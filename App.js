@@ -1,16 +1,20 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { BarCodeScanner } from "expo-barcode-scanner";
+import Slider from "@react-native-community/slider";
 import { useEffect, useRef, useState } from "react";
 import Button from "./src/components/Button";
 import ButtomBottomPad from "./src/components/ButtomBottomPad";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back); // Decimos que camra queremos usar
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
+  const [zoom, setZoom] = useState(0)
+  const [scanned, setScanned] = useState(false);
   const cameraRef = useRef(null);
 
   // Se pide permiso a la camara
@@ -19,6 +23,9 @@ export default function App() {
       MediaLibrary.requestPermissionsAsync();
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
       setHasCameraPermission(cameraStatus.status === "granted"); // si el status es concedido la variable es verdadera
+
+      const camRatios = await cameraRef.current.getSupportedRatiosAsync();
+      console.log(camRatios)
     })(); // Con () llamamos la función
   }, []);
 
@@ -48,6 +55,11 @@ export default function App() {
     }
   };
 
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+  };
+
   if (hasCameraPermission === false) {
     return <Text>No access to camera</Text>;
   }
@@ -59,7 +71,10 @@ export default function App() {
           style={styles.camera}
           type={type}
           flashMode={flash}
+          zoom={zoom}
           ref={cameraRef}
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          ratio="16:9"
         >
           <View
             style={{
@@ -90,6 +105,17 @@ export default function App() {
                 );
               }}
             />
+            <Slider
+              style={{ width: 200, height: 40 }}
+              minimumValue={0}
+              maximumValue={1}
+              value={zoom}
+              onValueChange={(value) => {
+                setZoom(value)
+              }}
+              minimumTrackTintColor="#06b6d4"
+              maximumTrackTintColor="#cbd5e1"
+            />
           </View>
         </Camera>
       ) : (
@@ -106,6 +132,7 @@ export default function App() {
         takePicture={takePicture}
         setImage={setImage}
       />
+      <StatusBar style="light" />
     </View>
   );
 }
@@ -115,10 +142,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#000",
     justifyContent: "center",
-    paddingBottom: 15,
+    
   },
   camera: {
-    flex: 1,
+    aspectRatio: 9 / 16, 
     borderRadius: 20,
   },
 });
