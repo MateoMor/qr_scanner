@@ -7,13 +7,14 @@ import { useEffect, useRef, useState } from "react";
 import Button from "./src/components/Button";
 import ButtomBottomPad from "./src/components/ButtomBottomPad";
 import { StatusBar } from "expo-status-bar";
+import ScannerAnimation from "./src/components/ScannerAnimation";
 
 export default function App() {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back); // Decimos que camra queremos usar
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
-  const [zoom, setZoom] = useState(0)
+  const [zoom, setZoom] = useState(0);
   const [scanned, setScanned] = useState(false);
   const cameraRef = useRef(null);
 
@@ -25,7 +26,7 @@ export default function App() {
       setHasCameraPermission(cameraStatus.status === "granted"); // si el status es concedido la variable es verdadera
 
       const camRatios = await cameraRef.current.getSupportedRatiosAsync();
-      console.log(camRatios)
+      console.log(camRatios);
     })(); // Con () llamamos la función
   }, []);
 
@@ -111,7 +112,7 @@ export default function App() {
               maximumValue={1}
               value={zoom}
               onValueChange={(value) => {
-                setZoom(value)
+                setZoom(value);
               }}
               minimumTrackTintColor="#06b6d4"
               maximumTrackTintColor="#cbd5e1"
@@ -125,7 +126,7 @@ export default function App() {
         />
       )}
       {/* Con estas configuraciones de camara manejamos que funciones están activadas y la referencia a la cámara */}
-
+      <ScannerAnimation/>
       <ButtomBottomPad
         image={image}
         saveImage={saveImage}
@@ -142,10 +143,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#000",
     justifyContent: "center",
-    
   },
   camera: {
-    aspectRatio: 9 / 16, 
+    aspectRatio: 9 / 16,
     borderRadius: 20,
+    flexDirection: "row",
+    justifyContent: "center",
   },
 });
