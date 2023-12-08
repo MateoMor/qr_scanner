@@ -13,13 +13,6 @@ import ButtomBottomPad from "./src/components/BottomPad";
 import ScannerAnimation from "./src/components/ScannerAnimation";
 import ZoomSlider from "./src/components/ZoomSlider";
 import BottomPad from "./src/components/BottomPad";
-import {
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView,
-} from "react-native-gesture-handler";
-
-let zoomScale = 0.01; // Para saber si el zoom aumentó o disminuyó
 
 export default function App() {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -83,23 +76,8 @@ export default function App() {
     return <Text>No access to camera</Text>;
   }
 
-  const pinchGesture = Gesture.Pinch()
-    .onUpdate((event) => {
-       console.log(event);
-      if (event.velocity > 0 && zoomScale < 1) {
-        zoomScale = zoomScale + 0.01;
-      } else if (zoomScale >= 0.01) {
-        zoomScale = zoomScale - 0.01;
-      }
-      console.log(zoomScale);
-    })
-    .onEnd(() => {
-      setZoom(zoomScale);
-    });
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <GestureDetector gesture={Gesture.Exclusive(pinchGesture)}>
         <View style={styles.container}>
           <View style={styles.buttonsPad}>
             <Button
@@ -145,8 +123,7 @@ export default function App() {
           <ScannerAnimation />
           <StatusBar style="light" />
         </View>
-      </GestureDetector>
-    </GestureHandlerRootView>
+      
   );
 }
 
