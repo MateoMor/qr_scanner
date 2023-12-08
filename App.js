@@ -13,6 +13,13 @@ import ButtomBottomPad from "./src/components/BottomPad";
 import ScannerAnimation from "./src/components/ScannerAnimation";
 import ZoomSlider from "./src/components/ZoomSlider";
 import BottomPad from "./src/components/BottomPad";
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
+
+let zoomScale = 0.01; // Para saber si el zoom aumentó o disminuyó
 
 export default function App() {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -30,8 +37,8 @@ export default function App() {
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
       setHasCameraPermission(cameraStatus.status === "granted"); // si el status es concedido la variable es verdadera
 
-      const camRatios = await cameraRef.current.getSupportedRatiosAsync();
-      console.log(camRatios);
+      //const camRatios = await cameraRef.current.getSupportedRatiosAsync();
+      //console.log(camRatios);
     })(); // Con () llamamos la función
   }, []);
 
@@ -76,52 +83,70 @@ export default function App() {
     return <Text>No access to camera</Text>;
   }
 
+  const pinchGesture = Gesture.Pinch()
+    .onUpdate((event) => {
+       console.log(event);
+      if (event.velocity > 0 && zoomScale < 1) {
+        zoomScale = zoomScale + 0.01;
+      } else if (zoomScale >= 0.01) {
+        zoomScale = zoomScale - 0.01;
+      }
+      console.log(zoomScale);
+    })
+    .onEnd(() => {
+      setZoom(zoomScale);
+    });
+
   return (
-    <View style={styles.container}>
-      <View style={styles.buttonsPad}>
-        <Button
-          icon={"camera-reverse"}
-          onPress={() => {
-            setType(
-              type === CameraType.back ? CameraType.front : CameraType.back
-            );
-          }}
-        />
-        <Button
-          icon={
-            flash === Camera.Constants.FlashMode.off ? "flash-off" : "flash"
-          }
-          onPress={() => {
-            setFlash(
-              flash === Camera.Constants.FlashMode.off
-                ? Camera.Constants.FlashMode.torch
-                : Camera.Constants.FlashMode.off
-            );
-            console.log(selectedImage);
-          }}
-        />
-        <Button icon={"images"} onPress={() => pickImage()} />
-      </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <GestureDetector gesture={Gesture.Exclusive(pinchGesture)}>
+        <View style={styles.container}>
+          <View style={styles.buttonsPad}>
+            <Button
+              icon={"camera-reverse"}
+              onPress={() => {
+                setType(
+                  type === CameraType.back ? CameraType.front : CameraType.back
+                );
+              }}
+            />
+            <Button
+              icon={
+                flash === Camera.Constants.FlashMode.off ? "flash-off" : "flash"
+              }
+              onPress={() => {
+                setFlash(
+                  flash === Camera.Constants.FlashMode.off
+                    ? Camera.Constants.FlashMode.torch
+                    : Camera.Constants.FlashMode.off
+                );
+                console.log(selectedImage);
+              }}
+            />
+            <Button icon={"images"} onPress={() => pickImage()} />
+          </View>
 
-      <Camera
-        style={styles.camera}
-        type={type}
-        flashMode={flash}
-        zoom={zoom}
-        ref={cameraRef}
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        ratio="16:9"
-      ></Camera>
-      
-        <BottomPad zoom={zoom} setZoom={setZoom}/>
+          <Camera
+            style={styles.camera}
+            type={type}
+            flashMode={flash}
+            zoom={zoom}
+            ref={cameraRef}
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            ratio="16:9"
+          ></Camera>
 
-      {/* <Image
+          <BottomPad zoom={zoom} setZoom={setZoom} />
+
+          {/* <Image
         source={{ uri: selectedImage?.localUri }}
         style={{ width: 200, height: 200 }}
       /> */}
-      <ScannerAnimation/>
-      <StatusBar style="light" />
-    </View>
+          <ScannerAnimation />
+          <StatusBar style="light" />
+        </View>
+      </GestureDetector>
+    </GestureHandlerRootView>
   );
 }
 
@@ -133,11 +158,11 @@ const styles = StyleSheet.create({
   },
   buttonsPad: {
     position: "absolute",
-    top: 0,
+    top: "5%",
     left: 0,
     right: 0,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     paddingHorizontal: 30,
     padding: 30,
     zIndex: 10,

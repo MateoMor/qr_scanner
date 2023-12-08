@@ -12,7 +12,7 @@ function BottomPad({ zoom, setZoom }) {
 
 const styles = StyleSheet.create({
   container: { position: "absolute",
-  bottom: "16%",
+  bottom: "15%",
   left: "10%",
   right: "10%",
 

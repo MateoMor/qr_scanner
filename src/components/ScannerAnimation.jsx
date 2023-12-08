@@ -1,9 +1,17 @@
 import { StyleSheet, View } from "react-native";
 
+import { GestureDetector, Gesture, GestureHandlerRootView } from "react-native-gesture-handler";
+
 const backgroundColor = "rgba(0, 0, 0, 0.4)";
 
 // Este componente crea la imágen del scaner con el fondo y la animación
-function ScannerAnimation() {
+function ScannerAnimation({ zoom, setZoom }) {
+
+  const pinchGesture = Gesture.Pinch().onUpdate((event) => {
+    console.log(event.scale);
+    setZoom(event.scale);
+  });
+
   return (
     <View style={styles.scanner}>
       <View style={[styles.upperWall, { backgroundColor }]} />
@@ -11,6 +19,7 @@ function ScannerAnimation() {
       <View style={[styles.rightWall, { backgroundColor }]} />
       <View style={[styles.bottomWall, { backgroundColor }]} />
     </View>
+    
   );
 }
 
