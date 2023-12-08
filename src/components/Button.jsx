@@ -1,11 +1,11 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Entypo } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 function Button({ title, onPress, icon, color }) {
   return (
     <View>
       <TouchableOpacity onPress={onPress} style={styles.button}>
-        <Entypo name={icon} size={28} color={color ? color : "white"} />
+        <Ionicons name={icon} size={28} color={color ? color : "white"} />
         <Text style={styles.text}>{title}</Text>
       </TouchableOpacity>
     </View>

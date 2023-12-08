@@ -1,17 +1,20 @@
 import { Image, StyleSheet, Text, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
+import * as ImagePicker from "expo-image-picker";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import Slider from "@react-native-community/slider";
-import { useEffect, useRef, useState } from "react";
+import { StatusBar } from "expo-status-bar";
+
 import Button from "./src/components/Button";
 import ButtomBottomPad from "./src/components/ButtomBottomPad";
-import { StatusBar } from "expo-status-bar";
 import ScannerAnimation from "./src/components/ScannerAnimation";
 
 export default function App() {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
-  const [image, setImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back); // Decimos que camra queremos usar
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   const [zoom, setZoom] = useState(0);
@@ -30,29 +33,24 @@ export default function App() {
     })(); // Con () llamamos la función
   }, []);
 
-  // Función para tomar una foto
-  const takePicture = async () => {
-    if (cameraRef) {
-      try {
-        const data = await cameraRef.current.takePictureAsync();
-        console.log(data);
-        setImage(data.uri);
-      } catch (error) {
-        console.log(error);
-      }
+  // Función para seleccionar una imagen
+  let openImagePickerAsync = async () => {
+    let permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync(); // Pide permiso al usuario para acceder a las galeria de imagenes
+    if (permissionResult.granted === false) {
+      alert("Permission to acces media library is required");
+      return;
     }
-  };
 
-  // Función para guardar imágen
-  const saveImage = async () => {
-    if (image) {
-      try {
-        await MediaLibrary.createAssetAsync(image); // Función que guarda la imágen
-        alert("Picture save!");
-        setImage(null);
-      } catch (error) {
-        console.log(error);
-      }
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1, // Importante para no tener un warning
+    });
+
+    if (pickerResult.canceled == true) {
+      return;
+    } else {
+      setSelectedImage({ localUri: pickerResult.assets[0].uri });
     }
   };
 
@@ -67,72 +65,59 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {!image ? (
-        <Camera
-          style={styles.camera}
-          type={type}
-          flashMode={flash}
-          zoom={zoom}
-          ref={cameraRef}
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          ratio="16:9"
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              paddingHorizontal: 30,
-              padding: 30,
-            }}
-          >
-            <Button
-              icon={"retweet"}
-              onPress={() => {
-                setType(
-                  type === CameraType.back ? CameraType.front : CameraType.back
-                );
-              }}
-            />
-            <Button
-              icon={"flash"}
-              color={
-                flash === Camera.Constants.FlashMode.off ? "gray" : "white"
-              }
-              onPress={() => {
-                setFlash(
-                  flash === Camera.Constants.FlashMode.off
-                    ? Camera.Constants.FlashMode.torch
-                    : Camera.Constants.FlashMode.off
-                );
-              }}
-            />
-            <Slider
-              style={{ width: 200, height: 40 }}
-              minimumValue={0}
-              maximumValue={1}
-              value={zoom}
-              onValueChange={(value) => {
-                setZoom(value);
-              }}
-              minimumTrackTintColor="#06b6d4"
-              maximumTrackTintColor="#cbd5e1"
-            />
-          </View>
-        </Camera>
-      ) : (
-        <Image
-          source={{ uri: image /*Si la imágen existe la uri de la imágen */ }}
-          style={styles.camera}
+      <View style={styles.buttonsPad}>
+        <Button
+          icon={"camera-reverse"}
+          onPress={() => {
+            setType(
+              type === CameraType.back ? CameraType.front : CameraType.back
+            );
+          }}
         />
-      )}
-      {/* Con estas configuraciones de camara manejamos que funciones están activadas y la referencia a la cámara */}
-      <ScannerAnimation/>
-      <ButtomBottomPad
-        image={image}
-        saveImage={saveImage}
-        takePicture={takePicture}
-        setImage={setImage}
+        <Button
+          icon={
+            flash === Camera.Constants.FlashMode.off ? "flash-off" : "flash"
+          }
+          onPress={() => {
+            setFlash(
+              flash === Camera.Constants.FlashMode.off
+                ? Camera.Constants.FlashMode.torch
+                : Camera.Constants.FlashMode.off
+            );
+            console.log(selectedImage);
+          }}
+        />
+        <Button icon={"images"} onPress={() => openImagePickerAsync()} />
+
+        <Slider
+          style={{ width: 200, height: 40 }}
+          minimumValue={0}
+          maximumValue={1}
+          value={zoom}
+          onValueChange={(value) => {
+            setZoom(value);
+          }}
+          minimumTrackTintColor="#06b6d4"
+          maximumTrackTintColor="#cbd5e1"
+        />
+      </View>
+
+      <Camera
+        style={styles.camera}
+        type={type}
+        flashMode={flash}
+        zoom={zoom}
+        ref={cameraRef}
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        ratio="16:9"
+      ></Camera>
+
+      <Image
+        source={{ uri: selectedImage?.localUri }}
+        style={{ width: 200, height: 200 }}
       />
+      {/* Con estas configuraciones de camara manejamos que funciones están activadas y la referencia a la cámara */}
+      <ScannerAnimation />
       <StatusBar style="light" />
     </View>
   );
@@ -143,6 +128,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#000",
     justifyContent: "center",
+  },
+  buttonsPad: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 30,
+    padding: 30,
+    zIndex: 10,
   },
   camera: {
     aspectRatio: 9 / 16,
