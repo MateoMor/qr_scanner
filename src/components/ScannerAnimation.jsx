@@ -17,8 +17,8 @@ function ScannerAnimation() {
 const styles = StyleSheet.create({
   scanner: {
     position: "absolute",
-    right: "15%",
-    left: "15%",
+    right: "20%",
+    left: "20%",
     aspectRatio: 1 / 1,
   },
   upperWall: {

@@ -9,13 +9,15 @@ import Slider from "@react-native-community/slider";
 import { StatusBar } from "expo-status-bar";
 
 import Button from "./src/components/Button";
-import ButtomBottomPad from "./src/components/ButtomBottomPad";
+import ButtomBottomPad from "./src/components/BottomPad";
 import ScannerAnimation from "./src/components/ScannerAnimation";
+import ZoomSlider from "./src/components/ZoomSlider";
+import BottomPad from "./src/components/BottomPad";
 
 export default function App() {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back); // Decimos que camra queremos usar
+  const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   const [zoom, setZoom] = useState(0);
   const [scanned, setScanned] = useState(false);
@@ -34,7 +36,7 @@ export default function App() {
   }, []);
 
   // Función para seleccionar una imagen
-  let openImagePickerAsync = async () => {
+  let pickImage = async () => {
     let permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync(); // Pide permiso al usuario para acceder a las galeria de imagenes
     if (permissionResult.granted === false) {
@@ -51,6 +53,17 @@ export default function App() {
       return;
     } else {
       setSelectedImage({ localUri: pickerResult.assets[0].uri });
+      try {
+        const scannedResults = await BarCodeScanner.scanFromURLAsync(
+          pickerResult.assets[0].uri
+        );
+
+        const dataNeeded = scannedResults[0].data;
+        alert(dataNeeded);
+      } catch (error) {
+        // if there this no QR code
+        alert("No QR Code Found");
+      }
     }
   };
 
@@ -87,19 +100,7 @@ export default function App() {
             console.log(selectedImage);
           }}
         />
-        <Button icon={"images"} onPress={() => openImagePickerAsync()} />
-
-        <Slider
-          style={{ width: 200, height: 40 }}
-          minimumValue={0}
-          maximumValue={1}
-          value={zoom}
-          onValueChange={(value) => {
-            setZoom(value);
-          }}
-          minimumTrackTintColor="#06b6d4"
-          maximumTrackTintColor="#cbd5e1"
-        />
+        <Button icon={"images"} onPress={() => pickImage()} />
       </View>
 
       <Camera
@@ -111,13 +112,14 @@ export default function App() {
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         ratio="16:9"
       ></Camera>
+      
+        <BottomPad zoom={zoom} setZoom={setZoom}/>
 
-      <Image
+      {/* <Image
         source={{ uri: selectedImage?.localUri }}
         style={{ width: 200, height: 200 }}
-      />
-      {/* Con estas configuraciones de camara manejamos que funciones están activadas y la referencia a la cámara */}
-      <ScannerAnimation />
+      /> */}
+      <ScannerAnimation/>
       <StatusBar style="light" />
     </View>
   );
