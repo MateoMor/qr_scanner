@@ -145,9 +145,9 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   camera: {
+    
+    height: "100%",
     aspectRatio: 9 / 16,
     borderRadius: 20,
-    flexDirection: "row",
-    justifyContent: "center",
   },
 });
