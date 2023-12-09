@@ -13,7 +13,7 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 function Scanner() {
   const { navigate } = useNavigation(); // Llamamos al hook de navigation
-  const isFocused = useIsFocused(); // Hook para saber si el componente está enfocado
+  const isFocused = useIsFocused(); // Hook para saber cuando montar y desmontar la cámara
 
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -39,6 +39,12 @@ function Scanner() {
     navigate("Detail", { data }); // Recibe el nombre de la pantalla definida en el rooteador y llama al compomente con los argumentos dados
   };
 
+  const barcodeScanned = (type, data) => {
+    Vibration.vibrate(100);
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    QRscannedNav(data);
+  };
+
   // Función para seleccionar una imagen
   let pickImage = async () => {
     let permissionResult =
@@ -58,29 +64,23 @@ function Scanner() {
     } else {
       setSelectedImage({ localUri: pickerResult.assets[0].uri });
       try {
+        // Se busca un qr en la imágen
         const scannedResults = await BarCodeScanner.scanFromURLAsync(
           pickerResult.assets[0].uri
         );
 
-        const dataNeeded = scannedResults[0].data;
-        alert(dataNeeded);
+        const imageData = scannedResults[0].data;
+        const imageType = scannedResults[0].type;
+
+        barcodeScanned(imageType, imageData);
       } catch (error) {
-        // if there this no QR code
         alert("No QR Code Found");
       }
     }
   };
 
   const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    Vibration.vibrate(100);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    QRscannedNav(data);
-
-    // Establecer un temporizador para cambiar scanned a false
-    setTimeout(() => {
-      setScanned(false);
-    }, 2000);
+    barcodeScanned(type, data);
   };
 
   if (hasCameraPermission === false) {
@@ -117,7 +117,6 @@ function Scanner() {
         />
         <Button icon={"images"} onPress={() => pickImage()} />
       </View>
-
       {isFocused && (
         <Camera
           style={styles.camera}
