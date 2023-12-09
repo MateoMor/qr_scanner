@@ -1,19 +1,20 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, Vibration, View } from "react-native";
 import { useEffect, useRef, useState } from "react";
 
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import Slider from "@react-native-community/slider";
 
 import Button from "../components/Button";
-import ButtomBottomPad from "../components/BottomPad";
 import ScannerAnimation from "../components/ScannerAnimation";
-import ZoomSlider from "../components/ZoomSlider";
 import BottomPad from "../components/BottomPad";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 function Scanner() {
+  const { navigate } = useNavigation(); // Llamamos al hook de navigation
+  const isFocused = useIsFocused(); // Hook para saber si el componente está enfocado
+
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -33,6 +34,10 @@ function Scanner() {
       //console.log(camRatios);
     })(); // Con () llamamos la función
   }, []);
+
+  const QRscannedNav = (data) => {
+    navigate("Detail", { data }); // Recibe el nombre de la pantalla definida en el rooteador y llama al compomente con los argumentos dados
+  };
 
   // Función para seleccionar una imagen
   let pickImage = async () => {
@@ -68,12 +73,24 @@ function Scanner() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
+    Vibration.vibrate(100);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    QRscannedNav(data);
+
+    // Establecer un temporizador para cambiar scanned a false
+    setTimeout(() => {
+      setScanned(false);
+    }, 2000);
   };
 
   if (hasCameraPermission === false) {
-    return <Text>No access to camera</Text>;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>No access to camera</Text>
+      </View>
+    );
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonsPad}>
@@ -101,22 +118,20 @@ function Scanner() {
         <Button icon={"images"} onPress={() => pickImage()} />
       </View>
 
-      <Camera
-        style={styles.camera}
-        type={type}
-        flashMode={flash}
-        zoom={zoom}
-        ref={cameraRef}
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        ratio="16:9"
-      ></Camera>
+      {isFocused && (
+        <Camera
+          style={styles.camera}
+          type={type}
+          flashMode={flash}
+          zoom={zoom}
+          ref={cameraRef}
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          ratio="16:9"
+        ></Camera>
+      )}
 
       <BottomPad zoom={zoom} setZoom={setZoom} />
 
-      {/* <Image
-        source={{ uri: selectedImage?.localUri }}
-        style={{ width: 200, height: 200 }}
-      /> */}
       <ScannerAnimation />
     </View>
   );
