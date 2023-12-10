@@ -2,20 +2,32 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { useRoute } from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
+import Toast from "react-native-simple-toast";
 
 import Button from "../components/Button";
 
 function ResultView() {
+  let toastShown = false;
+
   const {
     params: { data },
   } = useRoute(); //con esto pedimos los parametros enviados por ruta
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(data);
+
+    // Alert when copy with timeout to show again
+    if (!toastShown) {
+      Toast.show("Copied to clipboard!");
+      toastShown = true;
+      setTimeout(() => {
+        toastShown = false;
+      }, 2000);
+    }
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.mainContainer}>
       <View style={[styles.text_container, styles.containerStyles]}>
         <Text style={styles.text}>{data}</Text>
         <Button
@@ -30,7 +42,7 @@ function ResultView() {
 }
 
 styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
     padding: 15,
     backgroundColor: "#fafafa",

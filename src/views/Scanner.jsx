@@ -1,10 +1,11 @@
-import { StyleSheet, Text, Vibration, View } from "react-native";
+import { Alert, StyleSheet, Text, Vibration, View } from "react-native";
 import { useEffect, useRef, useState } from "react";
 
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import Toast from "react-native-simple-toast";
 
 import Button from "../components/Button";
 import ScannerAnimation from "../components/ScannerAnimation";
@@ -41,7 +42,7 @@ function Scanner() {
 
   const barcodeScanned = (type, data) => {
     Vibration.vibrate(100);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    // Alert.alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     QRscannedNav(data);
   };
 
@@ -74,7 +75,8 @@ function Scanner() {
 
         barcodeScanned(imageType, imageData);
       } catch (error) {
-        alert("No QR Code Found");
+        Toast.show("No Barcode Code Found");
+        //alert("No Barcode Code Found");
       }
     }
   };
