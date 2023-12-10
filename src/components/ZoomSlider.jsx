@@ -1,7 +1,7 @@
 import Slider from "@react-native-community/slider";
 import React from "react";
-import { Pressable, StyleSheet, View } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { StyleSheet, View } from "react-native";
+import Button from "./Button";
 
 function ZoomSlider({ zoom, setZoom }) {
   const stepSize = 0.07;
@@ -24,9 +24,12 @@ function ZoomSlider({ zoom, setZoom }) {
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => lessZoom()}>
-        <MaterialIcons name="zoom-out" size={28} color={"white"} />
-      </Pressable>
+      <Button
+        icon={"zoom-out"}
+        library={"MaterialIcons"}
+        onPress={() => lessZoom()}
+      />
+
       <Slider
         style={styles.slider}
         minimumValue={0}
@@ -38,9 +41,11 @@ function ZoomSlider({ zoom, setZoom }) {
         minimumTrackTintColor="#06b6d4"
         maximumTrackTintColor="#cbd5e1"
       />
-      <Pressable onPress={() => increaseZoom()}>
-        <MaterialIcons name="zoom-in" size={28} color={"white"} />
-      </Pressable>
+      <Button
+        icon={"zoom-in"}
+        library={"MaterialIcons"}
+        onPress={() => increaseZoom()}
+      />
     </View>
   );
 }

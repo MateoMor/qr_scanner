@@ -8,7 +8,9 @@ function ResultView() {
 
   return (
     <View style={styles.container}>
-      <Text>{data}</Text>
+      <View style={[styles.text_container, styles.containerStyles]}>
+        <Text style={styles.text}>{data}</Text>
+      </View>
     </View>
   );
 }
@@ -16,8 +18,27 @@ function ResultView() {
 styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 15,
+    backgroundColor: "#fafafa",
+  },
+
+  text_container: { flexDirection: "row" },
+
+  text: { fontWeight: "400" },
+
+  containerStyles: {
+    backgroundColor: "#fefefe",
     justifyContent: "center",
-    alignItems: "center",
+    padding: 4,
+    borderRadius: 5,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.17,
+    shadowRadius: 2.54,
+    elevation: 3,
   },
 });
 
