@@ -64,7 +64,7 @@ function Button({
         {library === "Ionicons" ? (
           <Ionicons name={icon} size={size} color={color} />
         ) : (
-          <MaterialIcons name="zoom-out" size={size} color={"white"} />
+          <MaterialIcons name={icon} size={size} color={color} />
         )}
       </Pressable>
     </View>
