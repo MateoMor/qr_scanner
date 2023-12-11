@@ -3,23 +3,14 @@ import { StyleSheet, Text, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
 import Toast from "react-native-simple-toast";
-import { QRCode } from "react-native-custom-qr-codes-expo";
 
 import Button from "../components/Button";
-import { useEffect, useState } from "react";
+import ImageQR from "../components/ImageQR";
+
+const iconsColor = "blue"; // Color de los iconos del view
 
 function ResultView() {
-  const [isMounted, setIsMounted] = useState(false);
   let toastShown = false;
-
-
-  useEffect(() => {
-    // useEffect para montar el QR solo despues de cambiar de ruta
-    setIsMounted(true); // El componente está montado
-    return () => {
-      setIsMounted(false); // El componente está desmontado
-    };
-  }, []);
 
   const {
     params: { data },
@@ -50,14 +41,19 @@ function ResultView() {
         />
       </View>
       {/* QR code generator */}
-      {isMounted && <QRCode content={data} />}
+      <ImageQR
+        data={data}
+        containerStyle={styles.containerStyles}
+        iconsColor={iconsColor}
+      />
     </View>
   );
 }
 
-styles = StyleSheet.create({
+const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    gap: 15,
     padding: 15,
     backgroundColor: "#fafafa",
   },
