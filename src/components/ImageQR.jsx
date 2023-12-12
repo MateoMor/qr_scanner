@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, Linking, StyleSheet, View } from "react-native";
 
 import { QRCode } from "react-native-custom-qr-codes-expo";
 import { captureRef } from "react-native-view-shot";
 import Toast from "react-native-simple-toast";
+import * as ImagePicker from "expo-image-picker";
 
 // Librerías apra descargar la imágen en el dispositivo
 import * as FileSystem from "expo-file-system";
@@ -14,7 +15,6 @@ import Button from "./Button";
 function ImageQR({ data, containerStyle, iconsColor }) {
   let toastShown = false;
   const [isMounted, setIsMounted] = useState(false);
-  const [status, requestPermission] = MediaLibrary.usePermissions();
   const imageRef = useRef();
 
   useEffect(() => {
@@ -26,8 +26,24 @@ function ImageQR({ data, containerStyle, iconsColor }) {
   }, []);
 
   const onSaveImageAsync = async () => {
+    // Method to request permission slightly different from the one used in Scanner.jsx to requiest camera acces
 
-    
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync(); // Pide permiso al usuario para acceder a las galeria de imagenes
+    if (permissionResult.granted === false) {
+      Alert.alert("Media Permission", "Need media permission to save qr code", [
+        {
+          text: "Cancel",
+        },
+        {
+          text: "go to settings",
+          onPress: () => {
+            Linking.openSettings();
+          },
+        },
+      ]);
+      return;
+    }
 
     try {
       const imageUri = await captureRef(imageRef, {
@@ -47,7 +63,7 @@ function ImageQR({ data, containerStyle, iconsColor }) {
       let asset = await MediaLibrary.createAssetAsync(imageUri);
       */
 
-      await MediaLibrary.createAssetAsync(imageUri)
+      await MediaLibrary.createAssetAsync(imageUri);
 
       /* await MediaLibrary.createAlbumAsync("Download", asset); */
 
@@ -61,6 +77,7 @@ function ImageQR({ data, containerStyle, iconsColor }) {
         }
       }
     } catch (e) {
+      console.log(e);
       if (!toastShown) {
         Toast.show("QR Code Was Not Downloaded");
         toastShown = true;
@@ -70,10 +87,6 @@ function ImageQR({ data, containerStyle, iconsColor }) {
       }
     }
   };
-
-  if (status === null) {
-    requestPermission();
-  }
 
   return (
     <View

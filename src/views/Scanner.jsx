@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, Vibration, View } from "react-native";
+import { Alert, Linking, StyleSheet, Vibration, View } from "react-native";
 import { useEffect, useRef, useState } from "react";
 
 import { Camera, CameraType } from "expo-camera";
@@ -6,11 +6,13 @@ import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import Toast from "react-native-simple-toast";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 import Button from "../components/Button";
 import ScannerAnimation from "../components/ScannerAnimation";
 import BottomPad from "../components/BottomPad";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
+import ButtonText from "../components/ButtonText";
+import { StatusBar } from "expo-status-bar";
 
 function Scanner() {
   const { navigate } = useNavigation(); // Llamamos al hook de navigation
@@ -25,36 +27,35 @@ function Scanner() {
   const cameraRef = useRef(null);
 
   // Se pide permiso a la camara
-  useEffect(() => {
-    (async () => {
-      MediaLibrary.requestPermissionsAsync();
-      const cameraStatus = await Camera.requestCameraPermissionsAsync();
-      setHasCameraPermission(cameraStatus.status === "granted"); // si el status es concedido la variable es verdadera
+  useEffect(
+    () => {
+      (async () => {
+        const cameraStatus = await Camera.requestCameraPermissionsAsync();
+        setHasCameraPermission(cameraStatus.status === "granted"); // si el status es concedido el estado es verdadero
 
-      //const camRatios = await cameraRef.current.getSupportedRatiosAsync();
-      //console.log(camRatios);
-    })(); // Con () llamamos la función
-  }, []);
+        //const camRatios = await cameraRef.current.getSupportedRatiosAsync();
+        //console.log(camRatios);
+      })(); // Con () llamamos la función
+    },
+    [
+      isFocused,
+    ] /* Con isFocused la función se ejecutará cada vez que se entre a la pantalla */
+  );
 
+  // Function to navigate to the information screen
   const QRscannedNav = (data) => {
     navigate("Detail", { data }); // Recibe el nombre de la pantalla definida en el rooteador y llama al compomente con los argumentos dados
   };
 
+  // Function what receive barcode info and calls navigate to other route
   const barcodeScanned = (type, data) => {
     Vibration.vibrate(100);
     // Alert.alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     QRscannedNav(data);
   };
 
-  // Función para seleccionar una imagen
+  // Function to select an image
   let pickImage = async () => {
-    let permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync(); // Pide permiso al usuario para acceder a las galeria de imagenes
-    if (permissionResult.granted === false) {
-      alert("Permission to acces media library is required");
-      return;
-    }
-
     const pickerResult = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1, // Importante para no tener un warning
@@ -76,7 +77,6 @@ function Scanner() {
         barcodeScanned(imageType, imageData);
       } catch (error) {
         Toast.show("No Barcode Code Found");
-        //alert("No Barcode Code Found");
       }
     }
   };
@@ -85,10 +85,56 @@ function Scanner() {
     barcodeScanned(type, data);
   };
 
+  // Function to promp user for camera permission
+  const requestCameraPermissionFromSettings = () => {
+    Alert.alert(
+      "No Camera Permission",
+      "Need camera permission to scan with camera",
+      [
+        {
+          text: "Cancel",
+        },
+        {
+          text: "go to settings",
+          onPress: () => {
+            Linking.openSettings(); /* Se abre la configuración */
+            /* Function to ask if hasPermission === "granted" after one second and force a reload if indeed it is, surely there's a better way but i don't know it */
+            setTimeout(async () => {
+              const cameraStatus = await Camera.getCameraPermissionsAsync(); // Se si se tiene permiso de cámara
+              setHasCameraPermission(cameraStatus.status === "granted");
+            }, 1500);
+          },
+        },
+      ]
+    );
+  };
+
+  // View to show if the app doesn't have camera permission
   if (hasCameraPermission === false) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>No access to camera</Text>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 16,
+        }}
+      >
+        <ButtonText
+          text="Scan with Camera"
+          color="green"
+          icon="camera-alt"
+          library="MaterialIcons"
+          onPress={requestCameraPermissionFromSettings}
+        />
+        <ButtonText
+          text="Scan from Gallery"
+          color="blue"
+          icon="images"
+          library="Ionicons"
+          onPress={pickImage}
+        />
+        <StatusBar style="dark" />
       </View>
     );
   }
@@ -97,7 +143,7 @@ function Scanner() {
     <View style={styles.container}>
       <View style={styles.buttonsPad}>
         <Button
-          icon={"camera-reverse"}
+          icon="camera-reverse"
           onPress={() => {
             setType(
               type === CameraType.back ? CameraType.front : CameraType.back
@@ -117,7 +163,7 @@ function Scanner() {
             console.log(selectedImage);
           }}
         />
-        <Button icon={"images"} onPress={() => pickImage()} />
+        <Button icon="images" onPress={() => pickImage()} />
       </View>
       {isFocused && (
         <Camera
