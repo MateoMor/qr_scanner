@@ -5,6 +5,7 @@ import { QRCode } from "react-native-custom-qr-codes-expo";
 import { captureRef } from "react-native-view-shot";
 import Toast from "react-native-simple-toast";
 import * as ImagePicker from "expo-image-picker";
+import * as Sharing from "expo-sharing";
 
 // Librerías apra descargar la imágen en el dispositivo
 import * as FileSystem from "expo-file-system";
@@ -114,6 +115,29 @@ function ImageQR({ data, containerStyle, iconsColor }) {
     }
   };
 
+  // Función para compartir la imagen
+  const openShareDialog = async () => {
+    if (!(await Sharing.isAvailableAsync())) {
+      // Se comprueba si el dispositivo movil tiene la api para compartir
+      alert("Sharing, is not available on your platform");
+      return;
+    }
+
+    try {
+      const imageUri = await captureRef(imageRef, {
+        height: 440,
+        format: "png",
+        quality: 1,
+      });
+
+      await Sharing.shareAsync(imageUri);
+    } catch (e) {
+      console.log(e);
+
+      Toast.show("QR share problem");
+    }
+  };
+
   return (
     <View
       style={[containerStyle /* Estilos heredados */, styles.mainContainer]}
@@ -152,7 +176,7 @@ function ImageQR({ data, containerStyle, iconsColor }) {
           library={"AntDesign"}
           color={iconsColor}
           size={32}
-          onPress={() => console.log("share")}
+          onPress={openShareDialog}
         />
       </View>
     </View>
