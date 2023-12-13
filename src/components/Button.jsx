@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { Animated, Pressable, StyleSheet, View } from "react-native";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+
+// Libraries added to this component
+import {
+  Ionicons,
+  MaterialIcons,
+  MaterialCommunityIcons,
+  AntDesign,
+  Entypo,
+} from "@expo/vector-icons";
 
 // button with
 function Button({
@@ -63,8 +71,14 @@ function Button({
         {/* Ioicons o MaterialIcons son soportados */}
         {library === "Ionicons" ? (
           <Ionicons name={icon} size={size} color={color} />
-        ) : (
+        ) : library === "MaterialIcons" ? (
           <MaterialIcons name={icon} size={size} color={color} />
+        ) : library === "MaterialCommunityIcons" ? (
+          <MaterialCommunityIcons name={icon} size={size} color={color} />
+        ) : library === "AntDesign" ? (
+          <AntDesign name={icon} size={size} color={color} />
+        ) : (
+          <Entypo name={icon} size={size} color={color} />
         )}
       </Pressable>
     </View>

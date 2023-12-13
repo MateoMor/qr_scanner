@@ -16,14 +16,21 @@ function ImageQR({ data, containerStyle, iconsColor }) {
   let toastShown = false;
   const [isMounted, setIsMounted] = useState(false);
   const imageRef = useRef();
+  const [isDataURL, setIsDataURL] = useState(false);
 
   useEffect(() => {
-    // useEffect para montar el QR solo despues de cambiar de ruta
+    // useEffect para montar el QR solo después de cambiar de ruta
     setIsMounted(true); // El componente está montado
-    return () => {
-      setIsMounted(false); // El componente está desmontado
-    };
-  }, []);
+
+    // Función para preguntar si si data es una URL valida y la asigna
+    async function canDataBeOpen() {
+      const canOpen = await Linking.canOpenURL(data);
+      setIsDataURL(canOpen);
+    }
+
+    // Llamada a la función asincrónica
+    canDataBeOpen();
+  }, [data]); // Asegúrate de incluir 'data' como una dependencia si lo usas dentro de la función
 
   const onSaveImageAsync = async () => {
     // Method to request permission slightly different from the one used in Scanner.jsx to requiest camera acces
@@ -88,19 +95,64 @@ function ImageQR({ data, containerStyle, iconsColor }) {
     }
   };
 
+  // Función para buscar un string en el browser
+  const SearchInBrowser = async (searchString) => {
+    console.log("hello");
+    try {
+      console.log("Hello");
+
+      const encodeURI = encodeURIComponent(searchString);
+
+      console.log(encodeURI);
+
+      const searchUrl = `https://www.google.com/search?q=${encodeURI}`;
+
+      // Abre el navegador con la barra de búsqueda
+      await Linking.openURL(searchUrl);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View
       style={[containerStyle /* Estilos heredados */, styles.mainContainer]}
     >
       <View ref={imageRef} collapsable={false} style={styles.qrContainer}>
-        {isMounted && <QRCode content={data} />}
+        {isMounted && <QRCode content={data} size={230} />}
       </View>
-      <View>
+      <View style={styles.buttonsContainer}>
+        {/* Si se puede abrir la url se usará el método Linking.openURL() de lo contrario se buscará en el navegador*/}
+        {isDataURL ? (
+          <Button
+            icon={"link-outline"}
+            library={"Ionicons"}
+            color={iconsColor}
+            size={32}
+            onPress={() => Linking.openURL(data)}
+          />
+        ) : (
+          <Button
+            icon={"web"}
+            library={"MaterialCommunityIcons"}
+            color={iconsColor}
+            size={32}
+            onPress={() => SearchInBrowser(data)}
+          />
+        )}
         <Button
           icon={"download-outline"}
           library={"Ionicons"}
           color={iconsColor}
+          size={32}
           onPress={onSaveImageAsync}
+        />
+        <Button
+          icon={"sharealt"}
+          library={"AntDesign"}
+          color={iconsColor}
+          size={32}
+          onPress={() => console.log("share")}
         />
       </View>
     </View>
@@ -113,6 +165,11 @@ const styles = StyleSheet.create({
   },
   qrContainer: {
     backgroundColor: "white",
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    marginTop: 10,
+    gap: 52,
   },
 });
 
