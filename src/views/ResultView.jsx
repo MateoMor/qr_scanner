@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
 
   bannerContainer: {
     width: "100%",
-    justifyContent: "center"
   },
 
   containerStyles: {
