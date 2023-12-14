@@ -3,6 +3,11 @@ import { StyleSheet, Text, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
 import Toast from "react-native-simple-toast";
+/* import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from "react-native-google-mobile-ads"; */
 
 import Button from "../components/Button";
 import ImageQR from "../components/ImageQR";
@@ -46,6 +51,16 @@ function ResultView() {
         containerStyle={styles.containerStyles}
         iconsColor={iconsColor}
       />
+      {/* Banner de anuncios */}
+      {/* <View style={styles.bannerContainer}>
+        <BannerAd
+          unitId={TestIds.BANNER}
+          size={BannerAdSize.FLUID}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        />
+      </View> */}
     </View>
   );
 }
@@ -65,6 +80,11 @@ const styles = StyleSheet.create({
   },
 
   text: { width: "84%", fontWeight: "400", fontSize: 15 },
+
+  bannerContainer: {
+    width: "100%",
+    justifyContent: "center"
+  },
 
   containerStyles: {
     backgroundColor: "#fefefe",

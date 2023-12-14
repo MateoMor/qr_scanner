@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Alert, Linking, StyleSheet, View } from "react-native";
 
-import { QRCode } from "react-native-custom-qr-codes-expo";
+/* import { QRCode } from "react-native-custom-qr-codes-expo"; */
 import { captureRef } from "react-native-view-shot";
 import Toast from "react-native-simple-toast";
 import * as ImagePicker from "expo-image-picker";
@@ -142,9 +142,9 @@ function ImageQR({ data, containerStyle, iconsColor }) {
     <View
       style={[containerStyle /* Estilos heredados */, styles.mainContainer]}
     >
-      <View ref={imageRef} collapsable={false} style={styles.qrContainer}>
+      {/* <View ref={imageRef} collapsable={false} style={styles.qrContainer}>
         {isMounted && <QRCode content={data} size={230} />}
-      </View>
+      </View> */}
       <View style={styles.buttonsContainer}>
         {/* Si se puede abrir la url se usará el método Linking.openURL() de lo contrario se buscará en el navegador*/}
         {isDataURL ? (
