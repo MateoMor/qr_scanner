@@ -12,7 +12,13 @@ import Toast from "react-native-simple-toast";
 import Button from "../components/Button";
 import ImageQR from "../components/ImageQR";
 
-const iconsColor = "blue"; // Color de los iconos del view
+import {
+  globalBackgoundColor,
+  globalContainerStyle,
+  globalIconColor,
+  globalMainContainer,
+  globalPrimaryColor,
+} from "../global/globalVariables";
 
 function ResultView() {
   let toastShown = false;
@@ -35,22 +41,18 @@ function ResultView() {
   };
 
   return (
-    <View style={styles.mainContainer}>
-      <View style={[styles.text_container, styles.containerStyles]}>
+    <View style={globalMainContainer}>
+      <View style={[styles.text_container, globalContainerStyle]}>
         <Text style={styles.text}>{data}</Text>
         <Button
           icon={"content-copy"}
           library={"MaterialIcons"}
-          color={"blue"}
+          color={globalIconColor}
           onPress={copyToClipboard}
         />
       </View>
       {/* QR code generator */}
-      <ImageQR
-        data={data}
-        containerStyle={styles.containerStyles}
-        iconsColor={iconsColor}
-      />
+      <ImageQR data={data} containerStyle={globalContainerStyle} />
       {/* Banner de anuncios */}
       {/* <View style={styles.bannerContainer}>
         <BannerAd
@@ -66,13 +68,6 @@ function ResultView() {
 }
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    gap: 15,
-    padding: 15,
-    backgroundColor: "#fafafa",
-  },
-
   text_container: {
     flexDirection: "row",
     alignItems: "center",
@@ -83,20 +78,6 @@ const styles = StyleSheet.create({
 
   bannerContainer: {
     width: "100%",
-  },
-
-  containerStyles: {
-    backgroundColor: "#fefefe",
-    padding: 14,
-    borderRadius: 6,
-    shadowColor: "#000000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.17,
-    shadowRadius: 2.54,
-    elevation: 3,
   },
 });
 

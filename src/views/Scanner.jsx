@@ -44,7 +44,7 @@ function Scanner() {
 
   // Function to navigate to the information screen
   const QRscannedNav = (data) => {
-    navigate("Detail", { data }); // Recibe el nombre de la pantalla definida en el rooteador y llama al compomente con los argumentos dados
+    navigate("Details", { data }); // Recibe el nombre de la pantalla definida en el rooteador y llama al compomente con los argumentos dados
   };
 
   // Function what receive barcode info and calls navigate to other route

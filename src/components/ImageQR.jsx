@@ -12,8 +12,9 @@ import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 
 import Button from "./Button";
+import { globalIconColor } from "../global/globalVariables";
 
-function ImageQR({ data, containerStyle, iconsColor }) {
+function ImageQR({ data, containerStyle}) {
   let toastShown = false;
   const [isMounted, setIsMounted] = useState(false);
   const imageRef = useRef();
@@ -151,7 +152,7 @@ function ImageQR({ data, containerStyle, iconsColor }) {
           <Button
             icon={"link-outline"}
             library={"Ionicons"}
-            color={iconsColor}
+            color={globalIconColor}
             size={32}
             onPress={() => Linking.openURL(data)}
           />
@@ -159,7 +160,7 @@ function ImageQR({ data, containerStyle, iconsColor }) {
           <Button
             icon={"web"}
             library={"MaterialCommunityIcons"}
-            color={iconsColor}
+            color={globalIconColor}
             size={32}
             onPress={() => SearchInBrowser(data)}
           />
@@ -167,14 +168,14 @@ function ImageQR({ data, containerStyle, iconsColor }) {
         <Button
           icon={"download-outline"}
           library={"Ionicons"}
-          color={iconsColor}
+          color={globalIconColor}
           size={32}
           onPress={onSaveImageAsync}
         />
         <Button
           icon={"sharealt"}
           library={"AntDesign"}
-          color={iconsColor}
+          color={globalIconColor}
           size={32}
           onPress={openShareDialog}
         />
