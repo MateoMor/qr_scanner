@@ -20,7 +20,7 @@ function Scanner() {
 
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [type, setType] = useState(CameraType.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   const [zoom, setZoom] = useState(0);
   const [scanned, setScanned] = useState(false);
