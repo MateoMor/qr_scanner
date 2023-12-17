@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Animated, StyleSheet, View, useWindowDimensions } from "react-native";
+import { Animated, Easing, StyleSheet, View, useWindowDimensions } from "react-native";
 
 const backgroundColor = "rgba(0, 0, 0, 0.4)";
 
@@ -8,11 +8,11 @@ function ScannerAnimation() {
   const { height, width } = useWindowDimensions();
   const [fadeIn, setFadeIn] = useState(new Animated.Value(0.5));
   const [scanerPointerPos, setScanerPointerPos] = useState(
-    new Animated.Value(0)
+    new Animated.Value(3)
   );
 
   useEffect(() => {
-    const windowHeight = width - width * 0.3 - 9; // Altura de la ventana de scaner
+    const windowHeight = width - width * 0.3 - 6; // Altura de la ventana de scaner
     const movementTime = 3900; // Tiempo en el que la barra hace medio recorrido
 
     Animated.loop(
@@ -22,11 +22,13 @@ function ScannerAnimation() {
             duration: movementTime, // Mitad del tiempo
             useNativeDriver: true,
             toValue: windowHeight,
+            easing: Easing.linear,
           }),
           Animated.timing(scanerPointerPos, {
             duration: movementTime, // Mitad del tiempo
             useNativeDriver: true,
-            toValue: 0,
+            toValue: 3,
+            easing: Easing.linear,
           }),
         ]),
         Animated.loop(
@@ -35,13 +37,13 @@ function ScannerAnimation() {
               duration: 1100, 
               useNativeDriver: true,
               toValue: 1,
-              delay: 300,
+              delay: 250,
             }),
             Animated.timing(fadeIn, {
               duration: 1100, 
               useNativeDriver: true,
               toValue: 0.4,
-              delay: 100,
+              delay: 80,
             }),
           ]),
           { iterations: 3 } /*  Número de iteraciones */
@@ -58,6 +60,7 @@ function ScannerAnimation() {
           { opacity: fadeIn, transform: [{ translateY: scanerPointerPos }] },
         ]}
       />
+      <View style={styles.scannerBorder}/>
       <View style={[styles.upperWall, { backgroundColor }]} />
       <View style={[styles.leftWall, { backgroundColor }]} />
       <View style={[styles.rightWall, { backgroundColor }]} />
@@ -72,13 +75,18 @@ const styles = StyleSheet.create({
     right: "15%",
     left: "15%",
     aspectRatio: 1 / 1,
-    borderColor: "#09c6e6",
+  },
+  scannerBorder: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
     borderWidth: 3,
+    borderColor: "#06b6d4",
   },
   scanPointer: {
     width: "100%",
     height: 3,
-    backgroundColor: "#4cbb17",
+    backgroundColor: "#4fcf19",
   },
   upperWall: {
     position: "absolute",
