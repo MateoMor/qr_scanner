@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 import TitleSpace from "../components/TitleSpace";
 import DefaultOptionBox from "../components/DefaultOptionBox";
@@ -11,13 +11,37 @@ import {
 
 function Settings() {
   return (
-    <View style={globalMainContainer}>
-      <TitleSpace title="Scanner" />
-      <View style={[globalContainerStyle, { padding: 0 }]}>
-        <DefaultOptionBox title="Vibration" />
+    <ScrollView>
+      <View style={globalMainContainer}>
+        <TitleSpace title="Appereance" />
+        <View style={[globalContainerStyle, styles.container]}>
+          <DefaultOptionBox title="Theme" />
+          <DefaultOptionBox title="Icon Color" />
+        </View>
+        <TitleSpace title="Scanner" />
+        <View style={[globalContainerStyle, styles.container]}>
+          <DefaultOptionBox title="Vibration" />
+          <DefaultOptionBox title="Beep" description="Sound when scanned" />
+        </View>
+        <TitleSpace title="Results" />
+        <View style={[globalContainerStyle, styles.container]}>
+          <DefaultOptionBox title="Auto Copy to Clipboard" />
+          <DefaultOptionBox title="Search Engine" />
+          <DefaultOptionBox
+            title="Automatically open URLs"
+            description="Automatically open websites after scanning QR with URL"
+          />
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 0,
+    paddingHorizontal: 10,
+  },
+});
 
 export default Settings;

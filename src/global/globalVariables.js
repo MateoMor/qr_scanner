@@ -2,6 +2,9 @@ export const globalBackgoundColor = "#fafafa";
 export const globalPrimaryColor = "#fefefe";
 export const globalSecondaryColor = "rgba(7,26,93,255)";
 export const globalIconColor = "#1973e9";
+export const globalTitleColor = "#000";
+export const globalSubtitleColor = "#999999";
+
 
 export const globalContainerStyle = {
     backgroundColor: globalPrimaryColor,
@@ -23,3 +26,8 @@ export const globalMainContainer = {
     padding: 15,
     backgroundColor: globalBackgoundColor,
   }
+
+  setTimeout(() => {
+    globalTitleColor = "#00ff00"
+    
+  }, 5000);

@@ -3,7 +3,11 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { MaterialIcons } from "@expo/vector-icons";
 
-import { globalIconColor } from "../global/globalVariables";
+import {
+  globalIconColor,
+  globalSubtitleColor,
+  globalTitleColor,
+} from "../global/globalVariables";
 import Button from "./Button";
 
 function DefaultOptionBox({ title, description, check, setCheck }) {
@@ -36,8 +40,8 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   leftContainer: { flexDirection: "column", justifyContent: "center" },
-  title: {},
-  description: {},
+  title: { color: globalTitleColor },
+  description: { color: globalSubtitleColor },
 });
 
 export default DefaultOptionBox;
