@@ -26,8 +26,3 @@ export const globalMainContainer = {
     padding: 15,
     backgroundColor: globalBackgoundColor,
   }
-
-  setTimeout(() => {
-    globalTitleColor = "#00ff00"
-    
-  }, 5000);

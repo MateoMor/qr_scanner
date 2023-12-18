@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { MaterialIcons } from "@expo/vector-icons";
@@ -9,8 +9,12 @@ import {
   globalTitleColor,
 } from "../global/globalVariables";
 import Button from "./Button";
+import { AppStateContext } from "../context/AppStateProvider";
 
 function DefaultOptionBox({ title, description, check, setCheck }) {
+
+  const {iconColor} = useContext(AppStateContext)
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.leftContainer}>
@@ -21,7 +25,7 @@ function DefaultOptionBox({ title, description, check, setCheck }) {
         <Button
           icon={check ? "check-box" : "check-box-outline-blank"}
           library={"MaterialIcons"}
-          color={globalIconColor}
+          color={iconColor}
           size={24}
           onPress={() => {
             console.log(setCheck);
