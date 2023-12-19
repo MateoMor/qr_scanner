@@ -120,6 +120,7 @@ function Scanner() {
           gap: 16,
         }}
       >
+        
         <ButtonText
           text="Scan with Camera"
           color="green"

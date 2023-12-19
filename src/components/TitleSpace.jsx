@@ -3,13 +3,16 @@ import { StyleSheet, Text, View } from "react-native";
 import { AppStateContext } from "../context/AppStateProvider";
 
 function TitleSpace({ title }) {
-  const { globalBackgoundColor } = useContext(AppStateContext);
+  const { globalBackgoundColor, globalSubtitleColor } =
+    useContext(AppStateContext);
 
   return (
     <View
       style={[styles.mainContainer, { backgroundColor: globalBackgoundColor }]}
     >
-      <Text style={styles.title}>{title}</Text>
+      <Text style={[styles.title, { color: globalSubtitleColor }]}>
+        {title}
+      </Text>
     </View>
   );
 }
@@ -17,10 +20,9 @@ function TitleSpace({ title }) {
 const styles = StyleSheet.create({
   mainContainer: {
     marginVertical: 8,
-    marginLeft: 10,
+    marginLeft: 14,
   },
   title: {
-    color: "#777777",
     fontWeight: "500",
   },
 });

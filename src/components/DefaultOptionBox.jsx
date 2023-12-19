@@ -5,7 +5,7 @@ import Button from "./Button";
 import { AppStateContext } from "../context/AppStateProvider";
 
 function DefaultOptionBox({ title, description, check, setCheck }) {
-  const { globalIconColor, globalSubtitleColor , globalTitleColor } = useContext(AppStateContext);
+  const { globalIconColor, globalSubtitleColor , globalTitleColor, themePreference, setThemePreference } = useContext(AppStateContext);
 
   return (
     <View style={styles.mainContainer}>
@@ -24,7 +24,7 @@ function DefaultOptionBox({ title, description, check, setCheck }) {
           color={globalIconColor}
           size={24}
           onPress={() => {
-            console.log("Hello");
+            themePreference === "dark" ? setThemePreference("light") : setThemePreference("dark");
           }}
         />
       </View>

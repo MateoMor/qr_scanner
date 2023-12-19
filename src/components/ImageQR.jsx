@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   },
   qrContainer: {
     backgroundColor: "white",
-    padding: 3,
+    padding: 8,
   },
   buttonsContainer: {
     flexDirection: "row",

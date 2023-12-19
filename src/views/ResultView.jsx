@@ -16,8 +16,14 @@ import ImageQR from "../components/ImageQR";
 import { AppStateContext } from "../context/AppStateProvider";
 
 function ResultView() {
-  const { globalContainerStyle, globalIconColor, globalMainContainerStyle } =
-    useContext(AppStateContext);
+  const {
+    globalContainerStyle,
+    globalIconColor,
+    globalMainContainerStyle,
+    globalPrimaryColor,
+    globalBackgoundColor,
+    globalTitleColor,
+  } = useContext(AppStateContext);
 
   let toastShown = false;
 
@@ -39,9 +45,20 @@ function ResultView() {
   };
 
   return (
-    <View style={globalMainContainerStyle}>
-      <View style={[styles.text_container, globalContainerStyle]}>
-        <Text style={styles.text}>{data}</Text>
+    <View
+      style={[
+        globalMainContainerStyle,
+        { backgroundColor: globalBackgoundColor },
+      ]}
+    >
+      <View
+        style={[
+          styles.text_container,
+          globalContainerStyle,
+          {backgroundColor: globalPrimaryColor},
+        ]}
+      >
+        <Text style={[styles.text, { color: globalTitleColor }]}>{data}</Text>
         <Button
           icon={"content-copy"}
           library={"MaterialIcons"}
@@ -50,7 +67,13 @@ function ResultView() {
         />
       </View>
       {/* QR code generator */}
-      <ImageQR data={data} containerStyle={globalContainerStyle} />
+      <ImageQR
+        data={data}
+        containerStyle={[
+          globalContainerStyle,
+          { backgroundColor: globalPrimaryColor },
+        ]}
+      />
       {/* Banner de anuncios */}
       {/* <View style={styles.bannerContainer}>
         <BannerAd

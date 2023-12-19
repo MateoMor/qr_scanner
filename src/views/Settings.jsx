@@ -1,4 +1,4 @@
-import React, { useContext }  from "react";
+import React, { useContext } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import TitleSpace from "../components/TitleSpace";
@@ -7,23 +7,51 @@ import DefaultOptionBox from "../components/DefaultOptionBox";
 import { AppStateContext } from "../context/AppStateProvider";
 
 function Settings() {
-  const { globalContainerStyle, globalMainContainerStyle } = useContext(AppStateContext);
+  const {
+    globalContainerStyle,
+    globalMainContainerStyle,
+    globalPrimaryColor,
+    globalBackgoundColor,
+  } = useContext(AppStateContext);
 
   return (
     <ScrollView>
-      <View style={globalMainContainerStyle}>
+      <View
+        style={[
+          globalMainContainerStyle,
+          { backgroundColor: globalBackgoundColor },
+        ]}
+      >
         <TitleSpace title="Appereance" />
-        <View style={[globalContainerStyle, styles.container]}>
+        <View
+          style={[
+            globalContainerStyle,
+            styles.container,
+            { backgroundColor: globalPrimaryColor },
+          ]}
+        >
           <DefaultOptionBox title="Theme" />
           <DefaultOptionBox title="Icon Color" />
         </View>
         <TitleSpace title="Scanner" />
-        <View style={[globalContainerStyle, styles.container]}>
+        <View
+          style={[
+            globalContainerStyle,
+            styles.container,
+            { backgroundColor: globalPrimaryColor },
+          ]}
+        >
           <DefaultOptionBox title="Vibration" />
           <DefaultOptionBox title="Beep" description="Sound when scanned" />
         </View>
         <TitleSpace title="Results" />
-        <View style={[globalContainerStyle, styles.container]}>
+        <View
+          style={[
+            globalContainerStyle,
+            styles.container,
+            { backgroundColor: globalPrimaryColor },
+          ]}
+        >
           <DefaultOptionBox title="Auto Copy to Clipboard" />
           <DefaultOptionBox title="Search Engine" />
           <DefaultOptionBox
