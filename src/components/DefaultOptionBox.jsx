@@ -1,34 +1,30 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import { MaterialIcons } from "@expo/vector-icons";
-
-import {
-  globalIconColor,
-  globalSubtitleColor,
-  globalTitleColor,
-} from "../global/globalVariables";
 import Button from "./Button";
 import { AppStateContext } from "../context/AppStateProvider";
 
 function DefaultOptionBox({ title, description, check, setCheck }) {
-
-  const {iconColor} = useContext(AppStateContext)
+  const { globalIconColor, globalSubtitleColor , globalTitleColor } = useContext(AppStateContext);
 
   return (
     <View style={styles.mainContainer}>
       <View style={styles.leftContainer}>
-        <Text style={styles.title}>{title}</Text>
-        {description && <Text style={styles.description}>{description}</Text>}
+        <Text style={[styles.title, { color: globalTitleColor }]}>{title}</Text>
+        {description && (
+          <Text style={[styles.description, { color: globalSubtitleColor }]}>
+            {description}
+          </Text>
+        )}
       </View>
       <View style={styles.rightContainer}>
         <Button
           icon={check ? "check-box" : "check-box-outline-blank"}
           library={"MaterialIcons"}
-          color={iconColor}
+          color={globalIconColor}
           size={24}
           onPress={() => {
-            console.log(setCheck);
+            console.log("Hello");
           }}
         />
       </View>
@@ -44,8 +40,8 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   leftContainer: { flexDirection: "column", justifyContent: "center" },
-  title: { color: globalTitleColor },
-  description: { color: globalSubtitleColor },
+  title: {},
+  description: {},
 });
 
 export default DefaultOptionBox;

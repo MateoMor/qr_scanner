@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { useRoute } from "@react-navigation/native";
@@ -12,15 +13,12 @@ import Toast from "react-native-simple-toast";
 import Button from "../components/Button";
 import ImageQR from "../components/ImageQR";
 
-import {
-  globalBackgoundColor,
-  globalContainerStyle,
-  globalIconColor,
-  globalMainContainer,
-  globalPrimaryColor,
-} from "../global/globalVariables";
+import { AppStateContext } from "../context/AppStateProvider";
 
 function ResultView() {
+  const { globalContainerStyle, globalIconColor, globalMainContainerStyle } =
+    useContext(AppStateContext);
+
   let toastShown = false;
 
   const {
@@ -41,7 +39,7 @@ function ResultView() {
   };
 
   return (
-    <View style={globalMainContainer}>
+    <View style={globalMainContainerStyle}>
       <View style={[styles.text_container, globalContainerStyle]}>
         <Text style={styles.text}>{data}</Text>
         <Button

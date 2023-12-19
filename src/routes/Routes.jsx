@@ -6,13 +6,13 @@ import Scanner from "../views/Scanner";
 import ResultView from "../views/ResultView";
 import Settings from "../views/Settings";
 
-import { globalSecondaryColor } from "../global/globalVariables";
+const headerColor = "rgba(7,26,93,255)";
 
 // Creo una instancia de createNativeStackNavigator que almacenará las rutas
 const Stack = createNativeStackNavigator();
 const routeScreenDefaultOptions = {
   headerStyle: {
-    backgroundColor: globalSecondaryColor,
+    backgroundColor: headerColor,
     
   },
   headerTitleStyle: {

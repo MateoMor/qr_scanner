@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { globalBackgoundColor } from "../global/globalVariables";
+import { AppStateContext } from "../context/AppStateProvider";
 
 function TitleSpace({ title }) {
+  const { globalBackgoundColor } = useContext(AppStateContext);
+
   return (
-    <View style={styles.mainContainer}>
+    <View
+      style={[styles.mainContainer, { backgroundColor: globalBackgoundColor }]}
+    >
       <Text style={styles.title}>{title}</Text>
     </View>
   );
@@ -12,7 +16,6 @@ function TitleSpace({ title }) {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: globalBackgoundColor,
     marginVertical: 8,
     marginLeft: 10,
   },

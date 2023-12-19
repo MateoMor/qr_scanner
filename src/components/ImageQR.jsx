@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Alert, Linking, StyleSheet, View } from "react-native";
 
 import QRCode from "react-native-qrcode-svg";
@@ -12,9 +12,12 @@ import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 
 import Button from "./Button";
-import { globalIconColor } from "../global/globalVariables";
+import { AppStateContext } from "../context/AppStateProvider";
 
 function ImageQR({ data, containerStyle}) {
+
+  const { globalIconColor } = useContext(AppStateContext);
+
   let toastShown = false;
   const [isMounted, setIsMounted] = useState(false);
   const imageRef = useRef();
@@ -190,6 +193,7 @@ const styles = StyleSheet.create({
   },
   qrContainer: {
     backgroundColor: "white",
+    padding: 3,
   },
   buttonsContainer: {
     flexDirection: "row",

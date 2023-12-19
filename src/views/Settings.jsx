@@ -1,18 +1,17 @@
-import React from "react";
+import React, { useContext }  from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import TitleSpace from "../components/TitleSpace";
 import DefaultOptionBox from "../components/DefaultOptionBox";
 
-import {
-  globalContainerStyle,
-  globalMainContainer,
-} from "../global/globalVariables";
+import { AppStateContext } from "../context/AppStateProvider";
 
 function Settings() {
+  const { globalContainerStyle, globalMainContainerStyle } = useContext(AppStateContext);
+
   return (
     <ScrollView>
-      <View style={globalMainContainer}>
+      <View style={globalMainContainerStyle}>
         <TitleSpace title="Appereance" />
         <View style={[globalContainerStyle, styles.container]}>
           <DefaultOptionBox title="Theme" />
