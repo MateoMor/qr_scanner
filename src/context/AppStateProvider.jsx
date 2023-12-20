@@ -51,7 +51,7 @@ export const AppStateProvider = (props) => {
       const themePreference = await getDataAsync("themePreference");
       changeTheme(themePreference);
     })();
-  }, []);
+  }, [deviceTheme]);
 
   const [globalBackgoundColor, setGlobalBackgoundColor] = useState("#fafafa");
   const [globalPrimaryColor, setGlobalPrimaryColor] = useState("#fefefe");
