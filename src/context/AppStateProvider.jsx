@@ -1,46 +1,57 @@
-import React, { useState, createContext, useEffect } from "react";
+import { useState, createContext, useEffect } from "react";
 import { useColorScheme } from "react-native";
+import { getDataAsync, storeDataAsync } from "../utils/AsyncStorageFunctions";
 
 export const AppStateContext = createContext();
 
 export const AppStateProvider = (props) => {
-  const [themePreference, setThemePreference] = useState("dark"); // options: auto, light, dark
-  const colorTheme = useColorScheme();
+
+  // --------------------------- THEME --------------------------- //
+  const deviceTheme = useColorScheme(); // Is necesary configure expo: {"userInterfaceStyle": "automatic"}, in app.json for useColorScheme() to work
+
+  // Colors style from https://material.io/design/color/dark-theme.html#ui-application
+  const darkThemeSetter = () => {
+    setGlobalPrimaryColor("#1C1C1C");
+    setheaderColor("#1C1C1C"); // Same color as globalPrimaryColor
+    setGlobalBackgoundColor("#121212");
+    setGlobalTitleColor("rgba(255, 255, 255, 0.87)");
+    setGlobalSubtitleColor("rgba(255, 255, 255, 0.60)");
+  };
+
+  const lightThemeSetter = () => {
+    setGlobalPrimaryColor("#FFFFFF");
+    setheaderColor("rgb(7,26,93)");
+    setGlobalBackgoundColor("#FAFAFA");
+    setGlobalTitleColor("rgba(0, 0, 0, 0.87)");
+    setGlobalSubtitleColor("rgba(0, 0, 0, 0.60)");
+  };
+
+  // Function thath changes the theme (Not change preference)
+  const changeTheme = (theme) => {
+    if (theme === "auto" || theme === undefined) {
+      deviceTheme === "dark" ? darkThemeSetter() : lightThemeSetter();
+    } else if (theme === "dark") {
+      darkThemeSetter();
+    } else if (theme === "light") {
+      lightThemeSetter();
+    }
+  }
+
+  // Function to change the theme preference. values: auto, light, dark
+  const changeThemePreference = async (value) => {
+    await storeDataAsync("themePreference", value);
+    changeTheme(value);
+  };
+
+  // --------------------------- /THEME --------------------------- //
 
   useEffect(() => {
-    // Colors from https://material.io/design/color/dark-theme.html#ui-application
-    const darkThemeSetter = () => {
-      setGlobalPrimaryColor("#1C1C1C");
-      setheaderColor("#1C1C1C"); // Same color as globalPrimaryColor
-      setGlobalBackgoundColor("#121212");
-      setGlobalTitleColor("rgba(255, 255, 255, 0.87)");
-      setGlobalSubtitleColor("rgba(255, 255, 255, 0.60)");
-    };
-
-    const lightThemeSetter = () => {
-      setGlobalPrimaryColor("#FFFFFF");
-      setheaderColor("rgb(7,26,93)");
-      setGlobalBackgoundColor("#FAFAFA");
-      setGlobalTitleColor("rgba(0, 0, 0, 0.87)");
-      setGlobalSubtitleColor("rgba(0, 0, 0, 0.60)");
-    };
-
-    // Asks wich theme is in use
-    switch (themePreference) {
-      case "auto":
-        colorTheme === "dark" ? darkThemeSetter() : lightThemeSetter();
-        break;
-      case "light":
-        lightThemeSetter();
-        break;
-      case "dark":
-        darkThemeSetter();
-        break;
-      default:
-        lightThemeSetter();
-        break;
-    }
-  }, [colorTheme, themePreference]);
+    // Asks which theme is in use at the beggining of the app and changes it to that
+    (async () => {
+      const themePreference = await getDataAsync("themePreference");
+      changeTheme(themePreference);
+    })();
+  }, []);
 
   const [globalBackgoundColor, setGlobalBackgoundColor] = useState("#fafafa");
   const [globalPrimaryColor, setGlobalPrimaryColor] = useState("#fefefe");
@@ -66,15 +77,14 @@ export const AppStateProvider = (props) => {
   });
 
   const [globalMainContainerStyle, setGlobalMainContainerStyle] = useState({
+    /* backgroundColor: globalBackgoundColor, */
     flex: 1,
     gap: 15,
     padding: 15,
-    /* backgroundColor: globalBackgoundColor, */
   });
 
   const contextValue = {
-    themePreference,
-    setThemePreference,
+    changeThemePreference, // Function
     globalIconColor,
     setGlobalIconColor,
     globalBackgoundColor,

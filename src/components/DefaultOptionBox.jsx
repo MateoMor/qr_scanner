@@ -4,8 +4,14 @@ import { StyleSheet, Text, View } from "react-native";
 import Button from "./Button";
 import { AppStateContext } from "../context/AppStateProvider";
 
+
 function DefaultOptionBox({ title, description, check, setCheck }) {
-  const { globalIconColor, globalSubtitleColor , globalTitleColor, themePreference, setThemePreference } = useContext(AppStateContext);
+  const {
+    changeThemePreference,
+    globalIconColor,
+    globalSubtitleColor,
+    globalTitleColor,
+  } = useContext(AppStateContext);
 
   return (
     <View style={styles.mainContainer}>
@@ -23,8 +29,8 @@ function DefaultOptionBox({ title, description, check, setCheck }) {
           library={"MaterialIcons"}
           color={globalIconColor}
           size={24}
-          onPress={() => {
-            themePreference === "dark" ? setThemePreference("light") : setThemePreference("dark");
+          onPress={async () => {
+            changeThemePreference("auto")
           }}
         />
       </View>
