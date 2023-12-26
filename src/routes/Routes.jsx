@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native"; // Componente pricnipal a través del que se crearan las rutas
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -11,14 +11,34 @@ import { AppStateContext } from "../context/AppStateProvider";
 const Stack = createNativeStackNavigator();
 
 function Routes() {
-  const { headerColor } = useContext(AppStateContext);
+  const { isAlertShown, currentTheme } = useContext(AppStateContext);
+
+  let headerColor = "rgb(7,26,93)";
+  let titlteColor = "#FFFFFF";
+
+  // Lógica para modificar el color para simular el oscurecimiento
+  if (currentTheme === "dark") {
+    if (isAlertShown) {
+      headerColor = "#151515"; // 25% opacity
+      titlteColor = "#BFBFBF"; // 25% opacity
+    } else {
+      headerColor = "#1C1C1C"; // Same as globalPrimaryColor
+    }
+  } else {
+    if (isAlertShown) {
+      headerColor = "rgb(5, 19, 70)"; // 25% opacity
+      titlteColor = "#BFBFBF"; // 25% opacity
+    } else {
+      headerColor = "rgb(7,26,93)";
+    }
+  }
 
   const routeScreenOptions = {
     headerStyle: {
       backgroundColor: headerColor,
     },
     headerTitleStyle: {
-      color: "white",
+      color: titlteColor,
       fontWeight: "bold",
     },
     headerTintColor: "#fff",

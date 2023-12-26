@@ -5,25 +5,28 @@ import { getDataAsync, storeDataAsync } from "../utils/AsyncStorageFunctions";
 export const AppStateContext = createContext();
 
 export const AppStateProvider = (props) => {
-
   // --------------------------- THEME --------------------------- //
   const deviceTheme = useColorScheme(); // Is necesary configure expo: {"userInterfaceStyle": "automatic"}, in app.json for useColorScheme() to work
+
+  const [currentTheme, setCurrentTheme] = useState("light"); // UseState to know when the theme changes (light or dark)
+
+  const [isAlertShown, setIsAlertShown] = useState(false); // UseState to know when the header should be blured
 
   // Colors style from https://material.io/design/color/dark-theme.html#ui-application
   const darkThemeSetter = () => {
     setGlobalPrimaryColor("#1C1C1C");
-    setheaderColor("#1C1C1C"); // Same color as globalPrimaryColor
     setGlobalBackgoundColor("#121212");
     setGlobalTitleColor("rgba(255, 255, 255, 0.87)");
     setGlobalSubtitleColor("rgba(255, 255, 255, 0.60)");
+    setCurrentTheme("dark");
   };
 
   const lightThemeSetter = () => {
     setGlobalPrimaryColor("#FFFFFF");
-    setheaderColor("rgb(7,26,93)");
     setGlobalBackgoundColor("#FAFAFA");
     setGlobalTitleColor("rgba(0, 0, 0, 0.87)");
     setGlobalSubtitleColor("rgba(0, 0, 0, 0.60)");
+    setCurrentTheme("light");
   };
 
   // Function thath changes the theme (Not change preference)
@@ -35,10 +38,10 @@ export const AppStateProvider = (props) => {
     } else if (theme === "light") {
       lightThemeSetter();
     }
-  }
+  };
 
   // Function to change the theme preference. values: auto, light, dark
-  const changeThemePreference = async (value) => {
+  const changeThemePreferenceAsync = async (value) => {
     await storeDataAsync("themePreference", value);
     changeTheme(value);
   };
@@ -57,8 +60,7 @@ export const AppStateProvider = (props) => {
   const [globalPrimaryColor, setGlobalPrimaryColor] = useState("#fefefe");
   const [globalSecondaryColor, setGlobalSecondaryColor] =
     useState("rgba(7,26,93,255)");
-  const [headerColor, setheaderColor] = useState("rgb(7,26,93)");
-  const [globalIconColor, setGlobalIconColor] = useState("aqua");
+  const [globalItemsColor, setGlobalItemsColor] = useState("aqua");
   const [globalTitleColor, setGlobalTitleColor] = useState("#000");
   const [globalSubtitleColor, setGlobalSubtitleColor] = useState("#999999");
 
@@ -84,17 +86,19 @@ export const AppStateProvider = (props) => {
   });
 
   const contextValue = {
-    changeThemePreference, // Function
-    globalIconColor,
-    setGlobalIconColor,
+    changeThemePreferenceAsync, // Function
+    currentTheme,
+    setCurrentTheme,
+    isAlertShown,
+    setIsAlertShown,
+    globalItemsColor,
+    setGlobalItemsColor,
     globalBackgoundColor,
     setGlobalBackgoundColor,
     globalPrimaryColor,
     setGlobalPrimaryColor,
     globalSecondaryColor,
     setGlobalSecondaryColor,
-    headerColor,
-    setheaderColor,
     globalTitleColor,
     setGlobalTitleColor,
     globalSubtitleColor,

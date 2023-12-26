@@ -1,10 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import TitleSpace from "../components/TitleSpace";
 import DefaultOptionBox from "../components/DefaultOptionBox";
 
 import { AppStateContext } from "../context/AppStateProvider";
+import { getDataAsync } from "../utils/AsyncStorageFunctions";
+import OptionThemeAlert from "../components/Alerts/OptionThemeAlert";
 
 function Settings() {
   const {
@@ -12,10 +14,26 @@ function Settings() {
     globalMainContainerStyle,
     globalPrimaryColor,
     globalBackgoundColor,
+    isAlertShown, // Manage the visibility of the alert
   } = useContext(AppStateContext);
 
+  const scrollEnabled = isAlertShown ? false : true; // To know if the component is scrollable or not
+
+  const [themePreferenceOptionSelected, setThemePreferenceOptionSelected] =
+    useState("auto");
+
+  // Function to check for the theme preference at the beggining of the render
+  const themePreferenceCheckOption = async () => {
+    const themePreference = await getDataAsync("themePreference");
+    setThemePreferenceOptionSelected(themePreference);
+  };
+
+  useEffect(() => {
+    themePreferenceCheckOption();
+  }, []);
+
   return (
-    <ScrollView>
+    <ScrollView scrollEnabled={scrollEnabled}>
       <View
         style={[
           globalMainContainerStyle,
@@ -59,6 +77,13 @@ function Settings() {
             description="Automatically open websites after scanning QR with URL"
           />
         </View>
+        {/* Alert frame to display alerts */}
+        {isAlertShown && (
+          <OptionThemeAlert
+            selectedTheme={themePreferenceOptionSelected}
+            setSelectedTheme={setThemePreferenceOptionSelected}
+          />
+        )}
       </View>
     </ScrollView>
   );

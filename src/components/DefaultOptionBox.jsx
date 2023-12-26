@@ -7,10 +7,10 @@ import { AppStateContext } from "../context/AppStateProvider";
 
 function DefaultOptionBox({ title, description, check, setCheck }) {
   const {
-    changeThemePreference,
-    globalIconColor,
+    globalItemsColor,
     globalSubtitleColor,
     globalTitleColor,
+    setIsAlertShown
   } = useContext(AppStateContext);
 
   return (
@@ -27,10 +27,10 @@ function DefaultOptionBox({ title, description, check, setCheck }) {
         <Button
           icon={check ? "check-box" : "check-box-outline-blank"}
           library={"MaterialIcons"}
-          color={globalIconColor}
+          color={globalItemsColor}
           size={24}
           onPress={async () => {
-            changeThemePreference("auto")
+            setIsAlertShown(true);
           }}
         />
       </View>
