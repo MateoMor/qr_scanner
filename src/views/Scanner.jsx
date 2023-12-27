@@ -8,10 +8,10 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import Toast from "react-native-simple-toast";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 
-import Button from "../components/Button";
+import Button from "../components/Buttons/Button";
 import ScannerAnimation from "../components/ScannerAnimation";
-import BottomPad from "../components/BottomPad";
-import ButtonText from "../components/ButtonText";
+import BottomPad from "../components/Buttons/BottomPad";
+import ButtonText from "../components/Buttons/ButtonText";
 import { StatusBar } from "expo-status-bar";
 
 function Scanner() {

@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import ZoomSlider from "./ZoomSlider";
+import ZoomSlider from "../ZoomSlider";
 
 function BottomPad({ zoom, setZoom }) {
   return (

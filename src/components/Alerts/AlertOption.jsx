@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Text, StyleSheet, Pressable } from "react-native";
 
-import Button from "../Button";
+import Button from "../Buttons/Button";
 import { AppStateContext } from "../../context/AppStateProvider";
 
 const AlertOption = ({ selected, children, onPress, setOpen, itemsColor }) => {

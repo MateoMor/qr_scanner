@@ -1,7 +1,7 @@
 import Slider from "@react-native-community/slider";
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import Button from "./Button";
+import Button from "./Buttons/Button";
 
 function ZoomSlider({ zoom, setZoom }) {
   const stepSize = 0.07;

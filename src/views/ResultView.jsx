@@ -10,7 +10,7 @@ import Toast from "react-native-simple-toast";
   TestIds,
 } from "react-native-google-mobile-ads"; */
 
-import Button from "../components/Button";
+import Button from "../components/Buttons/Button";
 import ImageQR from "../components/ImageQR";
 
 import { AppStateContext } from "../context/AppStateProvider";

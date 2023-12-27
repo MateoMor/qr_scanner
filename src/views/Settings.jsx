@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import TitleSpace from "../components/TitleSpace";
-import DefaultOptionBox from "../components/DefaultOptionBox";
+import DefaultOptionBox from "../components/Buttons/DefaultOptionBox";
 
 import { AppStateContext } from "../context/AppStateProvider";
 import { getDataAsync } from "../utils/AsyncStorageFunctions";
@@ -15,6 +15,7 @@ function Settings() {
     globalPrimaryColor,
     globalBackgoundColor,
     isAlertShown, // Manage the visibility of the alert
+    setIsAlertShown,
   } = useContext(AppStateContext);
 
   const scrollEnabled = isAlertShown ? false : true; // To know if the component is scrollable or not
@@ -48,8 +49,14 @@ function Settings() {
             { backgroundColor: globalPrimaryColor },
           ]}
         >
-          <DefaultOptionBox title="Theme" />
-          <DefaultOptionBox title="Icon Color" />
+          <DefaultOptionBox
+            title="Theme"
+            onPress={async () => {
+              setIsAlertShown(true);
+            }}
+            checkable={false}
+          />
+          <DefaultOptionBox title="Color Scheme" />
         </View>
         <TitleSpace title="Scanner" />
         <View
