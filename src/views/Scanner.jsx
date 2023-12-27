@@ -171,6 +171,11 @@ function Scanner() {
           }}
         />
         <Button icon="images" onPress={() => pickImage()} />
+        <Button
+          icon="settings"
+          library="MaterialIcons"
+          onPress={() => navigate("Settings")}
+        />
       </View>
       {isFocused && (
         <Camera
@@ -204,8 +209,8 @@ const styles = StyleSheet.create({
     right: 0,
     flexDirection: "row",
     justifyContent: "space-evenly",
-    paddingHorizontal: 30,
-    padding: 30,
+    paddingVertical: 30,
+    /* padding: 30, */
     zIndex: 10,
   },
   camera: {
