@@ -47,7 +47,7 @@ function Routes() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Settings">
+      <Stack.Navigator initialRouteName="Scanner">
         <Stack.Screen
           name="Scanner"
           component={Scanner}

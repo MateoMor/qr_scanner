@@ -48,15 +48,23 @@ export const AppStateProvider = (props) => {
 
   // --------------------------- /THEME --------------------------- //
 
-  // --------------------------- COLORS --------------------------- //
-
   // Function to change the items color in async storage and app state
   const changeItemsColor = (color) => {
     setGlobalItemsColor(color);
     storeDataAsync("itemsColor", color);
-  }
+  };
 
-  // --------------------------- /COLORS --------------------------- //
+  const toggleVibrationState = async () => {
+    setVibration(!vibration);
+    newVibrationState = vibration ? "false" : "true";
+    await storeDataAsync("vibration", newVibrationState);
+  };
+
+  const toggleBeepState = async () => {
+    setBeep(!beep);
+    newBeepState = beep ? "false" : "true";
+    await storeDataAsync("beep", newBeepState);
+  };
 
   // Asks async storaged properties at the beggining of the app
   useEffect(() => {
@@ -66,14 +74,34 @@ export const AppStateProvider = (props) => {
       changeTheme(themePreference);
 
       /* COLORS */
-      let itemsColor = await getDataAsync("itemsColor");
-      if (itemsColor === undefined) {
-        itemsColor = "#1973E9";
-        await storeDataAsync("itemsColor", itemsColor); // Stores color in async storage
+      let storedItemsColor = await getDataAsync("itemsColor");
+      if (storedItemsColor === undefined) {
+        storedItemsColor = "#1973E9";
+        await storeDataAsync("itemsColor", storedItemsColor); // Stores color in async storage
       }
-      setGlobalItemsColor(itemsColor);
+      setGlobalItemsColor(storedItemsColor);
+
+      /* VIBRATION and SOUND */
+      let storedVibration = await getDataAsync("vibration");
+      if (storedVibration === undefined) {
+        console.log("second")
+        storedVibration = "true";
+        await storeDataAsync("vibration", storedVibration);
+      }
+      setVibration(storedVibration === "true"); // converts string "true" of "false" in boolean
+
+      let storedBeep = await getDataAsync("beep");
+      if (storedBeep === undefined) {
+        storedBeep = "false";
+        await storeDataAsync("beep", storedBeep);
+      }
+      setBeep(storedBeep === "true");
     })();
   }, [deviceTheme]);
+
+  // the booleans are strings because async storage only accepts strings
+  const [vibration, setVibration] = useState(true);
+  const [beep, setBeep] = useState(false);
 
   const [globalBackgoundColor, setGlobalBackgoundColor] = useState("#fafafa");
   const [globalPrimaryColor, setGlobalPrimaryColor] = useState("#fefefe");
@@ -107,6 +135,10 @@ export const AppStateProvider = (props) => {
   const contextValue = {
     changeThemePreferenceAsync, // Function
     changeItemsColor, // Function
+    toggleVibrationState, // Function
+    toggleBeepState, // Function
+    vibration,
+    beep,
     currentTheme,
     setCurrentTheme,
     isAlertShown,

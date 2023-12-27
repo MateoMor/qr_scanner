@@ -11,6 +11,10 @@ import IconColorPalette from "../components/Buttons/IconColorPalette";
 
 function Settings() {
   const {
+    vibration,
+    beep,
+    toggleVibrationState,
+    toggleBeepState,
     globalContainerStyle,
     globalMainContainerStyle,
     globalPrimaryColor,
@@ -33,6 +37,10 @@ function Settings() {
   useEffect(() => {
     themePreferenceCheckOption();
   }, []);
+
+  useEffect(() => {
+    themePreferenceCheckOption();
+  }, [vibration, beep]);
 
   return (
     <ScrollView scrollEnabled={scrollEnabled}>
@@ -67,8 +75,21 @@ function Settings() {
             { backgroundColor: globalPrimaryColor },
           ]}
         >
-          <DefaultOptionBox title="Vibration" />
-          <DefaultOptionBox title="Beep" description="Sound when scanned" />
+          <DefaultOptionBox
+            title="Vibration"
+            onPress={async () => {
+              toggleVibrationState();
+            }}
+            check={vibration}
+          />
+          <DefaultOptionBox
+            title="Beep"
+            onPress={async () => {
+              toggleBeepState();
+            }}
+            description="Sound when scanned"
+            check={beep}
+          />
         </View>
         <TitleSpace title="Results" />
         <View

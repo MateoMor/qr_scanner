@@ -1,5 +1,5 @@
 import { Alert, Linking, StyleSheet, Vibration, View } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
@@ -14,9 +14,14 @@ import BottomPad from "../components/Buttons/BottomPad";
 import ButtonText from "../components/Buttons/ButtonText";
 import { StatusBar } from "expo-status-bar";
 
+import { AppStateContext } from "../context/AppStateProvider";
+
 function Scanner() {
   const { navigate } = useNavigation(); // Llamamos al hook de navigation
+
   const isFocused = useIsFocused(); // Hook para saber cuando montar y desmontar la cámara
+
+  const { vibration, beep } = useContext(AppStateContext);
 
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -49,7 +54,9 @@ function Scanner() {
 
   // Function what receive barcode info and calls navigate to other route
   const barcodeScanned = (type, data) => {
-    Vibration.vibrate(100);
+    if (vibration) {
+      Vibration.vibrate(100);
+    }
     // Alert.alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     QRscannedNav(data);
   };
@@ -120,7 +127,6 @@ function Scanner() {
           gap: 16,
         }}
       >
-        
         <ButtonText
           text="Scan with Camera"
           color="green"
