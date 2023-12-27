@@ -7,6 +7,7 @@ import DefaultOptionBox from "../components/Buttons/DefaultOptionBox";
 import { AppStateContext } from "../context/AppStateProvider";
 import { getDataAsync } from "../utils/AsyncStorageFunctions";
 import OptionThemeAlert from "../components/Alerts/OptionThemeAlert";
+import IconColorPalette from "../components/Buttons/IconColorPalette";
 
 function Settings() {
   const {
@@ -56,7 +57,7 @@ function Settings() {
             }}
             checkable={false}
           />
-          <DefaultOptionBox title="Color Scheme" />
+          <IconColorPalette />
         </View>
         <TitleSpace title="Scanner" />
         <View

@@ -48,11 +48,30 @@ export const AppStateProvider = (props) => {
 
   // --------------------------- /THEME --------------------------- //
 
+  // --------------------------- COLORS --------------------------- //
+
+  // Function to change the items color in async storage and app state
+  const changeItemsColor = (color) => {
+    setGlobalItemsColor(color);
+    storeDataAsync("itemsColor", color);
+  }
+
+  // --------------------------- /COLORS --------------------------- //
+
+  // Asks async storaged properties at the beggining of the app
   useEffect(() => {
-    // Asks which theme is in use at the beggining of the app and changes it to that
     (async () => {
+      /* THEME */
       const themePreference = await getDataAsync("themePreference");
       changeTheme(themePreference);
+
+      /* COLORS */
+      let itemsColor = await getDataAsync("itemsColor");
+      if (itemsColor === undefined) {
+        itemsColor = "#1973E9";
+        await storeDataAsync("itemsColor", itemsColor); // Stores color in async storage
+      }
+      setGlobalItemsColor(itemsColor);
     })();
   }, [deviceTheme]);
 
@@ -60,7 +79,7 @@ export const AppStateProvider = (props) => {
   const [globalPrimaryColor, setGlobalPrimaryColor] = useState("#fefefe");
   const [globalSecondaryColor, setGlobalSecondaryColor] =
     useState("rgba(7,26,93,255)");
-  const [globalItemsColor, setGlobalItemsColor] = useState("aqua");
+  const [globalItemsColor, setGlobalItemsColor] = useState("#1973E9");
   const [globalTitleColor, setGlobalTitleColor] = useState("#000");
   const [globalSubtitleColor, setGlobalSubtitleColor] = useState("#999999");
 
@@ -87,6 +106,7 @@ export const AppStateProvider = (props) => {
 
   const contextValue = {
     changeThemePreferenceAsync, // Function
+    changeItemsColor, // Function
     currentTheme,
     setCurrentTheme,
     isAlertShown,
