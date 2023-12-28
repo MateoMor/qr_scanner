@@ -11,10 +11,12 @@ import IconColorPalette from "../components/Buttons/IconColorPalette";
 
 function Settings() {
   const {
-    vibration,
-    beep,
     toggleVibrationState,
+    vibration,
     toggleBeepState,
+    beep,
+    toggleAutoCopyToClipboard,
+    autoCopyToClipboard,
     globalContainerStyle,
     globalMainContainerStyle,
     globalPrimaryColor,
@@ -99,7 +101,13 @@ function Settings() {
             { backgroundColor: globalPrimaryColor },
           ]}
         >
-          <DefaultOptionBox title="Auto Copy to Clipboard" />
+          <DefaultOptionBox
+            title="Auto Copy to Clipboard"
+            onPress={async () => {
+              toggleAutoCopyToClipboard();
+            }}
+            check={autoCopyToClipboard}
+          />
           <DefaultOptionBox title="Search Engine" />
           <DefaultOptionBox
             title="Automatically open URLs"

@@ -66,6 +66,12 @@ export const AppStateProvider = (props) => {
     await storeDataAsync("beep", newBeepState);
   };
 
+  const toggleAutoCopyToClipboard = async () => {
+    setAutoCopyToClipboard(!autoCopyToClipboard);
+    const newAutoCopyToClipboardState = autoCopyToClipboard ? "false"  : "true";
+    await storeDataAsync("autoCopyToClipboard", newAutoCopyToClipboardState);
+  }
+
   // Asks async storaged properties at the beggining of the app
   useEffect(() => {
     (async () => {
@@ -96,12 +102,21 @@ export const AppStateProvider = (props) => {
         await storeDataAsync("beep", storedBeep);
       }
       setBeep(storedBeep === "true");
+
+      /* AUTO COPY TO CLIPBOARD */
+      let storedAutoCopyToClipboard = await getDataAsync("autoCopyToClipboard");
+      if (storedAutoCopyToClipboard === undefined) {
+        storedAutoCopyToClipboard = "false";
+        await storeDataAsync("autoCopyToClipboard", storedAutoCopyToClipboard);
+      }
+      setAutoCopyToClipboard(storedAutoCopyToClipboard === "true");
     })();
   }, [deviceTheme]);
 
   // the booleans are strings because async storage only accepts strings
   const [vibration, setVibration] = useState(true);
   const [beep, setBeep] = useState(false);
+  const [autoCopyToClipboard, setAutoCopyToClipboard] = useState(false)
 
   const [globalBackgoundColor, setGlobalBackgoundColor] = useState("#fafafa");
   const [globalPrimaryColor, setGlobalPrimaryColor] = useState("#fefefe");
@@ -137,8 +152,10 @@ export const AppStateProvider = (props) => {
     changeItemsColor, // Function
     toggleVibrationState, // Function
     toggleBeepState, // Function
+    toggleAutoCopyToClipboard, // Function
     vibration,
     beep,
+    autoCopyToClipboard,
     currentTheme,
     setCurrentTheme,
     isAlertShown,

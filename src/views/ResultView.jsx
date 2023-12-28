@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { useRoute } from "@react-navigation/native";
@@ -17,6 +17,7 @@ import { AppStateContext } from "../context/AppStateProvider";
 
 function ResultView() {
   const {
+    autoCopyToClipboard,
     globalContainerStyle,
     globalIconColor,
     globalMainContainerStyle,
@@ -30,6 +31,14 @@ function ResultView() {
   const {
     params: { data },
   } = useRoute(); //con esto pedimos los parametros enviados por ruta
+
+  useEffect(() => {
+    // If auto copy is enabled copy automatically when render
+    if(autoCopyToClipboard) {
+      copyToClipboard();
+    }
+  }, [])
+  
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(data);
