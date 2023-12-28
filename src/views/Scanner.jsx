@@ -7,6 +7,7 @@ import * as ImagePicker from "expo-image-picker";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import Toast from "react-native-simple-toast";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { Audio } from "expo-av";
 
 import Button from "../components/Buttons/Button";
 import ScannerAnimation from "../components/ScannerAnimation";
@@ -30,6 +31,7 @@ function Scanner() {
   const [zoom, setZoom] = useState(0);
   const [scanned, setScanned] = useState(false);
   const cameraRef = useRef(null);
+  const [scanSound, setScanSound] = useState(null);
 
   // Se pide permiso a la camara
   useEffect(
@@ -37,6 +39,13 @@ function Scanner() {
       (async () => {
         const cameraStatus = await Camera.requestCameraPermissionsAsync();
         setHasCameraPermission(cameraStatus.status === "granted"); // si el status es concedido el estado es verdadero
+
+        const { sound } = await Audio.Sound.createAsync(
+          require("../../assets/beep.mp3"),
+          { playThroughEarpieceAndroid: true }
+        ); // Pide el sonido del scanner
+
+        setScanSound(sound);
 
         //const camRatios = await cameraRef.current.getSupportedRatiosAsync();
         //console.log(camRatios);
@@ -52,8 +61,15 @@ function Scanner() {
     navigate("Details", { data }); // Recibe el nombre de la pantalla definida en el rooteador y llama al compomente con los argumentos dados
   };
 
+  const playBeep = async () => {
+    await sound.playAsync(); // Reproduce el sonido
+  };
+
   // Function what receive barcode info and calls navigate to other route
-  const barcodeScanned = (type, data) => {
+  const barcodeScanned = async (type, data) => {
+    if (beep) {
+      scanSound.replayAsync(); // Beep sound is played
+    }
     if (vibration) {
       Vibration.vibrate(100);
     }
