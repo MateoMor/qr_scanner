@@ -4,13 +4,13 @@ import { useHeaderHeight } from "@react-navigation/elements";
 
 import { AppStateContext } from "../../context/AppStateProvider";
 
-function AlertFrame({ setOpen, itemsColor, children }) {
+function AlertFrame({ closeAlert, itemsColor, children }) {
   const { globalPrimaryColor } = useContext(AppStateContext);
 
   const headerHeight = useHeaderHeight();
 
   return (
-    <Pressable onPress={() => setOpen(false)} style={styles.background}>
+    <Pressable onPress={closeAlert} style={styles.background}>
       <View style={styles.mainContainer}>
         <Pressable
           style={[styles.container, { backgroundColor: globalPrimaryColor }]}
@@ -18,7 +18,7 @@ function AlertFrame({ setOpen, itemsColor, children }) {
           <View style={styles.childrenContainer}>{children}</View>
           <Pressable
             style={styles.cancelContainer}
-            onPress={() => setOpen(false)}
+            onPress={closeAlert}
           >
             <Text style={[styles.cancel, { color: itemsColor }]}>CANCEL</Text>
           </Pressable>

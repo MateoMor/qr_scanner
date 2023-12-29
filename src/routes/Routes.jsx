@@ -11,21 +11,21 @@ import { AppStateContext } from "../context/AppStateProvider";
 const Stack = createNativeStackNavigator();
 
 function Routes() {
-  const { isAlertShown, currentTheme } = useContext(AppStateContext);
+  const { isHeaderBlurred, currentTheme } = useContext(AppStateContext);
 
   let headerColor = "rgb(7,26,93)";
   let titlteColor = "#FFFFFF";
 
   // Lógica para modificar el color para simular el oscurecimiento
   if (currentTheme === "dark") {
-    if (isAlertShown) {
+    if (isHeaderBlurred) {
       headerColor = "#151515"; // 25% opacity
       titlteColor = "#BFBFBF"; // 25% opacity
     } else {
       headerColor = "#1C1C1C"; // Same as globalPrimaryColor
     }
   } else {
-    if (isAlertShown) {
+    if (isHeaderBlurred) {
       headerColor = "rgb(5, 19, 70)"; // 25% opacity
       titlteColor = "#BFBFBF"; // 25% opacity
     } else {

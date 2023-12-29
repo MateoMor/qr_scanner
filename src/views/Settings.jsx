@@ -21,14 +21,21 @@ function Settings() {
     globalMainContainerStyle,
     globalPrimaryColor,
     globalBackgoundColor,
-    isAlertShown, // Manage the visibility of the alert
-    setIsAlertShown,
+    setIsHeaderBlurred,
+    isThemeAlertShown, // Manage the visibility of the alert
+    setIsThemeAlertShown,
   } = useContext(AppStateContext);
 
-  const scrollEnabled = isAlertShown ? false : true; // To know if the component is scrollable or not
+  const scrollEnabled = isThemeAlertShown ? false : true; // To know if the component is scrollable or not
 
   const [themePreferenceOptionSelected, setThemePreferenceOptionSelected] =
     useState("auto");
+
+  // Function to open alerts with a useState as conditional
+  const openAlert = (alertSetter) => {
+    alertSetter(true);
+    setIsHeaderBlurred(true);
+  };
 
   // Function to check for the theme preference at the beggining of the render
   const themePreferenceCheckOption = async () => {
@@ -62,8 +69,8 @@ function Settings() {
         >
           <DefaultOptionBox
             title="Theme"
-            onPress={async () => {
-              setIsAlertShown(true);
+            onPress={() => {
+              openAlert(setIsThemeAlertShown);
             }}
             checkable={false}
           />
@@ -108,14 +115,20 @@ function Settings() {
             }}
             check={autoCopyToClipboard}
           />
-          <DefaultOptionBox title="Search Engine" />
+          <DefaultOptionBox
+            title="Search Engine"
+            onPress={async () => {
+              setIsThemeAlertShown(true);
+            }}
+            checkable={false}
+          />
           <DefaultOptionBox
             title="Automatically open URLs"
             description="Automatically open websites after scanning QR with URL"
           />
         </View>
         {/* Alert frame to display alerts */}
-        {isAlertShown && (
+        {isThemeAlertShown && (
           <OptionThemeAlert
             selectedTheme={themePreferenceOptionSelected}
             setSelectedTheme={setThemePreferenceOptionSelected}

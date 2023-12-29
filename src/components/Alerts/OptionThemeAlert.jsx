@@ -4,20 +4,29 @@ import AlertFrame from "./AlertFrame";
 import AlertOption from "./AlertOption";
 import { AppStateContext } from "../../context/AppStateProvider";
 
-function OptionThemeAlert({selectedTheme, setSelectedTheme}) {
-    const { changeThemePreferenceAsync, globalItemsColor, setIsAlertShown } =
-    useContext(AppStateContext);
+function OptionThemeAlert({ selectedTheme, setSelectedTheme }) {
+  const {
+    changeThemePreferenceAsync,
+    globalItemsColor,
+    setIsThemeAlertShown,
+    setIsHeaderBlurred,
+  } = useContext(AppStateContext);
+
+  const closeAlert = () => {
+    setIsThemeAlertShown(false);
+    setIsHeaderBlurred(false);
+  };
 
   return (
-    <AlertFrame itemsColor={globalItemsColor} setOpen={setIsAlertShown}>
+    <AlertFrame itemsColor={globalItemsColor} closeAlert={() => {closeAlert()}}>
       <AlertOption
         selected={selectedTheme === "auto"}
         itemsColor={globalItemsColor}
         onPress={async () => {
-            setSelectedTheme("auto");
-            await changeThemePreferenceAsync("auto");
+          closeAlert();
+          setSelectedTheme("auto");
+          await changeThemePreferenceAsync("auto");
         }}
-        setOpen={setIsAlertShown}
       >
         System Default
       </AlertOption>
@@ -25,10 +34,10 @@ function OptionThemeAlert({selectedTheme, setSelectedTheme}) {
         selected={selectedTheme === "light"}
         itemsColor={globalItemsColor}
         onPress={async () => {
+          closeAlert();
           setSelectedTheme("light");
           await changeThemePreferenceAsync("light");
         }}
-        setOpen={setIsAlertShown}
       >
         Light
       </AlertOption>
@@ -36,10 +45,10 @@ function OptionThemeAlert({selectedTheme, setSelectedTheme}) {
         selected={selectedTheme === "dark"}
         itemsColor={globalItemsColor}
         onPress={async () => {
+          closeAlert();
           setSelectedTheme("dark");
           await changeThemePreferenceAsync("dark");
         }}
-        setOpen={setIsAlertShown}
       >
         Dark
       </AlertOption>

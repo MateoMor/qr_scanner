@@ -10,7 +10,9 @@ export const AppStateProvider = (props) => {
 
   const [currentTheme, setCurrentTheme] = useState("light"); // UseState to know when the theme changes (light or dark)
 
-  const [isAlertShown, setIsAlertShown] = useState(false); // UseState to know when the header should be blured
+  const [isHeaderBlurred, setIsHeaderBlurred] = useState(false); // UseState to know when the header is blurred
+
+  const [isThemeAlertShown, setIsThemeAlertShown] = useState(false); // UseState to know wheter the alert is shown or not
 
   // Colors style from https://material.io/design/color/dark-theme.html#ui-application
   const darkThemeSetter = () => {
@@ -68,9 +70,9 @@ export const AppStateProvider = (props) => {
 
   const toggleAutoCopyToClipboard = async () => {
     setAutoCopyToClipboard(!autoCopyToClipboard);
-    const newAutoCopyToClipboardState = autoCopyToClipboard ? "false"  : "true";
+    const newAutoCopyToClipboardState = autoCopyToClipboard ? "false" : "true";
     await storeDataAsync("autoCopyToClipboard", newAutoCopyToClipboardState);
-  }
+  };
 
   // Asks async storaged properties at the beggining of the app
   useEffect(() => {
@@ -90,7 +92,7 @@ export const AppStateProvider = (props) => {
       /* VIBRATION and SOUND */
       let storedVibration = await getDataAsync("vibration");
       if (storedVibration === undefined) {
-        console.log("second")
+        console.log("second");
         storedVibration = "true";
         await storeDataAsync("vibration", storedVibration);
       }
@@ -116,7 +118,7 @@ export const AppStateProvider = (props) => {
   // the booleans are strings because async storage only accepts strings
   const [vibration, setVibration] = useState(true);
   const [beep, setBeep] = useState(false);
-  const [autoCopyToClipboard, setAutoCopyToClipboard] = useState(false)
+  const [autoCopyToClipboard, setAutoCopyToClipboard] = useState(false);
 
   const [globalBackgoundColor, setGlobalBackgoundColor] = useState("#fafafa");
   const [globalPrimaryColor, setGlobalPrimaryColor] = useState("#fefefe");
@@ -158,8 +160,10 @@ export const AppStateProvider = (props) => {
     autoCopyToClipboard,
     currentTheme,
     setCurrentTheme,
-    isAlertShown,
-    setIsAlertShown,
+    isHeaderBlurred,
+    setIsHeaderBlurred,
+    isThemeAlertShown,
+    setIsThemeAlertShown,
     globalItemsColor,
     setGlobalItemsColor,
     globalBackgoundColor,
