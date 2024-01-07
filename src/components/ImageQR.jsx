@@ -15,7 +15,8 @@ import Button from "./Buttons/Button";
 import { AppStateContext } from "../context/AppStateProvider";
 
 function ImageQR({ data, containerStyle }) {
-  const { globalItemsColor, searchEngine } = useContext(AppStateContext);
+  const { globalItemsColor, searchEngine, autoSearch } =
+    useContext(AppStateContext);
 
   let toastShown = false;
   const [isMounted, setIsMounted] = useState(false);
@@ -30,6 +31,13 @@ function ImageQR({ data, containerStyle }) {
     async function canDataBeOpen() {
       const canOpen = await Linking.canOpenURL(data);
       setIsDataURL(canOpen);
+
+      // Si autosearch está habilitado y si la data es una URL la abre
+      if (autoSearch) {
+        if (canOpen) {
+          Linking.openURL(data);
+        }
+      }
     }
 
     // Llamada a la función asincrónica

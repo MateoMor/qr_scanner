@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
 
   },
-  leftContainer: { flexDirection: "column", justifyContent: "center" },
+  leftContainer: { flexDirection: "column", justifyContent: "center", width: "85%" },
   title: {},
   description: {},
 });

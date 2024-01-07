@@ -16,7 +16,9 @@ function Settings() {
     vibration,
     toggleBeepState,
     beep,
+    autoSearch,
     toggleAutoCopyToClipboard,
+    toggleAutoSearch,
     autoCopyToClipboard,
     globalContainerStyle,
     globalMainContainerStyle,
@@ -123,7 +125,11 @@ function Settings() {
             />
             <DefaultOptionBox
               title="Automatically open URLs"
-              description="Automatically open websites after scanning QR with URL"
+              description="Open websites after scanning a QR with URL"
+              onPress={async () => {
+                toggleAutoSearch()
+              }}
+              check={autoSearch}
             />
           </View>
           {/* Alert frame to display alerts */}

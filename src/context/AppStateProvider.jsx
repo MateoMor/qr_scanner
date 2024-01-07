@@ -76,6 +76,12 @@ export const AppStateProvider = (props) => {
     await storeDataAsync("autoCopyToClipboard", newAutoCopyToClipboardState);
   };
 
+  const toggleAutoSearch = async () => {
+    setAutoSearch(!autoSearch);
+    const newAutoSearchState = autoSearch ? "false" : "true";
+    await storeDataAsync("autoSearch", newAutoSearchState);
+  };
+
   // Asks async storaged properties at the beggining of the app
   useEffect(() => {
     (async () => {
@@ -123,6 +129,15 @@ export const AppStateProvider = (props) => {
         await storeDataAsync("autoCopyToClipboard", storedAutoCopyToClipboard);
       }
       setAutoCopyToClipboard(storedAutoCopyToClipboard === "true");
+
+      /* AUTO SEARCH */
+    let storedAutoSearch = await getDataAsync("autoSearch");
+    if (storedAutoSearch === undefined) {
+      storedAutoSearch = "false";
+      await storeDataAsync("autoSearch", storedAutoSearch);
+    }
+    setAutoSearch(storedAutoSearch === "true");
+    
     })();
   }, [deviceTheme]);
 
@@ -131,6 +146,7 @@ export const AppStateProvider = (props) => {
   const [beep, setBeep] = useState(false);
   const [autoCopyToClipboard, setAutoCopyToClipboard] = useState(false);
   const [searchEngine, setSearchEngine] = useState("google");
+  const [autoSearch, setAutoSearch] = useState(false)
 
   const [globalBackgoundColor, setGlobalBackgoundColor] = useState("#fafafa");
   const [globalPrimaryColor, setGlobalPrimaryColor] = useState("#fefefe");
@@ -167,10 +183,12 @@ export const AppStateProvider = (props) => {
     toggleVibrationState, // Function
     toggleBeepState, // Function
     toggleAutoCopyToClipboard, // Function
+    toggleAutoSearch, // Function
     vibration,
     beep,
     autoCopyToClipboard,
     searchEngine,
+    autoSearch,
     setSearchEngine,
     currentTheme,
     setCurrentTheme,
