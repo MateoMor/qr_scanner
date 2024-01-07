@@ -15,7 +15,7 @@ import Button from "./Buttons/Button";
 import { AppStateContext } from "../context/AppStateProvider";
 
 function ImageQR({ data, containerStyle }) {
-  const { globalIconColor, searchEngine } = useContext(AppStateContext);
+  const { globalItemsColor, searchEngine } = useContext(AppStateContext);
 
   let toastShown = false;
   const [isMounted, setIsMounted] = useState(false);
@@ -151,7 +151,7 @@ function ImageQR({ data, containerStyle }) {
           <Button
             icon={"link-outline"}
             library={"Ionicons"}
-            color={globalIconColor}
+            color={globalItemsColor}
             size={32}
             onPress={() => Linking.openURL(data)}
           />
@@ -159,7 +159,7 @@ function ImageQR({ data, containerStyle }) {
           <Button
             icon={"web"}
             library={"MaterialCommunityIcons"}
-            color={globalIconColor}
+            color={globalItemsColor}
             size={32}
             onPress={() => SearchInBrowser(data, searchEngine || "google")}
           />
@@ -167,14 +167,14 @@ function ImageQR({ data, containerStyle }) {
         <Button
           icon={"download-outline"}
           library={"Ionicons"}
-          color={globalIconColor}
+          color={globalItemsColor}
           size={32}
           onPress={onSaveImageAsync}
         />
         <Button
           icon={"sharealt"}
           library={"AntDesign"}
-          color={globalIconColor}
+          color={globalItemsColor}
           size={32}
           onPress={openShareDialog}
         />

@@ -19,7 +19,7 @@ function ResultView() {
   const {
     autoCopyToClipboard,
     globalContainerStyle,
-    globalIconColor,
+    globalItemsColor,
     globalMainContainerStyle,
     globalPrimaryColor,
     globalBackgoundColor,
@@ -71,7 +71,7 @@ function ResultView() {
         <Button
           icon={"content-copy"}
           library={"MaterialIcons"}
-          color={globalIconColor}
+          color={globalItemsColor}
           onPress={copyToClipboard}
         />
       </View>
