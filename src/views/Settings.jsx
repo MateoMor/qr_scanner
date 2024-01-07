@@ -8,6 +8,7 @@ import { AppStateContext } from "../context/AppStateProvider";
 import { getDataAsync } from "../utils/AsyncStorageFunctions";
 import OptionThemeAlert from "../components/Alerts/OptionThemeAlert";
 import IconColorPalette from "../components/Buttons/IconColorPalette";
+import OptionEngineAlert from "../components/Alerts/OptionEngineAlert";
 
 function Settings() {
   const {
@@ -22,8 +23,10 @@ function Settings() {
     globalPrimaryColor,
     globalBackgoundColor,
     setIsHeaderBlurred,
-    isThemeAlertShown, // Manage the visibility of the alert
+    isThemeAlertShown, // Manages the visibility of the theme alert
     setIsThemeAlertShown,
+    isEngineAlertShown, // Manages the visibility of the engine alert
+    setIsEngineAlertShown,
   } = useContext(AppStateContext);
 
   const scrollEnabled = isThemeAlertShown ? false : true; // To know if the component is scrollable or not
@@ -118,7 +121,7 @@ function Settings() {
           <DefaultOptionBox
             title="Search Engine"
             onPress={async () => {
-              setIsThemeAlertShown(true);
+              setIsEngineAlertShown(true);
             }}
             checkable={false}
           />
@@ -130,6 +133,12 @@ function Settings() {
         {/* Alert frame to display alerts */}
         {isThemeAlertShown && (
           <OptionThemeAlert
+            selectedTheme={themePreferenceOptionSelected}
+            setSelectedTheme={setThemePreferenceOptionSelected}
+          />
+        )}
+        {isEngineAlertShown && (
+          <OptionEngineAlert
             selectedTheme={themePreferenceOptionSelected}
             setSelectedTheme={setThemePreferenceOptionSelected}
           />

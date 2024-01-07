@@ -14,9 +14,8 @@ import * as MediaLibrary from "expo-media-library";
 import Button from "./Buttons/Button";
 import { AppStateContext } from "../context/AppStateProvider";
 
-function ImageQR({ data, containerStyle}) {
-
-  const { globalIconColor } = useContext(AppStateContext);
+function ImageQR({ data, containerStyle }) {
+  const { globalIconColor, searchEngine } = useContext(AppStateContext);
 
   let toastShown = false;
   const [isMounted, setIsMounted] = useState(false);
@@ -101,21 +100,18 @@ function ImageQR({ data, containerStyle}) {
   };
 
   // Función para buscar un string en el browser
-  const SearchInBrowser = async (searchString) => {
-    console.log("hello");
+  const SearchInBrowser = async (searchString, engine) => {
     try {
-      console.log("Hello");
-
       const encodeURI = encodeURIComponent(searchString);
 
-      console.log(encodeURI);
+      const searchUrl = `https://www.${engine}.com/search?q=${encodeURI}`;
 
-      const searchUrl = `https://www.google.com/search?q=${encodeURI}`;
+      console.log(searchUrl);
 
       // Abre el navegador con la barra de búsqueda
       await Linking.openURL(searchUrl);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -147,7 +143,7 @@ function ImageQR({ data, containerStyle}) {
       style={[containerStyle /* Estilos heredados */, styles.mainContainer]}
     >
       <View ref={imageRef} collapsable={false} style={styles.qrContainer}>
-        {isMounted && <QRCode value={data} size={230}/>}
+        {isMounted && <QRCode value={data} size={230} />}
       </View>
       <View style={styles.buttonsContainer}>
         {/* Si se puede abrir la url se usará el método Linking.openURL() de lo contrario se buscará en el navegador*/}
@@ -165,7 +161,7 @@ function ImageQR({ data, containerStyle}) {
             library={"MaterialCommunityIcons"}
             color={globalIconColor}
             size={32}
-            onPress={() => SearchInBrowser(data)}
+            onPress={() => SearchInBrowser(data, searchEngine || "google")}
           />
         )}
         <Button

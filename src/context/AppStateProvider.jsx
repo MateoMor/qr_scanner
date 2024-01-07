@@ -14,6 +14,8 @@ export const AppStateProvider = (props) => {
 
   const [isThemeAlertShown, setIsThemeAlertShown] = useState(false); // UseState to know wheter the alert is shown or not
 
+  const [isEngineAlertShown, setIsEngineAlertShown] = useState(false);
+
   // Colors style from https://material.io/design/color/dark-theme.html#ui-application
   const darkThemeSetter = () => {
     setGlobalPrimaryColor("#1C1C1C");
@@ -81,6 +83,15 @@ export const AppStateProvider = (props) => {
       const themePreference = await getDataAsync("themePreference");
       changeTheme(themePreference);
 
+      /* SEARCH ENGINE */
+
+      let storedSearchEngine = await getDataAsync("searchEngine");
+      if (storedSearchEngine === undefined) {
+        storedSearchEngine = "google";
+        await storeDataAsync("searchEngine", storedSearchEngine);
+      }
+      setSearchEngine(storedSearchEngine);
+
       /* COLORS */
       let storedItemsColor = await getDataAsync("itemsColor");
       if (storedItemsColor === undefined) {
@@ -119,6 +130,7 @@ export const AppStateProvider = (props) => {
   const [vibration, setVibration] = useState(true);
   const [beep, setBeep] = useState(false);
   const [autoCopyToClipboard, setAutoCopyToClipboard] = useState(false);
+  const [searchEngine, setSearchEngine] = useState("google");
 
   const [globalBackgoundColor, setGlobalBackgoundColor] = useState("#fafafa");
   const [globalPrimaryColor, setGlobalPrimaryColor] = useState("#fefefe");
@@ -158,6 +170,8 @@ export const AppStateProvider = (props) => {
     vibration,
     beep,
     autoCopyToClipboard,
+    searchEngine,
+    setSearchEngine,
     currentTheme,
     setCurrentTheme,
     isHeaderBlurred,
@@ -165,6 +179,8 @@ export const AppStateProvider = (props) => {
     isThemeAlertShown,
     setIsThemeAlertShown,
     globalItemsColor,
+    isEngineAlertShown,
+    setIsEngineAlertShown,
     setGlobalItemsColor,
     globalBackgoundColor,
     setGlobalBackgoundColor,
