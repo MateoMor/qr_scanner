@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { useRoute } from "@react-navigation/native";
@@ -34,11 +34,10 @@ function ResultView() {
 
   useEffect(() => {
     // If auto copy is enabled copy automatically when render
-    if(autoCopyToClipboard) {
+    if (autoCopyToClipboard) {
       copyToClipboard();
     }
-  }, [])
-  
+  }, []);
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(data);
@@ -64,7 +63,7 @@ function ResultView() {
         style={[
           styles.text_container,
           globalContainerStyle,
-          {backgroundColor: globalPrimaryColor},
+          { backgroundColor: globalPrimaryColor },
         ]}
       >
         <Text style={[styles.text, { color: globalTitleColor }]}>{data}</Text>

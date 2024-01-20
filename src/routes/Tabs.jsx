@@ -1,5 +1,4 @@
-import { useState } from "react";
-
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -10,62 +9,47 @@ import ResultView from "../views/ResultView";
 import Settings from "../views/Settings";
 
 const Tab = createMaterialBottomTabNavigator();
-
-/* const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 
 function ScannerStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Scanner">
       <Stack.Screen name="Scanner" component={Scanner} />
+      <Stack.Screen name="Details" component={ResultView} />
     </Stack.Navigator>
   );
 }
 
-function SettingsStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Settings" component={Settings} />
-    </Stack.Navigator>
-  );
-} */
-
 function Tabs() {
   return (
-    <Tab.Navigator
-      initialRouteName="Home"
-      activeColor="blue"
-      inactiveColor="#ffffff"
-      shifting={true}
-      barStyle={{ backgroundColor: "#151515", height: 70 }}
-    >
-      <Tab.Screen
-        name="Scanner"
-        component={Scanner}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="crop-free" color={"#BFBFBF"} size={26} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Result"
-        component={ResultView}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="arch" color={"#BFBFBF"} size={26} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={Settings}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="hammer-wrench" color={"#BFBFBF"} size={26} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+    <NavigationContainer independent={true}>
+      <Tab.Navigator
+        initialRouteName="ScannerStack"
+        activeColor="blue"
+        inactiveColor="#ffffff"
+        shifting={true}
+        barStyle={{ backgroundColor: "#151515", height: 70 }}
+      >
+        <Tab.Screen
+          name="ScannerStack"
+          component={ScannerStack}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="crop-free" color={"#BFBFBF"} size={26} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={Settings}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="hammer-wrench" color={"#BFBFBF"} size={26} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 
