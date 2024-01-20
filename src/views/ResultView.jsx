@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { useRoute } from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
@@ -11,9 +11,10 @@ import Toast from "react-native-simple-toast";
 } from "react-native-google-mobile-ads"; */
 
 import Button from "../components/Buttons/Button";
-import ImageQR from "../components/ImageQR";
+import ImageQR from "../components/LayoutComponents/ImageQR";
 
 import { AppStateContext } from "../context/AppStateProvider";
+import Header from "../components/LayoutComponents/Header";
 
 function ResultView() {
   const {
@@ -53,37 +54,38 @@ function ResultView() {
   };
 
   return (
-    <View
-      style={[
-        globalMainContainerStyle,
-        { backgroundColor: globalBackgoundColor },
-      ]}
+    <ScrollView
+      style={{ backgroundColor: globalBackgoundColor }}
+      scrollEnabled={true}
+      stickyHeaderIndices={[0] /* Sticky header */}
     >
-      <View
-        style={[
-          styles.text_container,
-          globalContainerStyle,
-          { backgroundColor: globalPrimaryColor },
-        ]}
-      >
-        <Text style={[styles.text, { color: globalTitleColor }]}>{data}</Text>
-        <Button
-          icon={"content-copy"}
-          library={"MaterialIcons"}
-          color={globalItemsColor}
-          onPress={copyToClipboard}
+      <Header title="Details" />
+      <View style={[globalMainContainerStyle]}>
+        <View
+          style={[
+            styles.text_container,
+            globalContainerStyle,
+            { backgroundColor: globalPrimaryColor },
+          ]}
+        >
+          <Text style={[styles.text, { color: globalTitleColor }]}>{data}</Text>
+          <Button
+            icon={"content-copy"}
+            library={"MaterialIcons"}
+            color={globalItemsColor}
+            onPress={copyToClipboard}
+          />
+        </View>
+        {/* QR code generator */}
+        <ImageQR
+          data={data}
+          containerStyle={[
+            globalContainerStyle,
+            { backgroundColor: globalPrimaryColor },
+          ]}
         />
-      </View>
-      {/* QR code generator */}
-      <ImageQR
-        data={data}
-        containerStyle={[
-          globalContainerStyle,
-          { backgroundColor: globalPrimaryColor },
-        ]}
-      />
-      {/* Banner de anuncios */}
-      {/* <View style={styles.bannerContainer}>
+        {/* Banner de anuncios */}
+        {/* <View style={styles.bannerContainer}>
         <BannerAd
           unitId={TestIds.BANNER}
           size={BannerAdSize.FLUID}
@@ -92,7 +94,8 @@ function ResultView() {
           }}
         />
       </View> */}
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 

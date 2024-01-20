@@ -11,8 +11,8 @@ import * as Sharing from "expo-sharing";
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 
-import Button from "./Buttons/Button";
-import { AppStateContext } from "../context/AppStateProvider";
+import Button from "../Buttons/Button";
+import { AppStateContext } from "../../context/AppStateProvider";
 
 function ImageQR({ data, containerStyle }) {
   const { globalItemsColor, searchEngine, autoSearch } =

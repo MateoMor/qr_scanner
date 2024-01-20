@@ -1,13 +1,13 @@
 import { useContext } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { useHeaderHeight } from "@react-navigation/elements";
+/* import { useHeaderHeight } from "@react-navigation/elements"; */
 
 import { AppStateContext } from "../../context/AppStateProvider";
 
 function AlertFrame({ closeAlert, itemsColor, children }) {
   const { globalPrimaryColor } = useContext(AppStateContext);
 
-  const headerHeight = useHeaderHeight();
+  /* const headerHeight = useHeaderHeight(); */
 
   return (
     <Pressable onPress={closeAlert} style={styles.background}>
@@ -24,9 +24,9 @@ function AlertFrame({ closeAlert, itemsColor, children }) {
           </Pressable>
         </Pressable>
         <View
-          style={{
-            height: headerHeight * 2 - 14 /*  to center the container */,
-          }}
+          /* style={{
+            height: headerHeight * 2 - 14 ,
+          }}  */
         />
       </View>
     </Pressable>

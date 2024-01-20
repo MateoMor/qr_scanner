@@ -10,7 +10,7 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { Audio } from "expo-av";
 
 import Button from "../components/Buttons/Button";
-import ScannerAnimation from "../components/ScannerAnimation";
+import ScannerAnimation from "../components/LayoutComponents/ScannerAnimation";
 import BottomPad from "../components/Buttons/BottomPad";
 import ButtonText from "../components/Buttons/ButtonText";
 import { StatusBar } from "expo-status-bar";

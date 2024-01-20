@@ -4,21 +4,10 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Scanner from "../views/Scanner";
-import ResultView from "../views/ResultView";
 import Settings from "../views/Settings";
+import ScannerStack from "./ScannerStack";
 
 const Tab = createMaterialBottomTabNavigator();
-const Stack = createNativeStackNavigator();
-
-function ScannerStack() {
-  return (
-    <Stack.Navigator initialRouteName="Scanner">
-      <Stack.Screen name="Scanner" component={Scanner} />
-      <Stack.Screen name="Details" component={ResultView} />
-    </Stack.Navigator>
-  );
-}
 
 function Tabs() {
   return (
@@ -28,7 +17,7 @@ function Tabs() {
         activeColor="blue"
         inactiveColor="#ffffff"
         shifting={true}
-        barStyle={{ backgroundColor: "#151515", height: 70 }}
+        barStyle={{ backgroundColor: "rgb(7,26,93)", height: 70 }}
       >
         <Tab.Screen
           name="ScannerStack"

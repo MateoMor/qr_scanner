@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
-import TitleSpace from "../components/TitleSpace";
+import TitleSpace from "../components/LayoutComponents/TitleSpace";
 import DefaultOptionBox from "../components/Buttons/DefaultOptionBox";
+import Header from "../components/LayoutComponents/Header";
 
 import { AppStateContext } from "../context/AppStateProvider";
 import { getDataAsync } from "../utils/AsyncStorageFunctions";
@@ -58,7 +59,11 @@ function Settings() {
 
   return (
     <View style={{ backgroundColor: globalBackgoundColor, flex: 1 }}>
-      <ScrollView scrollEnabled={scrollEnabled}>
+      <ScrollView
+        scrollEnabled={scrollEnabled}
+        stickyHeaderIndices={[0] /* Sticky header */}
+      >
+        <Header title={"Settings"}></Header>
         <View style={[globalMainContainerStyle]}>
           <TitleSpace title="Appereance" />
           <View
@@ -118,8 +123,9 @@ function Settings() {
             />
             <DefaultOptionBox
               title="Search Engine"
+      
               onPress={async () => {
-                setIsEngineAlertShown(true);
+                openAlert(setIsEngineAlertShown);
               }}
               checkable={false}
             />
@@ -127,7 +133,7 @@ function Settings() {
               title="Automatically open URLs"
               description="Open websites after scanning a QR with URL"
               onPress={async () => {
-                toggleAutoSearch()
+                toggleAutoSearch();
               }}
               check={autoSearch}
             />

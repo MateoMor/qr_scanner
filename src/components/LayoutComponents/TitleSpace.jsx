@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { AppStateContext } from "../context/AppStateProvider";
+import { AppStateContext } from "../../context/AppStateProvider";
 
 function TitleSpace({ title }) {
   const { globalBackgoundColor, globalSubtitleColor } =
