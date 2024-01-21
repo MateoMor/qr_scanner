@@ -10,6 +10,7 @@ import { getDataAsync } from "../utils/AsyncStorageFunctions";
 import OptionThemeAlert from "../components/Alerts/OptionThemeAlert";
 import IconColorPalette from "../components/Buttons/IconColorPalette";
 import OptionEngineAlert from "../components/Alerts/OptionEngineAlert";
+import { useIsFocused } from "@react-navigation/native";
 
 function Settings() {
   const {
@@ -32,7 +33,7 @@ function Settings() {
     setIsEngineAlertShown,
   } = useContext(AppStateContext);
 
-  const scrollEnabled = isThemeAlertShown ? false : true; // To know if the component is scrollable or not
+  const scrollEnabled = isThemeAlertShown || isEngineAlertShown ? false : true; // To know if the component is scrollable or not
 
   const [themePreferenceOptionSelected, setThemePreferenceOptionSelected] =
     useState("auto");
@@ -56,6 +57,13 @@ function Settings() {
   useEffect(() => {
     themePreferenceCheckOption();
   }, [vibration, beep]);
+
+    // code that activates when the screen is focused or unfocused
+  const isFocused = useIsFocused(); 
+  useEffect(() => {
+    setIsThemeAlertShown(false);
+    setIsEngineAlertShown(false);
+  }, [isFocused])
 
   return (
     <View style={{ backgroundColor: globalBackgoundColor, flex: 1 }}>
