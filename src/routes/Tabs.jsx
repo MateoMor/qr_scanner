@@ -11,7 +11,28 @@ import { AppStateContext } from "../context/AppStateProvider";
 const Tab = createMaterialBottomTabNavigator();
 
 function Tabs() {
-  const { setIsHeaderBlurred } = useContext(AppStateContext);
+  const { setIsHeaderBlurred, isHeaderBlurred, currentTheme } =
+    useContext(AppStateContext);
+
+  let headerColor = "rgb(7,26,93)";
+  let titlteColor = "#FFFFFF";
+
+  if (currentTheme === "dark") {
+    if (isHeaderBlurred) {
+      headerColor = "rgb(7, 7, 7)"; // 75% opacity
+      titlteColor = "rgb(63, 63, 63)"; // 75% opacity
+    } else {
+      headerColor = "#1C1C1C"; // Same as globalPrimaryColor
+    }
+  } else {
+    console.log("isHeaderBlurred", isHeaderBlurred);
+    if (isHeaderBlurred) {
+      headerColor = "rgb(1, 7, 35)"; // 75% opacity
+      titlteColor = "rgb(63, 63, 63)"; // 75% opacity
+    } else {
+      headerColor = "rgb(7,26,93)";
+    }
+  }
 
   return (
     <NavigationContainer independent={true}>
@@ -20,7 +41,7 @@ function Tabs() {
         activeColor="blue"
         inactiveColor="#ffffff"
         shifting={true}
-        barStyle={{ backgroundColor: "rgb(7,26,93)", height: 70 }}
+        barStyle={{ backgroundColor: headerColor, height: 70 }}
       >
         <Tab.Screen
           listeners={{ tabPress: () => setIsHeaderBlurred(false) }} // listener to unblur header if it is blurred

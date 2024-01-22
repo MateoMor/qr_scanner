@@ -12,22 +12,20 @@ function AlertFrame({ closeAlert, itemsColor, children }) {
   return (
     <Pressable onPress={closeAlert} style={styles.background}>
       <View style={styles.mainContainer}>
+        <View
+          style={{
+            height: 70,
+            width: "100%",
+          }}
+        />
         <Pressable
           style={[styles.container, { backgroundColor: globalPrimaryColor }]}
         >
           <View style={styles.childrenContainer}>{children}</View>
-          <Pressable
-            style={styles.cancelContainer}
-            onPress={closeAlert}
-          >
+          <Pressable style={styles.cancelContainer} onPress={closeAlert}>
             <Text style={[styles.cancel, { color: itemsColor }]}>CANCEL</Text>
           </Pressable>
         </Pressable>
-        <View
-          /* style={{
-            height: headerHeight * 2 - 14 ,
-          }}  */
-        />
       </View>
     </Pressable>
   );

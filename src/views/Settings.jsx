@@ -146,8 +146,11 @@ function Settings() {
               check={autoSearch}
             />
           </View>
-          {/* Alert frame to display alerts */}
-          {isThemeAlertShown && (
+          
+        </View>
+      </ScrollView>
+      {/* Alert frame to display alerts */}
+      {isThemeAlertShown && (
             <OptionThemeAlert
               selectedTheme={themePreferenceOptionSelected}
               setSelectedTheme={setThemePreferenceOptionSelected}
@@ -159,8 +162,6 @@ function Settings() {
               setSelectedTheme={setThemePreferenceOptionSelected}
             />
           )}
-        </View>
-      </ScrollView>
     </View>
   );
 }

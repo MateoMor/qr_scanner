@@ -27,7 +27,7 @@ function Header({ title }) {
   return (
     <View style={[styles.container, { backgroundColor: headerColor }]}>
       <Text style={styles.title}>{title}</Text>
-      <View
+      {/* <View
         style={{
           position: "absolute",
           left: 0,
@@ -36,10 +36,10 @@ function Header({ title }) {
           bottom: 0,
           backgroundColor: "black",
           opacity: isHeaderBlurred
-            ? 0.5 /* The opacity is 50% inestead of 75% for a better effect */
+            ? 0.75
             : 0,
         }}
-      />
+      /> this are styles to show when header is blurred */}
     </View>
   );
 }
