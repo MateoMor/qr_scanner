@@ -22,7 +22,7 @@ function Scanner() {
 
   const isFocused = useIsFocused(); // Hook para saber cuando montar y desmontar la cámara
 
-  const { vibration, beep } = useContext(AppStateContext);
+  const { vibration, beep, isCameraReady } = useContext(AppStateContext);
 
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -178,6 +178,7 @@ function Scanner() {
             flash === Camera.Constants.FlashMode.off ? "flash-off" : "flash"
           }
           onPress={() => {
+            // Quiero que en esta linea la camara se pause
             setFlash(
               flash === Camera.Constants.FlashMode.off
                 ? Camera.Constants.FlashMode.torch
@@ -193,7 +194,7 @@ function Scanner() {
           onPress={() => navigate("Settings")}
         />
       </View>
-      {isFocused && (
+      {isCameraReady && (
         <Camera
           style={styles.camera}
           type={type}
@@ -202,6 +203,12 @@ function Scanner() {
           ref={cameraRef}
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           ratio="16:9"
+          onCameraReady={() => {
+            console.log("Camera Ready");
+          }}
+          onMountError={(error) => {
+            console.log(error);
+          }}
         ></Camera>
       )}
 

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -11,11 +11,17 @@ import { AppStateContext } from "../context/AppStateProvider";
 const Tab = createMaterialBottomTabNavigator();
 
 function Tabs() {
-  const { setIsHeaderBlurred, isHeaderBlurred, currentTheme } =
-    useContext(AppStateContext);
+  const {
+    setIsHeaderBlurred,
+    isHeaderBlurred,
+    currentTheme,
+    globalItemsColor,
+    setisCameraReady,
+  } = useContext(AppStateContext);
 
   let headerColor = "rgb(7,26,93)";
   let titlteColor = "#FFFFFF";
+  const defaultIconColor = "#BFBFBF";
 
   if (currentTheme === "dark") {
     if (isHeaderBlurred) {
@@ -25,7 +31,6 @@ function Tabs() {
       headerColor = "#1C1C1C"; // Same as globalPrimaryColor
     }
   } else {
-    console.log("isHeaderBlurred", isHeaderBlurred);
     if (isHeaderBlurred) {
       headerColor = "rgb(1, 7, 35)"; // 75% opacity
       titlteColor = "rgb(63, 63, 63)"; // 75% opacity
@@ -34,38 +39,53 @@ function Tabs() {
     }
   }
 
+  const [currentTab, setCurrentTab] = useState(0);
+
   return (
     <NavigationContainer independent={true}>
       <Tab.Navigator
         initialRouteName="ScannerStack"
-        activeColor="blue"
-        inactiveColor="#ffffff"
+        activeColor={globalItemsColor}
+        /*  inactiveColor="green" */
         shifting={true}
+        labeled={true}
         barStyle={{ backgroundColor: headerColor, height: 70 }}
       >
         <Tab.Screen
-          listeners={{ tabPress: () => setIsHeaderBlurred(false) }} // listener to unblur header if it is blurred
+          listeners={{
+            tabPress: () => {
+              setIsHeaderBlurred(false);
+              setCurrentTab(0);
+              setisCameraReady(true);
+            },
+          }} // listener to unblur header if it is blurred
           name="ScannerStack"
           component={ScannerStack}
           options={{
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons
                 name="crop-free"
-                color={"#BFBFBF"}
+                color={currentTab === 0 ? globalItemsColor : defaultIconColor}
                 size={26}
               />
             ),
           }}
         />
         <Tab.Screen
-          listeners={{ tabPress: () => setIsHeaderBlurred(false) }}
+          listeners={{
+            tabPress: () => {
+              setIsHeaderBlurred(false);
+              setCurrentTab(1);
+              setisCameraReady(false);
+            },
+          }}
           name="Settings"
           component={Settings}
           options={{
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons
                 name="hammer-wrench"
-                color={"#BFBFBF"}
+                color={currentTab === 1 ? globalItemsColor : defaultIconColor}
                 size={26}
               />
             ),

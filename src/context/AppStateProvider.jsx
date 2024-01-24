@@ -131,13 +131,12 @@ export const AppStateProvider = (props) => {
       setAutoCopyToClipboard(storedAutoCopyToClipboard === "true");
 
       /* AUTO SEARCH */
-    let storedAutoSearch = await getDataAsync("autoSearch");
-    if (storedAutoSearch === undefined) {
-      storedAutoSearch = "false";
-      await storeDataAsync("autoSearch", storedAutoSearch);
-    }
-    setAutoSearch(storedAutoSearch === "true");
-    
+      let storedAutoSearch = await getDataAsync("autoSearch");
+      if (storedAutoSearch === undefined) {
+        storedAutoSearch = "false";
+        await storeDataAsync("autoSearch", storedAutoSearch);
+      }
+      setAutoSearch(storedAutoSearch === "true");
     })();
   }, [deviceTheme]);
 
@@ -146,7 +145,7 @@ export const AppStateProvider = (props) => {
   const [beep, setBeep] = useState(false);
   const [autoCopyToClipboard, setAutoCopyToClipboard] = useState(false);
   const [searchEngine, setSearchEngine] = useState("google");
-  const [autoSearch, setAutoSearch] = useState(false)
+  const [autoSearch, setAutoSearch] = useState(false);
 
   const [globalBackgoundColor, setGlobalBackgoundColor] = useState("#fafafa");
   const [globalPrimaryColor, setGlobalPrimaryColor] = useState("#fefefe");
@@ -155,6 +154,7 @@ export const AppStateProvider = (props) => {
   const [globalItemsColor, setGlobalItemsColor] = useState("#1973E9");
   const [globalTitleColor, setGlobalTitleColor] = useState("#000");
   const [globalSubtitleColor, setGlobalSubtitleColor] = useState("#999999");
+  const [isCameraReady, setisCameraReady] = useState(true);
 
   const [globalContainerStyle, setGlobalContainerStyle] = useState({
     /* backgroundColor: globalPrimaryColor,  */
@@ -212,6 +212,8 @@ export const AppStateProvider = (props) => {
     setGlobalSubtitleColor,
     globalContainerStyle,
     globalMainContainerStyle,
+    isCameraReady,
+    setisCameraReady,
   };
 
   return (
