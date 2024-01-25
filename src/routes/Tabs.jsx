@@ -1,12 +1,14 @@
 import React, { useContext, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Settings from "../views/Settings";
+import History from "../views/History";
 import ScannerStack from "./ScannerStack";
 import { AppStateContext } from "../context/AppStateProvider";
+
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -79,13 +81,33 @@ function Tabs() {
               setisCameraReady(false);
             },
           }}
+          name="History"
+          component={History}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons
+                name="history"
+                color={currentTab === 1 ? globalItemsColor : defaultIconColor}
+                size={26}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          listeners={{
+            tabPress: () => {
+              setIsHeaderBlurred(false);
+              setCurrentTab(2);
+              setisCameraReady(false);
+            },
+          }}
           name="Settings"
           component={Settings}
           options={{
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="hammer-wrench"
-                color={currentTab === 1 ? globalItemsColor : defaultIconColor}
+              <Ionicons
+                name="settings-sharp"
+                color={currentTab === 2 ? globalItemsColor : defaultIconColor}
                 size={26}
               />
             ),
