@@ -177,6 +177,12 @@ export const AppStateProvider = (props) => {
     padding: 15,
   });
 
+  const [globalSubtitleStyle, setglobalSubtitleStyle] = useState({
+    color: globalSubtitleColor,
+    fontSize: 12,
+  });
+  
+
   const contextValue = {
     changeThemePreferenceAsync, // Function
     changeItemsColor, // Function
@@ -212,6 +218,7 @@ export const AppStateProvider = (props) => {
     setGlobalSubtitleColor,
     globalContainerStyle,
     globalMainContainerStyle,
+    globalSubtitleStyle,
     isCameraReady,
     setisCameraReady,
   };

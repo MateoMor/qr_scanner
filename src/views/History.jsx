@@ -2,14 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import TitleSpace from "../components/LayoutComponents/TitleSpace";
-import DefaultOptionBox from "../components/Buttons/DefaultOptionBox";
 import Header from "../components/LayoutComponents/Header";
 
 import { AppStateContext } from "../context/AppStateProvider";
 import { getDataAsync } from "../utils/AsyncStorageFunctions";
-import OptionThemeAlert from "../components/Alerts/OptionThemeAlert";
-import IconColorPalette from "../components/Buttons/IconColorPalette";
-import OptionEngineAlert from "../components/Alerts/OptionEngineAlert";
 import { useIsFocused } from "@react-navigation/native";
 import HistoryElement from "../components/LayoutComponents/HistoryComponents/HistoryElement";
 
@@ -49,7 +45,7 @@ function History() {
               { backgroundColor: globalPrimaryColor },
             ]}
           >
-            <HistoryElement type={"url"} data={"Hello"} time={"10:00"}/>
+            <HistoryElement type={"URL"} data={"Hello"} time={"10:00"}/>
           </View>
         </View>
       </ScrollView>

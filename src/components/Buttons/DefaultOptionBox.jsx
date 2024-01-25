@@ -12,7 +12,7 @@ function DefaultOptionBox({
   setCheck,
   checkable = true, // If checkbox exists or not
 }) {
-  const { globalItemsColor, globalSubtitleColor, globalTitleColor } =
+  const { globalItemsColor, globalTitleColor, globalSubtitleStyle } =
     useContext(AppStateContext);
 
   return (
@@ -25,7 +25,7 @@ function DefaultOptionBox({
       <View style={styles.leftContainer}>
         <Text style={[styles.title, { color: globalTitleColor }]}>{title}</Text>
         {description && (
-          <Text style={[styles.description, { color: globalSubtitleColor }]}>
+          <Text style={[styles.description, globalSubtitleStyle]}>
             {description}
           </Text>
         )}
@@ -53,9 +53,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: 8,
-
   },
-  leftContainer: { flexDirection: "column", justifyContent: "center", width: "85%" },
+  leftContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    width: "85%",
+  },
   title: {},
   description: {},
 });

@@ -49,8 +49,8 @@ function Tabs() {
         initialRouteName="ScannerStack"
         activeColor={globalItemsColor}
         /*  inactiveColor="green" */
-        shifting={true}
-        labeled={true}
+        shifting={false}
+        labeled={false}
         barStyle={{ backgroundColor: headerColor, height: 70 }}
       >
         <Tab.Screen
