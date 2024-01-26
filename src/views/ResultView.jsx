@@ -77,7 +77,7 @@ function ResultView() {
     // This method of state update is for an instant store of data
     let historyRegisterArray = historyRegister;
     historyRegisterArray.push(newRegister);
-    console.log(historyRegisterArray);
+    /* console.log(historyRegisterArray); */
     setHistoryRegister(
       /* [...historyRegister, newRegister] */ historyRegisterArray
     );
