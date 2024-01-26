@@ -5,7 +5,6 @@ import TitleSpace from "../components/LayoutComponents/TitleSpace";
 import Header from "../components/LayoutComponents/Header";
 
 import { AppStateContext } from "../context/AppStateProvider";
-import { getDataAsync } from "../utils/AsyncStorageFunctions";
 import { useIsFocused } from "@react-navigation/native";
 import HistoryElement from "../components/LayoutComponents/HistoryComponents/HistoryElement";
 
@@ -18,12 +17,6 @@ function History() {
     setIsThemeAlertShown,
     setIsEngineAlertShown,
   } = useContext(AppStateContext);
-
-  // Function to check for the theme preference at the beggining of the render
-  const themePreferenceCheckOption = async () => {
-    const themePreference = await getDataAsync("themePreference");
-    setThemePreferenceOptionSelected(themePreference);
-  };
 
   // code that activates when the screen is focused or unfocused
   const isFocused = useIsFocused();
@@ -45,7 +38,7 @@ function History() {
               { backgroundColor: globalPrimaryColor },
             ]}
           >
-            <HistoryElement type={"URL"} data={"Hello"} time={"10:00"}/>
+            <HistoryElement type={"URL"} data={"Hello"} time={"10:00"} />
           </View>
         </View>
       </ScrollView>

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Linking, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { useRoute } from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
@@ -15,6 +15,8 @@ import ImageQR from "../components/LayoutComponents/ImageQR";
 
 import { AppStateContext } from "../context/AppStateProvider";
 import Header from "../components/LayoutComponents/Header";
+import { getDataAsync, storeDataAsync } from "../utils/AsyncStorageFunctions";
+import { getCurrentHour, getTodaysDate } from "../utils/dateFunctions";
 
 function ResultView() {
   const {
@@ -25,6 +27,8 @@ function ResultView() {
     globalPrimaryColor,
     globalBackgoundColor,
     globalTitleColor,
+    historyRegister,
+    setHistoryRegister,
   } = useContext(AppStateContext);
 
   let toastShown = false;
@@ -38,6 +42,8 @@ function ResultView() {
     if (autoCopyToClipboard) {
       copyToClipboard();
     }
+
+    addElementToHistory();
   }, []);
 
   const copyToClipboard = async () => {
@@ -51,6 +57,29 @@ function ResultView() {
         toastShown = false;
       }, 2000);
     }
+  };
+
+  // Function to parse the history register from local storage and add the new element
+  const addElementToHistory = async () => {
+    let dataType = await Linking.canOpenURL(data) ? "URL" : "Text";
+
+    const newRegister = {
+      type: dataType,
+      data: data,
+      date: getTodaysDate(),
+      time: getCurrentHour(),
+    };
+    // This method of state update is for an instant store of data
+    let historyRegisterArray = historyRegister;
+    historyRegisterArray.push(newRegister);
+    console.log(historyRegisterArray);
+    setHistoryRegister(
+      /* [...historyRegister, newRegister] */ historyRegisterArray
+    );
+    await storeDataAsync(
+      "historyRegister",
+      JSON.stringify(historyRegisterArray)
+    );
   };
 
   return (
@@ -73,7 +102,11 @@ function ResultView() {
             icon={"content-copy"}
             library={"MaterialIcons"}
             color={globalItemsColor}
-            onPress={copyToClipboard}
+            onPress={async () => {
+              copyToClipboard;
+              const thisData = await getDataAsync("historyRegister");
+              /* console.log(thisData); */
+            }}
           />
         </View>
         {/* QR code generator */}

@@ -82,6 +82,8 @@ export const AppStateProvider = (props) => {
     await storeDataAsync("autoSearch", newAutoSearchState);
   };
 
+  const [historyRegister, setHistoryRegister] = useState([]);
+
   // Asks async storaged properties at the beggining of the app
   useEffect(() => {
     (async () => {
@@ -137,6 +139,15 @@ export const AppStateProvider = (props) => {
         await storeDataAsync("autoSearch", storedAutoSearch);
       }
       setAutoSearch(storedAutoSearch === "true");
+
+      /* HISTORY */
+      let storedHistory = await getDataAsync("historyRegister");
+      if (storedHistory === undefined) {
+        storedHistory = [];
+        await storeDataAsync("historyRegister", storedHistory);
+      }
+      let parsedHistoryRegister = JSON.parse(storedHistory);
+      setHistoryRegister(parsedHistoryRegister);
     })();
   }, [deviceTheme]);
 
@@ -181,7 +192,6 @@ export const AppStateProvider = (props) => {
     color: globalSubtitleColor,
     fontSize: 12,
   });
-  
 
   const contextValue = {
     changeThemePreferenceAsync, // Function
@@ -221,6 +231,8 @@ export const AppStateProvider = (props) => {
     globalSubtitleStyle,
     isCameraReady,
     setisCameraReady,
+    historyRegister,
+    setHistoryRegister,
   };
 
   return (
