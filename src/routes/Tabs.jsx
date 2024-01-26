@@ -18,7 +18,7 @@ function Tabs() {
     isHeaderBlurred,
     currentTheme,
     globalItemsColor,
-    setisCameraReady,
+    setIsCameraReady,
   } = useContext(AppStateContext);
 
   let headerColor = "rgb(7,26,93)";
@@ -58,7 +58,7 @@ function Tabs() {
             tabPress: () => {
               setIsHeaderBlurred(false);
               setCurrentTab(0);
-              setisCameraReady(true);
+              setIsCameraReady(true);
             },
           }} // listener to unblur header if it is blurred
           name="ScannerStack"
@@ -78,7 +78,7 @@ function Tabs() {
             tabPress: () => {
               setIsHeaderBlurred(false);
               setCurrentTab(1);
-              setisCameraReady(false);
+              setIsCameraReady(false);
             },
           }}
           name="History"
@@ -98,7 +98,7 @@ function Tabs() {
             tabPress: () => {
               setIsHeaderBlurred(false);
               setCurrentTab(2);
-              setisCameraReady(false);
+              setIsCameraReady(false);
             },
           }}
           name="Settings"

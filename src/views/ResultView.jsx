@@ -29,9 +29,14 @@ function ResultView() {
     globalTitleColor,
     historyRegister,
     setHistoryRegister,
+    setIsCameraReady,
   } = useContext(AppStateContext);
 
   let toastShown = false;
+
+  useEffect(() => {
+    setIsCameraReady(true);
+  }, []);
 
   const {
     params: { data },
@@ -61,7 +66,7 @@ function ResultView() {
 
   // Function to parse the history register from local storage and add the new element
   const addElementToHistory = async () => {
-    let dataType = await Linking.canOpenURL(data) ? "URL" : "Text";
+    let dataType = (await Linking.canOpenURL(data)) ? "URL" : "Text";
 
     const newRegister = {
       type: dataType,

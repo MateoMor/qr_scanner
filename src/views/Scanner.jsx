@@ -22,7 +22,7 @@ function Scanner() {
 
   const isFocused = useIsFocused(); // Hook para saber cuando montar y desmontar la cámara
 
-  const { vibration, beep, isCameraReady } = useContext(AppStateContext);
+  const { vibration, beep, isCameraReady, setIsCameraReady } = useContext(AppStateContext);
 
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -58,6 +58,7 @@ function Scanner() {
 
   // Function to navigate to the information screen
   const QRscannedNav = (data) => {
+    setIsCameraReady(false);
     navigate("Details", { data }); // Recibe el nombre de la pantalla definida en el rooteador y llama al compomente con los argumentos dados
   };
 
