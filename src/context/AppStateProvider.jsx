@@ -143,7 +143,7 @@ export const AppStateProvider = (props) => {
       /* HISTORY */
       let storedHistory = await getDataAsync("historyRegister");
       if (storedHistory === undefined) {
-        storedHistory = [];
+        storedHistory = "[]";
         await storeDataAsync("historyRegister", storedHistory);
       }
       let parsedHistoryRegister = JSON.parse(storedHistory);
