@@ -6,7 +6,7 @@ import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import Toast from "react-native-simple-toast";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { useNavigation, useIsFocused, useNavigationState, useRoute } from "@react-navigation/native";
 import { Audio } from "expo-av";
 
 import Button from "../components/Buttons/Button";
@@ -35,8 +35,13 @@ function Scanner() {
 
   // Se pide permiso a la camara
   useEffect(
+
+    
+
     () => {
       (async () => {
+        setIsCameraReady(true)
+
         const cameraStatus = await Camera.requestCameraPermissionsAsync();
         setHasCameraPermission(cameraStatus.status === "granted"); // si el status es concedido el estado es verdadero
 
@@ -55,6 +60,8 @@ function Scanner() {
       isFocused,
     ] /* Con isFocused la función se ejecutará cada vez que se entre a la pantalla */
   );
+
+    
 
   // Function to navigate to the information screen
   const QRscannedNav = (data) => {

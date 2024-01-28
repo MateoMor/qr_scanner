@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Linking, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
 import Toast from "react-native-simple-toast";
 /* import {
@@ -31,12 +31,36 @@ function ResultView() {
     setHistoryRegister,
     setIsCameraReady,
   } = useContext(AppStateContext);
+  const navigation = useNavigation();
+  const navState = useNavigationState((state) => state);
+  const route = useRoute();
 
   let toastShown = false;
 
+  /*useEffect(() => {
+    const unsubscribe = navigation.addListener('transitionStart', (e) => {
+      setIsCameraReady(true);
+      console.log("Navigation")
+    });
+    console.log("Registered")
+  
+    return () => {
+      console.log("Unregistered")
+      unsubscribe();
+    };
+  }, [navigation]);*/
+
   useEffect(() => {
+    console.log("setIsCameraReady if")
+    if (navState.routes[navState.index].name === route.name) {
+      setIsCameraReady(true);
+      console.log("setIsCameraReady")
+    }
+  }, [navState.index, navState.history]);
+
+  /* useEffect(() => {
     setIsCameraReady(true);
-  }, []);
+  }, []); */
 
   const {
     params: { data },
@@ -75,11 +99,11 @@ function ResultView() {
       time: getCurrentHour(),
     };
     // This method of state update is for an instant store of data
-    let historyRegisterArray = historyRegister;
-    historyRegisterArray.push(newRegister);
+    const historyRegisterArray = [...historyRegister, newRegister];
+    // historyRegisterArray.push(newRegister);
     /* console.log(historyRegisterArray); */
     setHistoryRegister(
-      /* [...historyRegister, newRegister] */ historyRegisterArray
+      historyRegisterArray /* historyRegisterArray */
     );
     await storeDataAsync(
       "historyRegister",

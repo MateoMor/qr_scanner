@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, View } from "react-native";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { FlatList, ScrollView, View } from "react-native";
 
 import TitleSpace from "../components/LayoutComponents/TitleSpace";
 import Header from "../components/LayoutComponents/Header";
@@ -30,25 +30,29 @@ function History() {
   }, [isFocused]);
 
   // This creates a new array with the elements in reverse order
-  const historyRegisterCopy = [...historyRegister];
-  const historyRegisterReversed = historyRegisterCopy.reverse();
+  /* const historyRegisterCopy = [...historyRegister];
+  const historyRegisterReversed = historyRegisterCopy.reverse(); */
+
+  /* console.log(historyRegisterReversed); */
 
   // Agrupar elementos por fecha
-  const groupedHistory = historyRegisterReversed.reduce((groups, element) => {
+  const groupedHistory = useMemo(() => Object.entries(historyRegister.slice().reverse().reduce((groups, element) => {
+    console.log("useMemo")
     const date = element.date;
     if (!groups[date]) {
       groups[date] = [];
     }
     groups[date].push(element);
     return groups;
-  }, {});
+    
+  }, {})), [historyRegister]);
 
   return (
     <View style={{ backgroundColor: globalBackgoundColor, flex: 1 }}>
-      <ScrollView stickyHeaderIndices={[0] /* Sticky header */}>
+      <ScrollView stickyHeaderIndices={[0] }>
         <Header title={"History"}></Header>
         <View style={[globalMainContainerStyle]}>
-          {Object.entries(groupedHistory).map(([date, elements], index) => (
+          {groupedHistory.map(([date, elements], index) => (
             <React.Fragment key={index}>
               <TitleSpace title={date} />
               <DefaultContainer>
@@ -58,11 +62,25 @@ function History() {
                     type={element.type}
                     data={element.data}
                     time={element.time}
+                    
                   />
                 ))}
               </DefaultContainer>
             </React.Fragment>
           ))}
+          {/* <FlatList
+            data={historyRegisterReversed}
+            renderItem={({ item }) => (
+              <HistoryElement
+        
+                type={item.type}
+                data={item.data}
+                time={item.time}
+                unixTime={Date.now()}
+              />
+            )}
+            keyExtractor={(item, index) => index}
+          /> */}
         </View>
       </ScrollView>
     </View>

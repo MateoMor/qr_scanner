@@ -44,11 +44,21 @@ export default function ScannerStack() {
   return (
     <Stack.Navigator initialRouteName="Scanner">
       <Stack.Screen
+      /* listeners={{
+        transitionStart: () => {
+          console.log("Transition Start");
+        }
+      }} */
         name="Scanner"
         component={Scanner}
         options={{ headerShown: false, unmountOnBlur: true }}
       />
       <Stack.Screen
+      listeners={{
+        transitionStart: () => {
+          console.log("Transition Details Start");
+        }
+      }}
         name="Details"
         component={ResultView}
         options={{ headerShown: false } /* routeScreenOptions */}

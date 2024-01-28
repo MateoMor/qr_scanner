@@ -58,8 +58,12 @@ function Tabs() {
             tabPress: () => {
               setIsHeaderBlurred(false);
               setCurrentTab(0);
-              setIsCameraReady(true);
+              /* setIsCameraReady(true); */
             },
+            /* blur: () => {
+              setIsCameraReady(false);
+            } */
+
           }} // listener to unblur header if it is blurred
           name="ScannerStack"
           component={ScannerStack}
@@ -78,8 +82,11 @@ function Tabs() {
             tabPress: () => {
               setIsHeaderBlurred(false);
               setCurrentTab(1);
-              setIsCameraReady(false);
+              /* setIsCameraReady(false); */
             },
+            /* blur: () => {
+              setIsCameraReady(true);
+            } */
           }}
           name="History"
           component={History}
@@ -98,8 +105,11 @@ function Tabs() {
             tabPress: () => {
               setIsHeaderBlurred(false);
               setCurrentTab(2);
-              setIsCameraReady(false);
+              /* setIsCameraReady(false); */
             },
+            /* blur: () => {
+              setIsCameraReady(true);
+            } */
           }}
           name="Settings"
           component={Settings}
