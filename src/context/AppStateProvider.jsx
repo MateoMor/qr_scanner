@@ -165,7 +165,7 @@ export const AppStateProvider = (props) => {
   const [globalItemsColor, setGlobalItemsColor] = useState("#1973E9");
   const [globalTitleColor, setGlobalTitleColor] = useState("#000");
   const [globalSubtitleColor, setGlobalSubtitleColor] = useState("#999999");
-  const [isCameraReady, setIsCameraReady] = useState(true);
+  const [isCameraReady, setIsCameraReady] = useState(false);
 
   const [globalContainerStyle, setGlobalContainerStyle] = useState({
     /* backgroundColor: globalPrimaryColor,  */

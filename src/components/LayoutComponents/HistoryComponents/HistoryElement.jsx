@@ -6,8 +6,8 @@ import { AppStateContext } from "../../../context/AppStateProvider";
 
 // Component based on ../../../components/Buttons/DefaultOptionBox
 function HistoryElement({ type, data, time }) {
-  /* const { globalItemsColor, globalTitleColor, globalSubtitleStyle } =
-    useContext(AppStateContext); */
+  const { globalItemsColor, globalTitleColor, globalSubtitleStyle } =
+    useContext(AppStateContext);
 
   let iconSize = 34;
 
@@ -17,24 +17,24 @@ function HistoryElement({ type, data, time }) {
     <View style={styles.mainContainer}>
       <View style={styles.iconContainer}>
         {type === "URL" ? (
-          <FontAwesome5 name="link" size={iconSize} /* color={globalItemsColor} */ />
+          <FontAwesome5 name="link" size={iconSize} color={globalItemsColor} />
         ) : (
           <MaterialIcons
             name="text-fields"
             size={iconSize}
-            /* color={globalItemsColor} */
+            color={globalItemsColor}
           />
         )}
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.dataContainer}>
-          <Text numberOfLines={1} /* style={{ color: globalTitleColor }} */>
+          <Text numberOfLines={1} style={{ color: globalTitleColor }}>
             {data}
           </Text>
         </View>
         <View style={styles.typeAndDateContainer}>
-          <Text /* style={globalSubtitleStyle} */>{type}</Text>
-          <Text /* style={globalSubtitleStyle} */>{time}</Text>
+          <Text style={globalSubtitleStyle}>{type}</Text>
+          <Text style={globalSubtitleStyle}>{time}</Text>
         </View>
       </View>
     </View>

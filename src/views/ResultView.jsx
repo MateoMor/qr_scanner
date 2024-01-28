@@ -1,7 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { Linking, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
+import {
+  useNavigation,
+  useNavigationState,
+  useRoute,
+} from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
 import Toast from "react-native-simple-toast";
 /* import {
@@ -51,10 +55,10 @@ function ResultView() {
   }, [navigation]);*/
 
   useEffect(() => {
-    console.log("setIsCameraReady if")
+    console.log("setIsCameraReady if");
     if (navState.routes[navState.index].name === route.name) {
       setIsCameraReady(true);
-      console.log("setIsCameraReady")
+      console.log("setIsCameraReady");
     }
   }, [navState.index, navState.history]);
 
@@ -97,14 +101,16 @@ function ResultView() {
       data: data,
       date: getTodaysDate(),
       time: getCurrentHour(),
+      id:
+        historyRegister.length !== 0
+          ? historyRegister[historyRegister.length - 1].id + 1
+          : 0,
     };
     // This method of state update is for an instant store of data
     const historyRegisterArray = [...historyRegister, newRegister];
     // historyRegisterArray.push(newRegister);
     /* console.log(historyRegisterArray); */
-    setHistoryRegister(
-      historyRegisterArray /* historyRegisterArray */
-    );
+    setHistoryRegister(historyRegisterArray /* historyRegisterArray */);
     await storeDataAsync(
       "historyRegister",
       JSON.stringify(historyRegisterArray)

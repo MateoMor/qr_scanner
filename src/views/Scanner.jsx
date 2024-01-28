@@ -6,7 +6,7 @@ import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import Toast from "react-native-simple-toast";
-import { useNavigation, useIsFocused, useNavigationState, useRoute } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { Audio } from "expo-av";
 
 import Button from "../components/Buttons/Button";
@@ -22,7 +22,8 @@ function Scanner() {
 
   const isFocused = useIsFocused(); // Hook para saber cuando montar y desmontar la cámara
 
-  const { vibration, beep, isCameraReady, setIsCameraReady } = useContext(AppStateContext);
+  const { vibration, beep, isCameraReady, setIsCameraReady } =
+    useContext(AppStateContext);
 
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -35,15 +36,14 @@ function Scanner() {
 
   // Se pide permiso a la camara
   useEffect(
-
-    
-
     () => {
       (async () => {
-        setIsCameraReady(true)
-
         const cameraStatus = await Camera.requestCameraPermissionsAsync();
         setHasCameraPermission(cameraStatus.status === "granted"); // si el status es concedido el estado es verdadero
+
+        if(hasCameraPermission){
+          setIsCameraReady(true);
+        }
 
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/beep.mp3"),
@@ -61,7 +61,11 @@ function Scanner() {
     ] /* Con isFocused la función se ejecutará cada vez que se entre a la pantalla */
   );
 
-    
+  useEffect(() => {
+    if(hasCameraPermission){
+      setIsCameraReady(true);
+    }
+  }, [hasCameraPermission]);
 
   // Function to navigate to the information screen
   const QRscannedNav = (data) => {
