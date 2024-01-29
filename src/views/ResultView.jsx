@@ -32,7 +32,9 @@ function ResultView() {
     globalBackgoundColor,
     globalTitleColor,
     historyRegister,
-    setHistoryRegister,
+    /* setHistoryRegister, setHistoryRegister doesnt change in this component */
+    thisSessionHistoryRegister,
+    setThisSessionHistoryRegister,
     setIsCameraReady,
   } = useContext(AppStateContext);
   const navigation = useNavigation();
@@ -96,24 +98,44 @@ function ResultView() {
   const addElementToHistory = async () => {
     let dataType = (await Linking.canOpenURL(data)) ? "URL" : "Text";
 
+    let newId;
+    if (thisSessionHistoryRegister.length !== 0) {
+      newId =
+        thisSessionHistoryRegister[thisSessionHistoryRegister.length - 1].id +
+        1;
+    } else if (historyRegister.length !== 0) {
+      newId = historyRegister[historyRegister.length - 1].id + 1;
+    } else {
+      newId = 0;
+    }
+
     const newRegister = {
       type: dataType,
       data: data,
       date: getTodaysDate(),
       time: getCurrentHour(),
-      id:
-        historyRegister.length !== 0
-          ? historyRegister[historyRegister.length - 1].id + 1
-          : 0,
+      id: newId,
     };
     // This method of state update is for an instant store of data
-    const historyRegisterArray = [...historyRegister, newRegister];
+    const newHistoryRegisterArray = [
+      ...thisSessionHistoryRegister,
+      newRegister,
+    ];
     // historyRegisterArray.push(newRegister);
     /* console.log(historyRegisterArray); */
-    setHistoryRegister(historyRegisterArray /* historyRegisterArray */);
+    setThisSessionHistoryRegister(
+      newHistoryRegisterArray /* historyRegisterArray */
+    );
+
+    //  Merge of the old history and this session history
+    const concatenateHistoryRegister = [
+      ...historyRegister,
+      ...newHistoryRegisterArray,
+    ];
+
     await storeDataAsync(
       "historyRegister",
-      JSON.stringify(historyRegisterArray)
+      JSON.stringify(concatenateHistoryRegister)
     );
   };
 

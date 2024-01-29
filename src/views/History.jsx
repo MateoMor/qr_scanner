@@ -16,6 +16,10 @@ function History() {
     setIsThemeAlertShown,
     setIsEngineAlertShown,
     historyRegister,
+    thisSessionHistoryRegister,
+    globalItemsColor,
+    globalTitleColor,
+    globalSubtitleStyle,
   } = useContext(AppStateContext);
 
   useEffect(() => {
@@ -35,23 +39,52 @@ function History() {
 
   /* console.log(historyRegisterReversed); */
 
-  // Agrupar elementos por fecha
-  const groupedHistory = useMemo(() => Object.entries(historyRegister.slice().reverse().reduce((groups, element) => {
-    console.log("useMemo")
-    const date = element.date;
-    if (!groups[date]) {
-      groups[date] = [];
-    }
-    groups[date].push(element);
-    return groups;
-    
-  }, {})), [historyRegister]);
+  // Elemtens in the register of past sessions
+  const groupedHistory = useMemo(
+    () =>
+      Object.entries(
+        historyRegister
+          .slice()
+          .reverse()
+          .reduce((groups, element) => {
+            console.log("useMemo");
+            const date = element.date;
+            if (!groups[date]) {
+              groups[date] = [];
+            }
+            groups[date].push(element);
+            return groups;
+          }, {})
+      ),
+    [historyRegister]
+  );
 
   return (
     <View style={{ backgroundColor: globalBackgoundColor, flex: 1 }}>
-      <ScrollView stickyHeaderIndices={[0] }>
+      <ScrollView stickyHeaderIndices={[0]}>
         <Header title={"History"}></Header>
         <View style={[globalMainContainerStyle]}>
+          {/* Elements scanned this aplication open */}
+          {/* This element is not necessary anymore because the issue it was intendent to solve was solved by removing useContext from the HistoryElement */}
+          {thisSessionHistoryRegister.length !== 0 && (
+            <View>
+              <TitleSpace title={"Now"} />
+              <DefaultContainer>
+                {thisSessionHistoryRegister.map((element, index) => (
+                  <HistoryElement
+                    key={index}
+                    type={element.type}
+                    data={element.data}
+                    time={element.time}
+                    color={globalItemsColor}
+                    titleColor={globalTitleColor}
+                    subtitleStyle={globalSubtitleStyle}
+                  />
+                ))}
+              </DefaultContainer>
+            </View>
+          )}
+          {/* Elements in localStorage by past sessions */}
           {groupedHistory.map(([date, elements], index) => (
             <React.Fragment key={index}>
               <TitleSpace title={date} />
@@ -62,7 +95,9 @@ function History() {
                     type={element.type}
                     data={element.data}
                     time={element.time}
-                    
+                    color={globalItemsColor}
+                    titleColor={globalTitleColor}
+                    subtitleStyle={globalSubtitleStyle}
                   />
                 ))}
               </DefaultContainer>

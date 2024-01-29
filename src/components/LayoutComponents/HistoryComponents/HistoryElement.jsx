@@ -2,12 +2,12 @@ import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
-import { AppStateContext } from "../../../context/AppStateProvider";
+/* import { AppStateContext } from "../../../context/AppStateProvider"; */
 
 // Component based on ../../../components/Buttons/DefaultOptionBox
-function HistoryElement({ type, data, time }) {
-  const { globalItemsColor, globalTitleColor, globalSubtitleStyle } =
-    useContext(AppStateContext);
+function HistoryElement({ type, data, time, color, titleColor, subtitleStyle }) {
+  /* const { globalItemsColor, globalTitleColor, globalSubtitleStyle } =
+    useContext(AppStateContext); */
 
   let iconSize = 34;
 
@@ -17,24 +17,24 @@ function HistoryElement({ type, data, time }) {
     <View style={styles.mainContainer}>
       <View style={styles.iconContainer}>
         {type === "URL" ? (
-          <FontAwesome5 name="link" size={iconSize} color={globalItemsColor} />
+          <FontAwesome5 name="link" size={iconSize} color={color} />
         ) : (
           <MaterialIcons
             name="text-fields"
             size={iconSize}
-            color={globalItemsColor}
+            color={color}
           />
         )}
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.dataContainer}>
-          <Text numberOfLines={1} style={{ color: globalTitleColor }}>
+          <Text numberOfLines={1} style={{ color: titleColor }}>
             {data}
           </Text>
         </View>
         <View style={styles.typeAndDateContainer}>
-          <Text style={globalSubtitleStyle}>{type}</Text>
-          <Text style={globalSubtitleStyle}>{time}</Text>
+          <Text style={subtitleStyle}>{type}</Text>
+          <Text style={subtitleStyle}>{time}</Text>
         </View>
       </View>
     </View>
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(HistoryElement);
+export default React.memo(HistoryElement); // Prevent re-rendering
