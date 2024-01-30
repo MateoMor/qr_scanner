@@ -1,30 +1,27 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import HistoryElementIcon from "./HistoryElementIcon";
 /* import { AppStateContext } from "../../../context/AppStateProvider"; */
 
 // Component based on ../../../components/Buttons/DefaultOptionBox
-function HistoryElement({ type, data, time, color, titleColor, subtitleStyle }) {
+function HistoryElement({
+  type,
+  data,
+  time,
+  color,
+  titleColor,
+  subtitleStyle,
+}) {
   /* const { globalItemsColor, globalTitleColor, globalSubtitleStyle } =
     useContext(AppStateContext); */
 
-  let iconSize = 34;
-
-  console.log("Hello :(")
+  console.log("Hello :(");
 
   return (
     <View style={styles.mainContainer}>
       <View style={styles.iconContainer}>
-        {type === "URL" ? (
-          <FontAwesome5 name="link" size={iconSize} color={color} />
-        ) : (
-          <MaterialIcons
-            name="text-fields"
-            size={iconSize}
-            color={color}
-          />
-        )}
+        <HistoryElementIcon color={color} type={type} />
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.dataContainer}>
