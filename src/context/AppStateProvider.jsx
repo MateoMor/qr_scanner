@@ -84,10 +84,6 @@ export const AppStateProvider = (props) => {
 
   const [historyRegister, setHistoryRegister] = useState([]);
 
-  const [thisSessionHistoryRegister, setThisSessionHistoryRegister] = useState(
-    []
-  );
-
   // Asks async storaged properties at the beggining of the app
   useEffect(() => {
     (async () => {
@@ -237,8 +233,6 @@ export const AppStateProvider = (props) => {
     setIsCameraReady,
     historyRegister,
     setHistoryRegister,
-    thisSessionHistoryRegister,
-    setThisSessionHistoryRegister,
   };
 
   return (

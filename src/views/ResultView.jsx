@@ -32,9 +32,7 @@ function ResultView() {
     globalBackgoundColor,
     globalTitleColor,
     historyRegister,
-    /* setHistoryRegister, setHistoryRegister doesnt change in this component */
-    thisSessionHistoryRegister,
-    setThisSessionHistoryRegister,
+    setHistoryRegister,
     setIsCameraReady,
   } = useContext(AppStateContext);
   const navigation = useNavigation();
@@ -99,14 +97,13 @@ function ResultView() {
     let dataType = (await Linking.canOpenURL(data)) ? "URL" : "Text";
   
     const todaysDate = getTodaysDate();
-    let newHistoryRegisterArray = [...thisSessionHistoryRegister];
+    let newHistoryRegisterArray = [...historyRegister];
   
     // [Date, Elements]
     const newRegister = {
       type: dataType,
       data: data,
       time: getCurrentHour(),
-      /* id: newId, */
     };
   
     // Verificar si el último elemento del array tiene la misma fecha que hoy
@@ -122,13 +119,10 @@ function ResultView() {
     }
   
     // Actualizar el estado
-    setThisSessionHistoryRegister(newHistoryRegisterArray);
-  
-    // Combinar el historial anterior con el historial actual de esta sesión
-    const concatenateHistoryRegister = [...historyRegister, ...newHistoryRegisterArray];
+    setHistoryRegister(newHistoryRegisterArray);
   
     // Almacenar los datos en AsyncStorage
-    await storeDataAsync("historyRegister", JSON.stringify(concatenateHistoryRegister));
+    await storeDataAsync("historyRegister", JSON.stringify(newHistoryRegisterArray));
   };
   
 

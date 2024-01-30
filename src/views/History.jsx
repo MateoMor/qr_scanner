@@ -16,7 +16,6 @@ function History() {
     setIsThemeAlertShown,
     setIsEngineAlertShown,
     historyRegister,
-    thisSessionHistoryRegister,
     globalItemsColor,
     globalTitleColor,
     globalSubtitleStyle,
@@ -33,45 +32,17 @@ function History() {
     setIsEngineAlertShown(false);
   }, [isFocused]);
 
-  // This creates a new array with the elements in reverse order
-  /* const historyRegisterCopy = [...historyRegister];
-  const historyRegisterReversed = historyRegisterCopy.reverse(); */
-
-  /* console.log(historyRegisterReversed); */
-
-  // Elemtens in the register of past sessions
-  const groupedHistory = useMemo(
-    () =>
-      Object.entries(
-        historyRegister
-          .slice()
-          .reverse()
-          .reduce((groups, element) => {
-            console.log("useMemo");
-            const date = element.date;
-            if (!groups[date]) {
-              groups[date] = [];
-            }
-            groups[date].push(element);
-            return groups;
-          }, {})
-      ),
-    [historyRegister]
-  );
-
   return (
     <View style={{ backgroundColor: globalBackgoundColor, flex: 1 }}>
       <ScrollView stickyHeaderIndices={[0]}>
         <Header title={"History"}></Header>
         <View style={[globalMainContainerStyle]}>
-          {/* Elements scanned this aplication open */}
-          {/* This element is not necessary anymore because the issue it was intendent to solve was solved by removing useContext from the HistoryElement */}
-          {thisSessionHistoryRegister.length !== 0 &&
+          {historyRegister.length !== 0 &&
             (() => {
               const renderedElements = [];
 
-              for (let i = thisSessionHistoryRegister.length - 1; i >= 0; i--) {
-                const [date, elements] = thisSessionHistoryRegister[i];
+              for (let i = historyRegister.length - 1; i >= 0; i--) {
+                const [date, elements] = historyRegister[i];
 
                 renderedElements.push(
                   <React.Fragment key={i}>
@@ -105,26 +76,6 @@ function History() {
 
               return renderedElements;
             })()}
-
-          {/* Elements in localStorage by past sessions */}
-          {groupedHistory.map(([date, elements], index) => (
-            <React.Fragment key={index}>
-              <TitleSpace title={date} />
-              <DefaultContainer>
-                {elements.map((element, innerIndex) => (
-                  <HistoryElement
-                    key={innerIndex}
-                    type={element.type}
-                    data={element.data}
-                    time={element.time}
-                    color={globalItemsColor}
-                    titleColor={globalTitleColor}
-                    subtitleStyle={globalSubtitleStyle}
-                  />
-                ))}
-              </DefaultContainer>
-            </React.Fragment>
-          ))}
           {/* <FlatList
             data={historyRegisterReversed}
             renderItem={({ item }) => (
