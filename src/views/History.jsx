@@ -66,24 +66,46 @@ function History() {
         <View style={[globalMainContainerStyle]}>
           {/* Elements scanned this aplication open */}
           {/* This element is not necessary anymore because the issue it was intendent to solve was solved by removing useContext from the HistoryElement */}
-          {thisSessionHistoryRegister.length !== 0 && (
-            <View>
-              <TitleSpace title={"Now"} />
-              <DefaultContainer>
-                {thisSessionHistoryRegister.map((element, index) => (
-                  <HistoryElement
-                    key={index}
-                    type={element.type}
-                    data={element.data}
-                    time={element.time}
-                    color={globalItemsColor}
-                    titleColor={globalTitleColor}
-                    subtitleStyle={globalSubtitleStyle}
-                  />
-                ))}
-              </DefaultContainer>
-            </View>
-          )}
+          {thisSessionHistoryRegister.length !== 0 &&
+            (() => {
+              const renderedElements = [];
+
+              for (let i = thisSessionHistoryRegister.length - 1; i >= 0; i--) {
+                const [date, elements] = thisSessionHistoryRegister[i];
+
+                renderedElements.push(
+                  <React.Fragment key={i}>
+                    <TitleSpace title={date} />
+                    <DefaultContainer>
+                      {(() => {
+                        const innerRenderedElements = [];
+
+                        for (let j = elements.length - 1; j >= 0; j--) {
+                          const element = elements[j];
+
+                          innerRenderedElements.push(
+                            <HistoryElement
+                              key={j}
+                              type={element.type}
+                              data={element.data}
+                              time={element.time}
+                              color={globalItemsColor}
+                              titleColor={globalTitleColor}
+                              subtitleStyle={globalSubtitleStyle}
+                            />
+                          );
+                        }
+
+                        return innerRenderedElements;
+                      })()}
+                    </DefaultContainer>
+                  </React.Fragment>
+                );
+              }
+
+              return renderedElements;
+            })()}
+
           {/* Elements in localStorage by past sessions */}
           {groupedHistory.map(([date, elements], index) => (
             <React.Fragment key={index}>
