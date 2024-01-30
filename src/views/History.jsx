@@ -34,8 +34,8 @@ function History() {
 
   return (
     <View style={{ backgroundColor: globalBackgoundColor, flex: 1 }}>
-      <ScrollView stickyHeaderIndices={[0]}>
-        <Header title={"History"}></Header>
+      <Header title={"History"} />
+      <ScrollView>
         <View style={[globalMainContainerStyle]}>
           {historyRegister.length !== 0 &&
             (() => {

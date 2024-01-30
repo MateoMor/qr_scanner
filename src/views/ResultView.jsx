@@ -1,11 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Linking, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import {
-  useNavigation,
-  useNavigationState,
-  useRoute,
-} from "@react-navigation/native";
+import { useNavigationState, useRoute } from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
 import Toast from "react-native-simple-toast";
 /* import {
@@ -35,7 +31,6 @@ function ResultView() {
     setHistoryRegister,
     setIsCameraReady,
   } = useContext(AppStateContext);
-  const navigation = useNavigation();
   const navState = useNavigationState((state) => state);
   const route = useRoute();
 
@@ -95,74 +90,81 @@ function ResultView() {
   // Function to parse the history register from local storage and add the new element
   const addElementToHistory = async () => {
     let dataType = (await Linking.canOpenURL(data)) ? "URL" : "Text";
-  
+
     const todaysDate = getTodaysDate();
     let newHistoryRegisterArray = [...historyRegister];
-  
+
     // [Date, Elements]
     const newRegister = {
       type: dataType,
       data: data,
       time: getCurrentHour(),
     };
-  
+
     // Verificar si el último elemento del array tiene la misma fecha que hoy
     if (
       newHistoryRegisterArray.length > 0 &&
-      newHistoryRegisterArray[newHistoryRegisterArray.length - 1][0] === todaysDate
+      newHistoryRegisterArray[newHistoryRegisterArray.length - 1][0] ===
+        todaysDate
     ) {
       // Agregar el nuevo elemento al último conjunto de elementos
-      newHistoryRegisterArray[newHistoryRegisterArray.length - 1][1].push(newRegister);
+      newHistoryRegisterArray[newHistoryRegisterArray.length - 1][1].push(
+        newRegister
+      );
     } else {
       // Agregar un nuevo conjunto de elementos para la fecha de hoy
       newHistoryRegisterArray.push([todaysDate, [newRegister]]);
     }
-  
+
     // Actualizar el estado
     setHistoryRegister(newHistoryRegisterArray);
-  
+
     // Almacenar los datos en AsyncStorage
-    await storeDataAsync("historyRegister", JSON.stringify(newHistoryRegisterArray));
+    await storeDataAsync(
+      "historyRegister",
+      JSON.stringify(newHistoryRegisterArray)
+    );
   };
-  
 
   return (
-    <ScrollView
-      style={{ backgroundColor: globalBackgoundColor }}
-      scrollEnabled={true}
-      stickyHeaderIndices={[0] /* Sticky header */}
-    >
+    <React.Fragment>
       <Header title="Details" />
-      <View style={[globalMainContainerStyle]}>
-        <View
-          style={[
-            styles.text_container,
-            globalContainerStyle,
-            { backgroundColor: globalPrimaryColor },
-          ]}
-        >
-          <Text style={[styles.text, { color: globalTitleColor }]}>{data}</Text>
-          <Button
-            icon={"content-copy"}
-            library={"MaterialIcons"}
-            color={globalItemsColor}
-            onPress={async () => {
-              copyToClipboard;
-              const thisData = await getDataAsync("historyRegister");
-              /* console.log(thisData); */
-            }}
+      <ScrollView
+        style={{ backgroundColor: globalBackgoundColor }}
+        scrollEnabled={true}
+      >
+        <View style={[globalMainContainerStyle]}>
+          <View
+            style={[
+              styles.text_container,
+              globalContainerStyle,
+              { backgroundColor: globalPrimaryColor },
+            ]}
+          >
+            <Text style={[styles.text, { color: globalTitleColor }]}>
+              {data}
+            </Text>
+            <Button
+              icon={"content-copy"}
+              library={"MaterialIcons"}
+              color={globalItemsColor}
+              onPress={async () => {
+                copyToClipboard;
+                const thisData = await getDataAsync("historyRegister");
+                /* console.log(thisData); */
+              }}
+            />
+          </View>
+          {/* QR code generator */}
+          <ImageQR
+            data={data}
+            containerStyle={[
+              globalContainerStyle,
+              { backgroundColor: globalPrimaryColor },
+            ]}
           />
-        </View>
-        {/* QR code generator */}
-        <ImageQR
-          data={data}
-          containerStyle={[
-            globalContainerStyle,
-            { backgroundColor: globalPrimaryColor },
-          ]}
-        />
-        {/* Banner de anuncios */}
-        {/* <View style={styles.bannerContainer}>
+          {/* Banner de anuncios */}
+          {/* <View style={styles.bannerContainer}>
         <BannerAd
           unitId={TestIds.BANNER}
           size={BannerAdSize.FLUID}
@@ -171,8 +173,9 @@ function ResultView() {
           }}
         />
       </View> */}
-      </View>
-    </ScrollView>
+        </View>
+      </ScrollView>
+    </React.Fragment>
   );
 }
 

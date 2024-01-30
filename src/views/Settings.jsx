@@ -58,20 +58,17 @@ function Settings() {
     themePreferenceCheckOption();
   }, [vibration, beep]);
 
-    // code that activates when the screen is focused or unfocused
-  const isFocused = useIsFocused(); 
+  // code that activates when the screen is focused or unfocused
+  const isFocused = useIsFocused();
   useEffect(() => {
     setIsThemeAlertShown(false);
     setIsEngineAlertShown(false);
-  }, [isFocused])
+  }, [isFocused]);
 
   return (
     <View style={{ backgroundColor: globalBackgoundColor, flex: 1 }}>
-      <ScrollView
-        scrollEnabled={scrollEnabled}
-        stickyHeaderIndices={[0] /* Sticky header */}
-      >
-        <Header title={"Settings"}></Header>
+      <Header title={"Settings"} />
+      <ScrollView scrollEnabled={scrollEnabled}>
         <View style={[globalMainContainerStyle]}>
           <TitleSpace title="Appereance" />
           <View
@@ -131,7 +128,6 @@ function Settings() {
             />
             <DefaultOptionBox
               title="Search Engine"
-      
               onPress={async () => {
                 openAlert(setIsEngineAlertShown);
               }}
@@ -146,22 +142,21 @@ function Settings() {
               check={autoSearch}
             />
           </View>
-          
         </View>
       </ScrollView>
       {/* Alert frame to display alerts */}
       {isThemeAlertShown && (
-            <OptionThemeAlert
-              selectedTheme={themePreferenceOptionSelected}
-              setSelectedTheme={setThemePreferenceOptionSelected}
-            />
-          )}
-          {isEngineAlertShown && (
-            <OptionEngineAlert
-              selectedTheme={themePreferenceOptionSelected}
-              setSelectedTheme={setThemePreferenceOptionSelected}
-            />
-          )}
+        <OptionThemeAlert
+          selectedTheme={themePreferenceOptionSelected}
+          setSelectedTheme={setThemePreferenceOptionSelected}
+        />
+      )}
+      {isEngineAlertShown && (
+        <OptionEngineAlert
+          selectedTheme={themePreferenceOptionSelected}
+          setSelectedTheme={setThemePreferenceOptionSelected}
+        />
+      )}
     </View>
   );
 }
