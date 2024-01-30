@@ -9,19 +9,19 @@ function Header({ title }) {
   let titlteColor = "#FFFFFF";
 
   if (currentTheme === "dark") {
-    if (isHeaderBlurred) {
+    /* if (isHeaderBlurred) {
       headerColor = "#151515"; // 25% opacity
       titlteColor = "#BFBFBF"; // 25% opacity
-    } else {
-      headerColor = "#1C1C1C"; // Same as globalPrimaryColor
-    }
+    } else { */
+      headerColor = "#222222"; // Same as globalPrimaryColor
+    /* } */
   } else {
-    if (isHeaderBlurred) {
+    /* if (isHeaderBlurred) {
       headerColor = "rgb(5, 19, 70)"; // 25% opacity
       titlteColor = "#BFBFBF"; // 25% opacity
-    } else {
+    } else { */
       headerColor = "rgb(7,26,93)";
-    }
+    /* } */
   }
 
   return (

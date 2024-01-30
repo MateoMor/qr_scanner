@@ -27,10 +27,10 @@ function Tabs() {
 
   if (currentTheme === "dark") {
     if (isHeaderBlurred) {
-      headerColor = "rgb(7, 7, 7)"; // 75% opacity
+      headerColor = "rgb(13, 13, 13)"; // 75% opacity
       titlteColor = "rgb(63, 63, 63)"; // 75% opacity
     } else {
-      headerColor = "#1C1C1C"; // Same as globalPrimaryColor
+      headerColor = "#222222"; // Same as globalPrimaryColor
     }
   } else {
     if (isHeaderBlurred) {
