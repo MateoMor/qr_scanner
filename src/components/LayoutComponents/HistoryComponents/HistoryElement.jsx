@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import HistoryElementIcon from "./HistoryElementIcon";
@@ -17,8 +17,8 @@ function HistoryElement({
   /* const { globalItemsColor, globalTitleColor, globalSubtitleStyle } =
     useContext(AppStateContext); */
 
-  console.log("Hello :(");
-
+  console.log(Date.now());  
+  
   const { navigate } = useNavigation();
 
   const onPressHandler = () => {
@@ -35,9 +35,9 @@ function HistoryElement({
           <Text numberOfLines={1} style={{ color: titleColor }}>
             {data}
           </Text>
+          <Text style={subtitleStyle}>{type}</Text>
         </View>
         <View style={styles.typeAndDateContainer}>
-          <Text style={subtitleStyle}>{type}</Text>
           <Text style={subtitleStyle}>{time}</Text>
         </View>
       </View>
@@ -57,18 +57,19 @@ const styles = StyleSheet.create({
   iconContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 16,
+    marginHorizontal: 16,
     marginLeft: 6,
   },
   infoContainer: {
     flex: 1,
+    marginHorizontal: 10,
     justifyContent: "center",
-    flexDirection: "column",
+    flexDirection: "row",
   },
   dataContainer: { width: "94%" },
   typeAndDateContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: "column",
+    justifyContent: "flex-end",
   },
 });
 

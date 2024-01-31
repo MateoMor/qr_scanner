@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { FlatList, ScrollView, View } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { ScrollView, View } from "react-native";
 
 import TitleSpace from "../components/LayoutComponents/TitleSpace";
 import Header from "../components/LayoutComponents/Header";
@@ -21,8 +21,11 @@ function History() {
     globalSubtitleStyle,
   } = useContext(AppStateContext);
 
+  const [isMounted, setIsMounted] = useState(false);
+
   useEffect(() => {
     console.log(historyRegister);
+    setIsMounted(true);
   }, []);
 
   // code that activates when the screen is focused or unfocused
@@ -37,7 +40,7 @@ function History() {
       <Header title={"History"} />
       <ScrollView>
         <View style={[globalMainContainerStyle]}>
-          {historyRegister.length !== 0 &&
+          {historyRegister.length !== 0 && isMounted &&
             (() => {
               const renderedElements = [];
 
