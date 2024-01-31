@@ -55,17 +55,17 @@ function ResultView() {
     };
   }, [navigation]);*/
 
-  useEffect(() => {
+  /* 
+  This could be used in replace of the setter in isFocused useEffect
+   */
+  /* useEffect(() => {
     console.log("setIsCameraReady if");
     if (navState.routes[navState.index].name === route.name) {
       setIsCameraReady(true);
       console.log("setIsCameraReady");
     }
-  }, [navState.index, navState.history]);
+  }, [navState.index, navState.history]); */
 
-  /* useEffect(() => {
-    setIsCameraReady(true);
-  }, []); */
 
   const {
     params: { data, isNewData },
@@ -73,6 +73,8 @@ function ResultView() {
 
   useEffect(() => {
     if (isFocused) {
+      setIsCameraReady(false) // Set IsCameraReady to false to avoid camera crashes
+
       // If auto copy is enabled copy automatically when render
       if (autoCopyToClipboard) {
         copyToClipboard();
