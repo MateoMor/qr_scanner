@@ -45,7 +45,8 @@ function Tabs() {
         inactiveColor={"#BFBFBF"}
         shifting={false}
         labeled={false}
-        barStyle={{ backgroundColor: headerColor, height: 70 }}
+        activeIndicatorStyle={{ height: 35 }}
+        barStyle={{ backgroundColor: headerColor }}
       >
         <Tab.Screen
           listeners={{
@@ -64,7 +65,7 @@ function Tabs() {
               <MaterialCommunityIcons
                 name="crop-free"
                 color={color}
-                size={26}
+                size={24}
               />
             ),
           }}
@@ -83,7 +84,7 @@ function Tabs() {
           component={History}
           options={{
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="history" color={color} size={26} />
+              <MaterialCommunityIcons name="history" color={color} size={24} />
             ),
           }}
         />
@@ -101,7 +102,7 @@ function Tabs() {
           component={Settings}
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons name="settings-sharp" color={color} size={26} />
+              <Ionicons name="settings-sharp" color={color} size={24} />
             ),
           }}
         />

@@ -202,11 +202,6 @@ function Scanner() {
           }}
         />
         <Button icon="images" onPress={() => pickImage()} />
-        <Button
-          icon="settings"
-          library="MaterialIcons"
-          onPress={() => navigate("Settings")}
-        />
       </View>
       {isCameraReady && (
         <Camera

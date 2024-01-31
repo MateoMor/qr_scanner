@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Animated, Easing, StyleSheet, View, useWindowDimensions } from "react-native";
+import { AppStateContext } from "../../context/AppStateProvider";
 
 const backgroundColor = "rgba(0, 0, 0, 0.4)";
 
 // Este componente crea la imágen del scaner con el fondo y la animación
 function ScannerAnimation() {
+  const { globalItemsColor } = useContext(AppStateContext);
   const { height, width } = useWindowDimensions();
   const [fadeIn, setFadeIn] = useState(new Animated.Value(0.5));
   const [scanerPointerPos, setScanerPointerPos] = useState(

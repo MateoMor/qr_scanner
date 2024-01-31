@@ -1,9 +1,12 @@
 import Slider from "@react-native-community/slider";
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import Button from "../Buttons/Button";
+import { AppStateContext } from "../../context/AppStateProvider";
 
 function ZoomSlider({ zoom, setZoom }) {
+  const { globalItemsColor } = useContext(AppStateContext);
+
   const stepSize = 0.07;
 
   const lessZoom = () => {
@@ -38,8 +41,9 @@ function ZoomSlider({ zoom, setZoom }) {
         onValueChange={(value) => {
           setZoom(value);
         }}
-        minimumTrackTintColor="#06b6d4"
+        minimumTrackTintColor={globalItemsColor}
         maximumTrackTintColor="#cbd5e1"
+        thumbTintColor={globalItemsColor}
       />
       <Button
         icon={"zoom-in"}
