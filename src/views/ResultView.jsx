@@ -1,7 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Linking, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { useNavigationState, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigationState,
+  useRoute,
+} from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
 import Toast from "react-native-simple-toast";
 /* import {
@@ -31,8 +35,10 @@ function ResultView() {
     setHistoryRegister,
     setIsCameraReady,
   } = useContext(AppStateContext);
+
   const navState = useNavigationState((state) => state);
   const route = useRoute();
+  const isFocused = useIsFocused();
 
   let toastShown = false;
 
@@ -62,17 +68,23 @@ function ResultView() {
   }, []); */
 
   const {
-    params: { data },
+    params: { data, isNewData },
   } = useRoute(); //con esto pedimos los parametros enviados por ruta
 
   useEffect(() => {
-    // If auto copy is enabled copy automatically when render
-    if (autoCopyToClipboard) {
-      copyToClipboard();
-    }
+    if (isFocused) {
+      // If auto copy is enabled copy automatically when render
+      if (autoCopyToClipboard) {
+        copyToClipboard();
+      }
 
-    addElementToHistory();
-  }, []);
+      // If the data is new add it to history
+      if (isNewData) {
+        addElementToHistory();
+        console.log("Added to history");
+      }
+    }
+  }, [isFocused]);
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(data);

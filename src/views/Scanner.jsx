@@ -41,8 +41,10 @@ function Scanner() {
         const cameraStatus = await Camera.requestCameraPermissionsAsync();
         setHasCameraPermission(cameraStatus.status === "granted"); // si el status es concedido el estado es verdadero
 
-        if(hasCameraPermission){
-          setIsCameraReady(true);
+        if (hasCameraPermission) {
+          if (hasCameraPermission) {
+            setIsCameraReady(true);
+          }
         }
 
         const { sound } = await Audio.Sound.createAsync(
@@ -62,7 +64,7 @@ function Scanner() {
   );
 
   useEffect(() => {
-    if(hasCameraPermission){
+    if (hasCameraPermission) {
       setIsCameraReady(true);
     }
   }, [hasCameraPermission]);
@@ -70,7 +72,7 @@ function Scanner() {
   // Function to navigate to the information screen
   const QRscannedNav = (data) => {
     setIsCameraReady(false);
-    navigate("Details", { data }); // Recibe el nombre de la pantalla definida en el rooteador y llama al compomente con los argumentos dados
+    navigate("Details", { data, isNewData: true }); // Recibe el nombre de la pantalla definida en el rooteador y llama al compomente con los argumentos dados
   };
 
   const playBeep = async () => {

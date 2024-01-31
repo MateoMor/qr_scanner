@@ -1,14 +1,12 @@
 import React, { useContext, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import Settings from "../views/Settings";
 import History from "../views/History";
 import ScannerStack from "./ScannerStack";
 import { AppStateContext } from "../context/AppStateProvider";
-
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -18,12 +16,10 @@ function Tabs() {
     isHeaderBlurred,
     currentTheme,
     globalItemsColor,
-    setIsCameraReady,
   } = useContext(AppStateContext);
 
   let headerColor = "rgb(7,26,93)";
   let titlteColor = "#FFFFFF";
-  const defaultIconColor = "#BFBFBF";
 
   if (currentTheme === "dark") {
     if (isHeaderBlurred) {
@@ -41,14 +37,12 @@ function Tabs() {
     }
   }
 
-  const [currentTab, setCurrentTab] = useState(0);
-
   return (
     <NavigationContainer independent={true}>
       <Tab.Navigator
         initialRouteName="ScannerStack"
         activeColor={globalItemsColor}
-        /*  inactiveColor="green" */
+        inactiveColor={"#BFBFBF"}
         shifting={false}
         labeled={false}
         barStyle={{ backgroundColor: headerColor, height: 70 }}
@@ -57,13 +51,11 @@ function Tabs() {
           listeners={{
             tabPress: () => {
               setIsHeaderBlurred(false);
-              setCurrentTab(0);
               /* setIsCameraReady(true); */
             },
             /* blur: () => {
               setIsCameraReady(false);
             } */
-
           }} // listener to unblur header if it is blurred
           name="ScannerStack"
           component={ScannerStack}
@@ -71,7 +63,7 @@ function Tabs() {
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons
                 name="crop-free"
-                color={currentTab === 0 ? globalItemsColor : defaultIconColor}
+                color={color}
                 size={26}
               />
             ),
@@ -81,7 +73,6 @@ function Tabs() {
           listeners={{
             tabPress: () => {
               setIsHeaderBlurred(false);
-              setCurrentTab(1);
               /* setIsCameraReady(false); */
             },
             /* blur: () => {
@@ -92,11 +83,7 @@ function Tabs() {
           component={History}
           options={{
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="history"
-                color={currentTab === 1 ? globalItemsColor : defaultIconColor}
-                size={26}
-              />
+              <MaterialCommunityIcons name="history" color={color} size={26} />
             ),
           }}
         />
@@ -104,7 +91,6 @@ function Tabs() {
           listeners={{
             tabPress: () => {
               setIsHeaderBlurred(false);
-              setCurrentTab(2);
               /* setIsCameraReady(false); */
             },
             /* blur: () => {
@@ -115,11 +101,7 @@ function Tabs() {
           component={Settings}
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons
-                name="settings-sharp"
-                color={currentTab === 2 ? globalItemsColor : defaultIconColor}
-                size={26}
-              />
+              <Ionicons name="settings-sharp" color={color} size={26} />
             ),
           }}
         />

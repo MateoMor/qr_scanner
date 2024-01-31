@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import HistoryElementIcon from "./HistoryElementIcon";
+import { useNavigation } from "@react-navigation/native";
 /* import { AppStateContext } from "../../../context/AppStateProvider"; */
 
 // Component based on ../../../components/Buttons/DefaultOptionBox
@@ -18,8 +19,14 @@ function HistoryElement({
 
   console.log("Hello :(");
 
+  const { navigate } = useNavigation();
+
+  const onPressHandler = () => {
+    navigate("Details", { data, isNewData: false });
+  };
+
   return (
-    <View style={styles.mainContainer}>
+    <Pressable style={styles.mainContainer} onPress={onPressHandler}>
       <View style={styles.iconContainer}>
         <HistoryElementIcon color={color} type={type} />
       </View>
@@ -34,7 +41,7 @@ function HistoryElement({
           <Text style={subtitleStyle}>{time}</Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
