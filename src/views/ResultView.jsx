@@ -66,14 +66,13 @@ function ResultView() {
     }
   }, [navState.index, navState.history]); */
 
-
   const {
     params: { data, isNewData },
   } = useRoute(); //con esto pedimos los parametros enviados por ruta
 
   useEffect(() => {
     if (isFocused) {
-      setIsCameraReady(false) // Set IsCameraReady to false to avoid camera crashes
+      setIsCameraReady(false); // Set IsCameraReady to false to avoid camera crashes
 
       // If auto copy is enabled copy automatically when render
       if (autoCopyToClipboard) {
@@ -105,6 +104,18 @@ function ResultView() {
   const addElementToHistory = async () => {
     let dataType = (await Linking.canOpenURL(data)) ? "URL" : "Text";
 
+    // Get the last id
+    let lastId = 0;
+
+    if (historyRegister.length !== 0) {
+      lastId =
+        historyRegister[historyRegister.length - 1][1][
+          historyRegister[historyRegister.length - 1][1].length - 1
+        ].id + 1;
+    }
+
+    console.log("Last id: ", lastId);
+
     const todaysDate = getTodaysDate();
     let newHistoryRegisterArray = [...historyRegister];
 
@@ -113,6 +124,7 @@ function ResultView() {
       type: dataType,
       data: data,
       time: getCurrentHour(),
+      id: lastId,
     };
 
     // Verificar si el último elemento del array tiene la misma fecha que hoy
@@ -164,8 +176,8 @@ function ResultView() {
               color={globalItemsColor}
               onPress={async () => {
                 copyToClipboard;
-                const thisData = await getDataAsync("historyRegister");
-                /* console.log(thisData); */
+                /* const thisData = await getDataAsync("historyRegister"); */
+                
               }}
             />
           </View>

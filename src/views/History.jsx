@@ -8,6 +8,7 @@ import { AppStateContext } from "../context/AppStateProvider";
 import { useIsFocused } from "@react-navigation/native";
 import HistoryElement from "../components/LayoutComponents/HistoryComponents/HistoryElement";
 import DefaultContainer from "../components/LayoutComponents/DefaultContainer";
+import HistoryHeader from "../components/LayoutComponents/HistoryComponents/HistoryHeader";
 
 function History() {
   const {
@@ -22,6 +23,10 @@ function History() {
   } = useContext(AppStateContext);
 
   const [isMounted, setIsMounted] = useState(false);
+  const [checkBoxShown, setCheckBoxShown] = useState(false); // If the checkboxes of all elements are shown
+
+  const [idToDelete, setIdToDelete] = useState([]); // state that receives id once an element is selected
+  const [idsToDeleteList, setIdsToDeleteList] = useState([]); // List of ids scheduled to be deleted
 
   useEffect(() => {
     console.log(historyRegister);
@@ -35,12 +40,38 @@ function History() {
     setIsEngineAlertShown(false);
   }, [isFocused]);
 
+  // This list or unlist the ids received with idToDelete
+  useEffect(() => {
+    if (idToDelete[0] !== undefined) {
+      if (idsToDeleteList.includes(idToDelete[0])) {
+        // If the id is already in the list, remove it
+        setIdsToDeleteList((idsToDeleteList) =>
+          idsToDeleteList.filter((id) => id !== idToDelete[0])
+        );
+      } else {
+        // If the id is not in the list, add it
+        setIdsToDeleteList((idsToDeleteList) => [
+          ...idsToDeleteList,
+          idToDelete[0],
+        ]);
+      }
+    }
+    console.log("idToDelete:", idToDelete[0]);
+
+    console.log("idsToDeleteList:", idsToDeleteList);
+  }, [idToDelete]);
+
   return (
     <View style={{ backgroundColor: globalBackgoundColor, flex: 1 }}>
-      <Header title={"History"} />
+      <HistoryHeader
+        checkBoxShown={checkBoxShown}
+        setCheckBoxShown={setCheckBoxShown}
+        setIdsToDeleteList={setIdsToDeleteList}
+      />
       <ScrollView>
         <View style={[globalMainContainerStyle]}>
-          {historyRegister.length !== 0 && isMounted &&
+          {historyRegister.length !== 0 &&
+            isMounted &&
             (() => {
               const renderedElements = [];
 
@@ -59,13 +90,17 @@ function History() {
 
                           innerRenderedElements.push(
                             <HistoryElement
-                              key={j}
+                              key={element.id}
+                              id={element.id}
                               type={element.type}
                               data={element.data}
                               time={element.time}
                               color={globalItemsColor}
                               titleColor={globalTitleColor}
                               subtitleStyle={globalSubtitleStyle}
+                              setIdToDelete={setIdToDelete}
+                              checkBoxShown={checkBoxShown}
+                              setCheckBoxShown={setCheckBoxShown}
                             />
                           );
                         }
