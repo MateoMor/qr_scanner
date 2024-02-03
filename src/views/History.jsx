@@ -66,6 +66,7 @@ function History() {
       <HistoryHeader
         checkBoxShown={checkBoxShown}
         setCheckBoxShown={setCheckBoxShown}
+        idsToDeleteList={idsToDeleteList}
         setIdsToDeleteList={setIdsToDeleteList}
       />
       <ScrollView>

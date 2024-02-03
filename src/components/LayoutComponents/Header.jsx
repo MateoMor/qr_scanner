@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 84,
     padding: 12,
-    justifyContent: "flex-end",
+    justifyContent: "center",
+    flexDirection: "row",
   },
   title: {
     color: "white",

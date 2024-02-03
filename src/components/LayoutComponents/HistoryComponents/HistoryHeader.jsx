@@ -1,11 +1,14 @@
 import React, { useContext } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { AppStateContext } from "../../../context/AppStateProvider";
-import Button from "../../Buttons/Button";
+/* import Button from "../../Buttons/Button"; */
+
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 function HistoryHeader({
   checkBoxShown,
   setCheckBoxShown,
+  idsToDeleteList,
   setIdsToDeleteList,
 }) {
   const { currentTheme } = useContext(AppStateContext);
@@ -22,25 +25,32 @@ function HistoryHeader({
     setIdsToDeleteList([]);
   };
 
+  /* const deleteButtonHandler = () => {
+    setCheckBoxShown(false);
+    setIdsToDeleteList([]);
+  } */
+
   return (
     <View style={[styles.mainContainer, { backgroundColor: headerColor }]}>
-      {checkBoxShown && (
-        <View style={styles.leftContainer}>
-          <Button
-            icon={"close"}
-            library={"Ionicons"}
-            color={"white"}
-            size={24}
-            onPress={() => {
-              closeButtonHandler();
-            }}
-          />
-        </View>
-      )}
-      <View style={styles.middleContainer}>
-        <Text style={styles.title}>History</Text>
+      <View style={styles.leftContainer}>
+        {checkBoxShown && (
+          <Pressable onPress={() => closeButtonHandler()}>
+            <Ionicons name="close" size={24} color="white" />
+          </Pressable>
+        )}
       </View>
-      {checkBoxShown && <View style={styles.rightContainer}></View>}
+      <View style={styles.middleContainer}>
+        <Text style={styles.title}>
+          {checkBoxShown ? `Selected ${idsToDeleteList.length}` : "History"}
+        </Text>
+      </View>
+      <View style={styles.rightContainer}>
+        {/* {checkBoxShown && (
+          <Pressable onPress={() => deleteButtonHandler()}>
+            <MaterialCommunityIcons name="delete-outline" size={24} color="white" />
+          </Pressable>
+        )} */}
+      </View>
     </View>
   );
 }
@@ -50,12 +60,16 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 84,
     padding: 12,
-    justifyContent: "space-between",
     flexDirection: "row",
   },
-  leftContainer: { justifyContent: "flex-end", width: "50%" },
-  middleContainer: { backgroundColor: "grey" },
-  rightContainer: { width: "50%" },
+  leftContainer: { flex: 1, flexDirection: "row", alignItems: "flex-end" },
+  middleContainer: { width: 180 },
+  rightContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+  },
   title: {
     color: "white",
     fontSize: 23,
