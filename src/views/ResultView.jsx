@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Linking, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import {
   useIsFocused,
-  useNavigationState,
+  /* useNavigationState, */
   useRoute,
 } from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
@@ -36,8 +36,8 @@ function ResultView() {
     setIsCameraReady,
   } = useContext(AppStateContext);
 
-  const navState = useNavigationState((state) => state);
-  const route = useRoute();
+  /* const navState = useNavigationState((state) => state);
+  const route = useRoute(); */
   const isFocused = useIsFocused();
 
   let toastShown = false;
@@ -70,6 +70,8 @@ function ResultView() {
     params: { data, isNewData },
   } = useRoute(); //con esto pedimos los parametros enviados por ruta
 
+  const [isDataRead, setIsDataRead] = useState(false);
+
   useEffect(() => {
     if (isFocused) {
       setIsCameraReady(false); // Set IsCameraReady to false to avoid camera crashes
@@ -80,8 +82,9 @@ function ResultView() {
       }
 
       // If the data is new add it to history
-      if (isNewData) {
+      if (isNewData && !isDataRead) {
         addElementToHistory();
+        setIsDataRead(true);
         console.log("Added to history");
       }
     }
@@ -177,7 +180,6 @@ function ResultView() {
               onPress={async () => {
                 copyToClipboard;
                 /* const thisData = await getDataAsync("historyRegister"); */
-                
               }}
             />
           </View>

@@ -1,18 +1,17 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { AppStateContext } from "../../../context/AppStateProvider";
 /* import Button from "../../Buttons/Button"; */
 
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 function HistoryHeader({
+  currentTheme, // Receives the current theme to avoid calling it from context and re-render
   checkBoxShown,
   setCheckBoxShown,
   idsToDeleteList,
   setIdsToDeleteList,
+  setDeleteItems,
 }) {
-  const { currentTheme } = useContext(AppStateContext);
-
   let headerColor = "rgb(7,26,93)";
 
   if (currentTheme === "dark") {
@@ -25,10 +24,11 @@ function HistoryHeader({
     setIdsToDeleteList([]);
   };
 
-  /* const deleteButtonHandler = () => {
+  // Turn off checkboxes and trigger the deletion in History component
+  const deleteButtonHandler = () => {
     setCheckBoxShown(false);
-    setIdsToDeleteList([]);
-  } */
+    setDeleteItems(true);
+  };
 
   return (
     <View style={[styles.mainContainer, { backgroundColor: headerColor }]}>
@@ -45,11 +45,15 @@ function HistoryHeader({
         </Text>
       </View>
       <View style={styles.rightContainer}>
-        {/* {checkBoxShown && (
+        {checkBoxShown && (
           <Pressable onPress={() => deleteButtonHandler()}>
-            <MaterialCommunityIcons name="delete-outline" size={24} color="white" />
+            <MaterialCommunityIcons
+              name="delete-outline"
+              size={24}
+              color="white"
+            />
           </Pressable>
-        )} */}
+        )}
       </View>
     </View>
   );
@@ -79,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HistoryHeader;
+export default React.memo(HistoryHeader); // Prevent re-rendering
