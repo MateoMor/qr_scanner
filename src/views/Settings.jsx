@@ -33,6 +33,8 @@ function Settings() {
     setIsEngineAlertShown,
   } = useContext(AppStateContext);
 
+  const [isMounted, setIsMounted] = useState(false);
+
   const scrollEnabled = isThemeAlertShown || isEngineAlertShown ? false : true; // To know if the component is scrollable or not
 
   const [themePreferenceOptionSelected, setThemePreferenceOptionSelected] =
@@ -51,6 +53,7 @@ function Settings() {
   };
 
   useEffect(() => {
+    setIsMounted(true);
     themePreferenceCheckOption();
   }, []);
 
@@ -68,82 +71,84 @@ function Settings() {
   return (
     <View style={{ backgroundColor: globalBackgoundColor, flex: 1 }}>
       <Header title={"Settings"} />
-      <ScrollView scrollEnabled={scrollEnabled}>
-        <View style={[globalMainContainerStyle]}>
-          <TitleSpace title="Appereance" />
-          <View
-            style={[
-              globalContainerStyle,
-              styles.container,
-              { backgroundColor: globalPrimaryColor },
-            ]}
-          >
-            <DefaultOptionBox
-              title="Theme"
-              onPress={() => {
-                openAlert(setIsThemeAlertShown);
-              }}
-              checkable={false}
-            />
-            <IconColorPalette />
+      {isMounted && (
+        <ScrollView scrollEnabled={scrollEnabled}>
+          <View style={[globalMainContainerStyle]}>
+            <TitleSpace title="Appereance" />
+            <View
+              style={[
+                globalContainerStyle,
+                styles.container,
+                { backgroundColor: globalPrimaryColor },
+              ]}
+            >
+              <DefaultOptionBox
+                title="Theme"
+                onPress={() => {
+                  openAlert(setIsThemeAlertShown);
+                }}
+                checkable={false}
+              />
+              <IconColorPalette />
+            </View>
+            <TitleSpace title="Scanner" />
+            <View
+              style={[
+                globalContainerStyle,
+                styles.container,
+                { backgroundColor: globalPrimaryColor },
+              ]}
+            >
+              <DefaultOptionBox
+                title="Vibration"
+                onPress={async () => {
+                  toggleVibrationState();
+                }}
+                check={vibration}
+              />
+              <DefaultOptionBox
+                title="Beep"
+                onPress={async () => {
+                  toggleBeepState();
+                }}
+                description="Sound when scanned"
+                check={beep}
+              />
+            </View>
+            <TitleSpace title="Results" />
+            <View
+              style={[
+                globalContainerStyle,
+                styles.container,
+                { backgroundColor: globalPrimaryColor },
+              ]}
+            >
+              <DefaultOptionBox
+                title="Auto Copy to Clipboard"
+                onPress={async () => {
+                  toggleAutoCopyToClipboard();
+                }}
+                check={autoCopyToClipboard}
+              />
+              <DefaultOptionBox
+                title="Search Engine"
+                onPress={async () => {
+                  openAlert(setIsEngineAlertShown);
+                }}
+                checkable={false}
+              />
+              <DefaultOptionBox
+                title="Automatically open URLs"
+                description="Open websites after scanning a QR with URL"
+                onPress={async () => {
+                  toggleAutoSearch();
+                }}
+                check={autoSearch}
+              />
+            </View>
           </View>
-          <TitleSpace title="Scanner" />
-          <View
-            style={[
-              globalContainerStyle,
-              styles.container,
-              { backgroundColor: globalPrimaryColor },
-            ]}
-          >
-            <DefaultOptionBox
-              title="Vibration"
-              onPress={async () => {
-                toggleVibrationState();
-              }}
-              check={vibration}
-            />
-            <DefaultOptionBox
-              title="Beep"
-              onPress={async () => {
-                toggleBeepState();
-              }}
-              description="Sound when scanned"
-              check={beep}
-            />
-          </View>
-          <TitleSpace title="Results" />
-          <View
-            style={[
-              globalContainerStyle,
-              styles.container,
-              { backgroundColor: globalPrimaryColor },
-            ]}
-          >
-            <DefaultOptionBox
-              title="Auto Copy to Clipboard"
-              onPress={async () => {
-                toggleAutoCopyToClipboard();
-              }}
-              check={autoCopyToClipboard}
-            />
-            <DefaultOptionBox
-              title="Search Engine"
-              onPress={async () => {
-                openAlert(setIsEngineAlertShown);
-              }}
-              checkable={false}
-            />
-            <DefaultOptionBox
-              title="Automatically open URLs"
-              description="Open websites after scanning a QR with URL"
-              onPress={async () => {
-                toggleAutoSearch();
-              }}
-              check={autoSearch}
-            />
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )}
       {/* Alert frame to display alerts */}
       {isThemeAlertShown && (
         <OptionThemeAlert

@@ -18,9 +18,14 @@ function OptionThemeAlert({ selectedTheme, setSelectedTheme }) {
   };
 
   return (
-    <AlertFrame itemsColor={globalItemsColor} closeAlert={() => {closeAlert()}}>
+    <AlertFrame
+      itemsColor={globalItemsColor}
+      closeAlert={() => {
+        closeAlert();
+      }}
+    >
       <AlertOption
-        selected={selectedTheme === "auto"}
+        selected={selectedTheme === "auto" || selectedTheme === undefined}
         itemsColor={globalItemsColor}
         onPress={async () => {
           closeAlert();
