@@ -18,21 +18,36 @@ function HistoryElement({
   setIdToDelete,
   checkBoxShown,
   setCheckBoxShown,
+  selectAllElementsTrigger,
+  selectAllElementsTriggerFalse,
 }) {
   const { navigate } = useNavigation();
-  const [selectedToDelete, setselectedToDelete] = useState(false);
+  const [selected, setSelected] = useState(false);
 
   console.log("id:", id);
 
   // With this useEffect all the elements are unchecked when the checkBoxShown is turned off
   useEffect(() => {
-    setselectedToDelete(false);
+    setSelected(false);
   }, [checkBoxShown]);
+
+  // When the selectAllElementsTrigger is true, all element checkboxes are checked (adding id is done in History component). If not, they are unchecked
+  useEffect(() => {
+    if (selectAllElementsTriggerFalse !== undefined) {
+      setSelected(true);
+    }
+  }, [selectAllElementsTriggerFalse]);
+
+  useEffect(() => {
+    if (selectAllElementsTriggerFalse !== undefined) {
+      setSelected(false);
+    }
+  }, [selectAllElementsTrigger]);
 
   // This function handle waht happens when the delete action is done
   const onPressDeleteHandler = () => {
     setIdToDelete([id]);
-    setselectedToDelete(!selectedToDelete);
+    setSelected(!selected);
   };
 
   const onPressHandler = () => {
@@ -48,7 +63,7 @@ function HistoryElement({
   const onLongPressHandler = () => {
     setCheckBoxShown(true);
     onPressDeleteHandler();
-    console.log(selectedToDelete);
+    console.log(selected);
   };
 
   return (
@@ -69,8 +84,8 @@ function HistoryElement({
         </View>
         <View style={styles.typeAndDateContainer}>
           {checkBoxShown ? (
-            selectedToDelete ? (
-              <MaterialIcons name="check-box" size={26} color={titleColor} />
+            selected ? (
+              <MaterialIcons name="check-box" size={26} color={color} />
             ) : (
               <MaterialIcons
                 name="check-box-outline-blank"
@@ -89,12 +104,12 @@ function HistoryElement({
 
 const styles = StyleSheet.create({
   mainContainer: {
-    padding: 10,
+    paddingVertical: 18, // Not using marginVertical for a better press element experience
+    paddingRight: 10,
     paddingLeft: 0, // This padding is replaced with marginHorizontal of iconContainer
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginVertical: 8,
   },
   iconContainer: {
     justifyContent: "center",

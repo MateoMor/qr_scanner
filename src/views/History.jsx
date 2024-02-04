@@ -8,7 +8,6 @@ import HistoryHeader from "../components/LayoutComponents/HistoryComponents/Hist
 
 import { AppStateContext } from "../context/AppStateProvider";
 import { useIsFocused } from "@react-navigation/native";
-import { storeDataAsync } from "../utils/AsyncStorageFunctions";
 
 function History() {
   const {
@@ -30,7 +29,11 @@ function History() {
   const [idToDelete, setIdToDelete] = useState([]); // state that receives id once an element is selected
   const [idsToDeleteList, setIdsToDeleteList] = useState([]); // List of ids scheduled to be deleted
 
-  const [deleteItems, setDeleteItems] = useState(false); // State to trigger the deletion of elements (button in header)
+  /* NOTE: The following useStates are triggers used by HistoryHeader, they handle the activation of useEffects on HistoryElement to check all elements or uncheck them. In HistoryHeader they are triggered when selectAllButtonHandler is called, calling a diffrent trigger whether allElementsSelected is true or false */
+  const [selectAllElementsTrigger, setSelectAllElementsTrigger] =
+    useState(undefined); // Triggers for selectAllElementsHandler
+  const [selectAllElementsTriggerFalse, setSelectAllElementsTriggerFalse] =
+    useState(undefined); // Secondary trigger for selectAllElementsHandler
 
   useEffect(() => {
     console.log(historyRegister);
@@ -65,54 +68,46 @@ function History() {
     console.log("idsToDeleteList:", idsToDeleteList);
   }, [idToDelete]);
 
-  // Updates the history register without the elements to delete
-  useEffect(() => {
-    if (deleteItems) {
-      let HistoryRegisterAfterDelete = []; // Nuevo registro con los elementos no eliminados
-
-      // Itera sobre la primera capa del registro
-      for (let i = 0; i < historyRegister.length; i++) {
-        let element = historyRegister[i];
-        let newHistoryGroup = [element[0], []]; // [Fecha, Elementos]
-
-        // Itera sobre la segunda capa del registro
-        for (let j = 0; j < element[1].length; j++) {
-          let innerElement = element[1][j];
-          if (!idsToDeleteList.includes(innerElement.id)) {
-            newHistoryGroup[1].push(innerElement);
-          } 
-        }
-
-        // Si el grupo no está vacío, agrégalo al nuevo registro
-        if (newHistoryGroup[1].length !== 0) {
-          HistoryRegisterAfterDelete.push(newHistoryGroup);
-        }
+  // This function adds all the ids in the history
+  const addAllIdsToDeleteList = () => {
+    let ids = [];
+    for (let i = 0; i < historyRegister.length; i++) {
+      for (let j = 0; j < historyRegister[i][1].length; j++) {
+        ids.push(historyRegister[i][1][j].id);
       }
-
-      /* console.log("HistoryRegisterAfterDelete:", HistoryRegisterAfterDelete); */
-
-      setHistoryRegister(HistoryRegisterAfterDelete); // Establece el registro de historial en el nuevo registro
-      (async () => {
-        // Actualiza el almacenamiento local
-        await storeDataAsync(
-          "historyRegister",
-          JSON.stringify(HistoryRegisterAfterDelete)
-        );
-      })();
-      setIdsToDeleteList([]);
-      setDeleteItems(false);
     }
-  }, [deleteItems]);
+    setIdsToDeleteList(ids);
+  };
+
+  // This function adds all the ids in the history
+  useEffect(() => {
+    if (selectAllElementsTriggerFalse !== undefined) {
+      addAllIdsToDeleteList();
+    }
+  }, [selectAllElementsTriggerFalse]);
+
+  // This function unlist all the ids
+  useEffect(() => {
+    if (selectAllElementsTrigger !== undefined) {
+      setIdsToDeleteList([]);
+    }
+  }, [selectAllElementsTrigger]);
 
   return (
     <View style={{ backgroundColor: globalBackgoundColor, flex: 1 }}>
       <HistoryHeader
+        color={globalItemsColor}
         currentTheme={currentTheme}
         checkBoxShown={checkBoxShown}
         setCheckBoxShown={setCheckBoxShown}
         idsToDeleteList={idsToDeleteList}
         setIdsToDeleteList={setIdsToDeleteList}
-        setDeleteItems={setDeleteItems}
+        historyRegister={historyRegister}
+        setHistoryRegister={setHistoryRegister}
+        selectAllElementsTrigger={selectAllElementsTrigger}
+        setSelectAllElementsTrigger={setSelectAllElementsTrigger}
+        selectAllElementsTriggerFalse={selectAllElementsTriggerFalse}
+        setSelectAllElementsTriggerFalse={setSelectAllElementsTriggerFalse}
       />
       <ScrollView>
         <View style={[globalMainContainerStyle]}>
@@ -147,10 +142,15 @@ function History() {
                               setIdToDelete={setIdToDelete}
                               checkBoxShown={checkBoxShown}
                               setCheckBoxShown={setCheckBoxShown}
+                              selectAllElementsTrigger={
+                                selectAllElementsTrigger
+                              }
+                              selectAllElementsTriggerFalse={
+                                selectAllElementsTriggerFalse
+                              }
                             />
                           );
                         }
-
                         return innerRenderedElements;
                       })()}
                     </DefaultContainer>
