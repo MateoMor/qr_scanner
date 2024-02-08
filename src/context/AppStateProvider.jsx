@@ -1,5 +1,6 @@
 import { useState, createContext, useEffect } from "react";
 import { useColorScheme } from "react-native";
+import * as NavigationBar from "expo-navigation-bar";
 import { getDataAsync, storeDataAsync } from "../utils/AsyncStorageFunctions";
 
 export const AppStateContext = createContext();
@@ -16,6 +17,26 @@ export const AppStateProvider = (props) => {
 
   const [isEngineAlertShown, setIsEngineAlertShown] = useState(false);
 
+  const firstLoadHandler = async () => {
+    /* THEME */
+    const themePreference = await getDataAsync("themePreference");
+    changeTheme(themePreference);
+    console.log("Theme: " + themePreference);
+    
+  }
+
+  // -------------------------------------------------------------- //
+  // THIS CODE ONLY RUNS ON THE FIRST LOAD OF THE APP
+  const [firstLoad, setFirstLoad] = useState(true);
+  useEffect(() => {
+    setFirstLoad(false);
+  }, []);
+  if (firstLoad) {
+    console.log("First load");
+    firstLoadHandler()
+  }
+  // -------------------------------------------------------------- //
+
   // Colors style from https://material.io/design/color/dark-theme.html#ui-application
   const darkThemeSetter = () => {
     setGlobalPrimaryColor("#1C1C1C");
@@ -23,6 +44,7 @@ export const AppStateProvider = (props) => {
     setGlobalTitleColor("rgba(255, 255, 255, 0.87)");
     setGlobalSubtitleColor("rgba(255, 255, 255, 0.60)");
     setCurrentTheme("dark");
+    NavigationBar.setBackgroundColorAsync("#121212");
   };
 
   const lightThemeSetter = () => {
@@ -31,6 +53,7 @@ export const AppStateProvider = (props) => {
     setGlobalTitleColor("rgba(0, 0, 0, 0.87)");
     setGlobalSubtitleColor("rgba(0, 0, 0, 0.60)");
     setCurrentTheme("light");
+    NavigationBar.setBackgroundColorAsync("#FAFAFA");
   };
 
   // Function thath changes the theme (Not change preference)
@@ -87,9 +110,7 @@ export const AppStateProvider = (props) => {
   // Asks async storaged properties at the beggining of the app
   useEffect(() => {
     (async () => {
-      /* THEME */
-      const themePreference = await getDataAsync("themePreference");
-      changeTheme(themePreference);
+      
 
       /* SEARCH ENGINE */
 
