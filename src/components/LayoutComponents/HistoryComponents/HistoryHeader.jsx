@@ -47,8 +47,7 @@ function HistoryHeader({
   };
 
   const selectAllButtonHandler = () => {
-
-    console.log("allElementsSelected:", allElementsSelected)
+    console.log("allElementsSelected:", allElementsSelected);
     if (allElementsSelected) {
       if (selectAllElementsTrigger === undefined) {
         setSelectAllElementsTrigger(true);
@@ -110,34 +109,53 @@ function HistoryHeader({
     }
   };
 
+  // Shorts the size of the right container when checkbox is shown to give more space to selected counter
+  const rightContainerSize = checkBoxShown
+    ? {
+        flex: 0,
+        width: 90,
+      }
+    : {
+        flex: 1,
+      };
+
   return (
     <View style={[styles.mainContainer, { backgroundColor: headerColor }]}>
       <View style={styles.leftContainer}>
         {checkBoxShown && (
-          <Pressable
-            style={styles.pressable}
-            onPress={() => closeButtonHandler()}
-          >
-            <AntDesign name="arrowleft" size={iconSize} color="white" />
-          </Pressable>
+          <React.Fragment>
+            <Pressable
+              style={styles.pressable}
+              onPress={() => closeButtonHandler()}
+            >
+              <AntDesign name="arrowleft" size={iconSize} color="white" />
+            </Pressable>
+            <Text
+              style={styles.title}
+            >{`Selected ${idsToDeleteList.length}`}</Text>
+          </React.Fragment>
         )}
       </View>
-      <View style={styles.middleContainer}>
-        <Text style={styles.title}>
-          {checkBoxShown ? `Selected ${idsToDeleteList.length}` : "History"}
-        </Text>
-      </View>
-      <View style={styles.rightContainer}>
+      {!checkBoxShown && (
+        <View style={styles.middleContainer}>
+          <Text style={styles.title}>History</Text>
+        </View>
+      )}
+      <View style={[styles.rightContainer, rightContainerSize]}>
         {checkBoxShown && (
           <Pressable style={styles.pressable} onPress={selectAllButtonHandler}>
             <MaterialCommunityIcons
               name={
-                allElementsSelected
+                allElementsSelected && historyRegister.length !== 0
                   ? "checkbox-multiple-marked"
                   : "checkbox-multiple-blank-outline"
               }
               size={25}
-              color={allElementsSelected ? color : "white"}
+              color={
+                allElementsSelected && historyRegister.length !== 0
+                  ? color
+                  : "white"
+              }
             />
           </Pressable>
         )}
@@ -160,8 +178,12 @@ const styles = StyleSheet.create({
     padding: 12,
     flexDirection: "row",
   },
-  leftContainer: { flex: 1, flexDirection: "row", alignItems: "flex-end" },
-  middleContainer: { width: 180 /* backgroundColor: "green" */ },
+  leftContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "flex-end",
+  },
+  middleContainer: { width: 180 },
   rightContainer: {
     flex: 1,
     flexDirection: "row",
@@ -175,7 +197,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 24,
   },
-  pressable: { padding: 4 },
+  pressable: { paddingVertical: 4, paddingHorizontal: 6 },
 });
 
 export default React.memo(HistoryHeader); // Prevent re-rendering
