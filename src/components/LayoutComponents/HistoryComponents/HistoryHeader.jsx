@@ -131,7 +131,7 @@ function HistoryHeader({
               <AntDesign name="arrowleft" size={iconSize} color="white" />
             </Pressable>
             <Text
-              style={styles.title}
+              style={[styles.title, { marginLeft: 4 }]}
             >{`Selected ${idsToDeleteList.length}`}</Text>
           </React.Fragment>
         )}
