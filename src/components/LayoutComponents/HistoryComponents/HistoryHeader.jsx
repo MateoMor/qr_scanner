@@ -20,7 +20,7 @@ function HistoryHeader({
 }) {
   const iconSize = 26;
 
-  let headerColor = "rgb(7,26,93)";
+  let headerColor = "#0F238C";
   if (currentTheme === "dark") {
     headerColor = "#222222"; // Same as globalPrimaryColor
   }

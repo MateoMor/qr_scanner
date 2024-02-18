@@ -1,7 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import * as NavigationBar from "expo-navigation-bar";
 
 import Settings from "../views/Settings";
 import History from "../views/History";
@@ -18,35 +19,48 @@ function Tabs() {
     globalItemsColor,
   } = useContext(AppStateContext);
 
-  let headerColor = "rgb(7,26,93)";
+  let headerColor = "#0F238C";
   let titlteColor = "#FFFFFF";
 
   if (currentTheme === "dark") {
     if (isHeaderBlurred) {
-      headerColor = "rgb(13, 13, 13)"; // 75% opacity
-      titlteColor = "rgb(63, 63, 63)"; // 75% opacity
+      headerColor = "#0D0D0D"; // 75% opacity
+      titlteColor = "#3F3F3F"; // 75% opacity
     } else {
       headerColor = "#222222"; // Same as globalPrimaryColor
     }
   } else {
     if (isHeaderBlurred) {
-      headerColor = "rgb(1, 7, 35)"; // 75% opacity
-      titlteColor = "rgb(63, 63, 63)"; // 75% opacity
+      headerColor = "#040923"; // 75% opacity
+      titlteColor = "#3F3F3F"; // 75% opacity
     } else {
-      headerColor = "rgb(7,26,93)";
+      headerColor = "#0F238C";
     }
   }
+
+  // useEffect to coordinate navigation bar color with the bottomTab color
+  useEffect(() => {
+    if (currentTheme === "dark") {
+      isHeaderBlurred
+        ? NavigationBar.setBackgroundColorAsync("#0D0D0D")
+        : NavigationBar.setBackgroundColorAsync("#222222");
+    } else {
+      isHeaderBlurred
+        ? NavigationBar.setBackgroundColorAsync("#040923")
+        : NavigationBar.setBackgroundColorAsync("#0F238C");
+    }
+  }, [isHeaderBlurred]);
 
   return (
     <NavigationContainer independent={true}>
       <Tab.Navigator
         initialRouteName="ScannerStack"
         activeColor={globalItemsColor}
-        inactiveColor={"#BFBFBF"}
+        inactiveColor={"#FFFFFF"}
         shifting={false}
         labeled={false}
         activeIndicatorStyle={{ height: 35 }}
-        barStyle={{ backgroundColor: headerColor }}
+        barStyle={{ backgroundColor: headerColor, height: 70 }}
       >
         <Tab.Screen
           listeners={{

@@ -44,7 +44,7 @@ export const AppStateProvider = (props) => {
     setGlobalTitleColor("rgba(255, 255, 255, 0.87)");
     setGlobalSubtitleColor("rgba(255, 255, 255, 0.60)");
     setCurrentTheme("dark");
-    NavigationBar.setBackgroundColorAsync("#121212");
+    NavigationBar.setBackgroundColorAsync("#222222");
   };
 
   const lightThemeSetter = () => {
@@ -53,7 +53,7 @@ export const AppStateProvider = (props) => {
     setGlobalTitleColor("rgba(0, 0, 0, 0.87)");
     setGlobalSubtitleColor("rgba(0, 0, 0, 0.60)");
     setCurrentTheme("light");
-    NavigationBar.setBackgroundColorAsync("#FAFAFA");
+    NavigationBar.setBackgroundColorAsync("#0F238C");
   };
 
   // Function thath changes the theme (Not change preference)

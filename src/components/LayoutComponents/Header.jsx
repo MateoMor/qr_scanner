@@ -5,23 +5,12 @@ import { AppStateContext } from "../../context/AppStateProvider";
 function Header({ title }) {
   const { isHeaderBlurred, currentTheme } = useContext(AppStateContext);
 
-  let headerColor = "rgb(7,26,93)";
-  let titlteColor = "#FFFFFF";
+  let headerColor = "#0F238C";
 
   if (currentTheme === "dark") {
-    /* if (isHeaderBlurred) {
-      headerColor = "#151515"; // 25% opacity
-      titlteColor = "#BFBFBF"; // 25% opacity
-    } else { */
-      headerColor = "#222222"; // Same as globalPrimaryColor
-    /* } */
+    headerColor = "#222222"; // Same as globalPrimaryColor
   } else {
-    /* if (isHeaderBlurred) {
-      headerColor = "rgb(5, 19, 70)"; // 25% opacity
-      titlteColor = "#BFBFBF"; // 25% opacity
-    } else { */
-      headerColor = "rgb(7,26,93)";
-    /* } */
+    headerColor = "#0F238C";
   }
 
   return (

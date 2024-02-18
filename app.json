@@ -9,18 +9,21 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#FF6600"
+      "backgroundColor": "#0F238C"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "androidStatusBar": { "barStyle": "light-content" },
+    "androidNavigationBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#0F238C"
+    },
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FF6600"
+        "backgroundColor": "#0F238C"
       },
       "package": "com.frisded.qr_scanner"
     },
