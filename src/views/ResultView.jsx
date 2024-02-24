@@ -91,7 +91,9 @@ function ResultView() {
   }, [isFocused]);
 
   const copyToClipboard = async () => {
+    
     await Clipboard.setStringAsync(data);
+  
 
     // Alert when copy with timeout to show again
     if (!toastShown) {
@@ -178,7 +180,7 @@ function ResultView() {
               library={"MaterialIcons"}
               color={globalItemsColor}
               onPress={async () => {
-                copyToClipboard;
+                copyToClipboard();
                 /* const thisData = await getDataAsync("historyRegister"); */
               }}
             />

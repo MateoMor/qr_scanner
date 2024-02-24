@@ -71,6 +71,8 @@ function Scanner() {
 
   // Function to navigate to the information screen
   const QRscannedNav = (data) => {
+    setFlash(Camera.Constants.FlashMode.off);
+    setZoom(0);
     setIsCameraReady(false);
     navigate("Details", { data, isNewData: true }); // Recibe el nombre de la pantalla definida en el rooteador y llama al compomente con los argumentos dados
   };
