@@ -93,6 +93,28 @@ function History() {
     }
   }, [selectAllElementsTrigger]);
 
+  //const [layoutHeight, setLayoutHeight] = useState(600);
+  const [elementsToRender, setElementsToRender] = useState(0);
+  const [firstElementsRendered, setfirstElementsRendered] = useState(false); // If the first elements have been rendered
+
+  const onScrollHandler = (event) => {
+    // handles the quantity of elements to render based on the scroll height
+    let newElementsToRender =
+      (event.nativeEvent.layoutMeasurement.height +
+        event.nativeEvent.contentOffset.y) /
+      40;
+    if (newElementsToRender > elementsToRender) {
+      setElementsToRender(newElementsToRender);
+    }
+  };
+
+  useEffect(() => {
+    // Increase the first number of elements to render after the first render
+    if (firstElementsRendered) {
+      setElementsToRender(elementsToRender * 1.7);
+    }
+  }, [firstElementsRendered]);
+
   return (
     <View style={{ backgroundColor: globalBackgoundColor, flex: 1 }}>
       <HistoryHeader
@@ -109,15 +131,29 @@ function History() {
         selectAllElementsTriggerFalse={selectAllElementsTriggerFalse}
         setSelectAllElementsTriggerFalse={setSelectAllElementsTriggerFalse}
       />
-      <ScrollView>
+
+      <ScrollView
+        onScroll={(event) => onScrollHandler(event)}
+        onLayout={(layout) => {
+          // Set the first number of elements to render depending on the layout height
+          setElementsToRender(Math.ceil(layout.nativeEvent.layout.height / 80));
+          setfirstElementsRendered(true);
+        }}
+      >
         <View style={[globalMainContainerStyle]}>
           {historyRegister.length !== 0 &&
             isMounted &&
             (() => {
               const renderedElements = [];
+              let elementsRenderLimit = elementsToRender; // limit of elements to render to lazy load the view
 
-              for (let i = historyRegister.length - 1; i >= 0; i--) {
+              for (
+                let i = historyRegister.length - 1;
+                i >= 0 && elementsRenderLimit > 0;
+                i--
+              ) {
                 const [date, elements] = historyRegister[i];
+                // console.log("elementsRenderLimit: ", elementsRenderLimit);
 
                 renderedElements.push(
                   <React.Fragment key={i}>
@@ -126,7 +162,11 @@ function History() {
                       {(() => {
                         const innerRenderedElements = [];
 
-                        for (let j = elements.length - 1; j >= 0; j--) {
+                        for (
+                          let j = elements.length - 1;
+                          j >= 0 && elementsRenderLimit > 0;
+                          j--, elementsRenderLimit--
+                        ) {
                           const element = elements[j];
 
                           innerRenderedElements.push(
@@ -160,19 +200,6 @@ function History() {
 
               return renderedElements;
             })()}
-          {/* <FlatList
-            data={historyRegisterReversed}
-            renderItem={({ item }) => (
-              <HistoryElement
-        
-                type={item.type}
-                data={item.data}
-                time={item.time}
-                unixTime={Date.now()}
-              />
-            )}
-            keyExtractor={(item, index) => index}
-          /> */}
         </View>
       </ScrollView>
     </View>
