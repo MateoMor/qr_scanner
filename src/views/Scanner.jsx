@@ -121,7 +121,9 @@ function Scanner() {
   };
 
   const handleBarCodeScanned = ({ type, data }) => {
-    barcodeScanned(type, data);
+    if (isFocused) {
+      barcodeScanned(type, data);
+    } 
   };
 
   // Function to promp user for camera permission
@@ -218,7 +220,7 @@ function Scanner() {
             console.log("Camera Ready");
           }}
           onMountError={(error) => {
-            console.log(error);
+            console.log("onMountError", error);
           }}
         ></Camera>
       )}
