@@ -11,6 +11,7 @@ import OptionThemeAlert from "../components/Alerts/OptionThemeAlert";
 import IconColorPalette from "../components/Buttons/IconColorPalette";
 import OptionEngineAlert from "../components/Alerts/OptionEngineAlert";
 import { useIsFocused } from "@react-navigation/native";
+import FooterBanner from "../components/Ads/FooterBanner";
 
 function Settings() {
   const {
@@ -147,6 +148,7 @@ function Settings() {
               />
             </View>
           </View>
+          <View style={{ height: 65 }} />
         </ScrollView>
       )}
       {/* Alert frame to display alerts */}
@@ -162,6 +164,8 @@ function Settings() {
           setSelectedTheme={setThemePreferenceOptionSelected}
         />
       )}
+      {/* This gives some space at the bottom for the footerBanner */}
+      <FooterBanner />
     </View>
   );
 }

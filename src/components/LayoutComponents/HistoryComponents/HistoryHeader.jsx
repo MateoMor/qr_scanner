@@ -174,7 +174,7 @@ function HistoryHeader({
 const styles = StyleSheet.create({
   mainContainer: {
     width: "100%",
-    height: 84,
+    height: 80,
     padding: 12,
     flexDirection: "row",
   },
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     fontSize: 23,
     fontWeight: "bold",
     textAlign: "center",
-    marginTop: 24,
+    marginTop: 20,
   },
   pressable: { paddingVertical: 4, paddingHorizontal: 6 },
 });

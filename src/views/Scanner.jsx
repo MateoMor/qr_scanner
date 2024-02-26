@@ -16,6 +16,7 @@ import ButtonText from "../components/Buttons/ButtonText";
 import { StatusBar } from "expo-status-bar";
 
 import { AppStateContext } from "../context/AppStateProvider";
+import FooterBanner from "../components/Ads/FooterBanner";
 
 function Scanner() {
   const { navigate } = useNavigation(); // Llamamos al hook de navigation
@@ -123,7 +124,7 @@ function Scanner() {
   const handleBarCodeScanned = ({ type, data }) => {
     if (isFocused) {
       barcodeScanned(type, data);
-    } 
+    }
   };
 
   // Function to promp user for camera permission
@@ -228,6 +229,9 @@ function Scanner() {
       <BottomPad zoom={zoom} setZoom={setZoom} />
 
       <ScannerAnimation />
+      
+        <FooterBanner />
+      
     </View>
   );
 }
@@ -253,7 +257,7 @@ const styles = StyleSheet.create({
     height: "100%",
     aspectRatio: 9 / 16,
     borderRadius: 20,
-  },
+  }
 });
 
 export default Scanner;

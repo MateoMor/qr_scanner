@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { AppStateContext } from "../../context/AppStateProvider";
 
 function Header({ title }) {
-  const { isHeaderBlurred, currentTheme } = useContext(AppStateContext);
+  const { currentTheme } = useContext(AppStateContext);
 
   let headerColor = "#0F238C";
 
@@ -16,19 +16,6 @@ function Header({ title }) {
   return (
     <View style={[styles.container, { backgroundColor: headerColor }]}>
       <Text style={styles.title}>{title}</Text>
-      {/* <View
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-          backgroundColor: "black",
-          opacity: isHeaderBlurred
-            ? 0.75
-            : 0,
-        }}
-      /> this are styles to show when header is blurred */}
     </View>
   );
 }
@@ -36,7 +23,7 @@ function Header({ title }) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: 84,
+    height: 80,
     padding: 12,
     justifyContent: "center",
     flexDirection: "row",
@@ -46,7 +33,7 @@ const styles = StyleSheet.create({
     fontSize: 23,
     fontWeight: "bold",
     textAlign: "center",
-    marginTop: 24,
+    marginTop: 20,
   },
 });
 

@@ -5,6 +5,7 @@ import TitleSpace from "../components/LayoutComponents/TitleSpace";
 import HistoryElement from "../components/LayoutComponents/HistoryComponents/HistoryElement";
 import DefaultContainer from "../components/LayoutComponents/DefaultContainer";
 import HistoryHeader from "../components/LayoutComponents/HistoryComponents/HistoryHeader";
+import FooterBanner from "../components/Ads/FooterBanner";
 
 import { AppStateContext } from "../context/AppStateProvider";
 import { useIsFocused } from "@react-navigation/native";
@@ -201,7 +202,10 @@ function History() {
               return renderedElements;
             })()}
         </View>
+        {/* This gives some space at the bottom for the footerBanner */}
+        <View style={{ height: 65 }} />
       </ScrollView>
+      <FooterBanner />
     </View>
   );
 }

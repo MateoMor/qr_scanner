@@ -151,7 +151,7 @@ function ImageQR({ data, containerStyle }) {
       style={[containerStyle /* Estilos heredados */, styles.mainContainer]}
     >
       <View ref={imageRef} collapsable={false} style={styles.qrContainer}>
-        {isMounted && <QRCode value={data} size={230} />}
+        {isMounted && <QRCode value={data} size={214} />}
       </View>
       <View style={styles.buttonsContainer}>
         {/* Si se puede abrir la url se usará el método Linking.openURL() de lo contrario se buscará en el navegador*/}

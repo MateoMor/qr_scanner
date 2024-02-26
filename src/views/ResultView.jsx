@@ -8,14 +8,11 @@ import {
 } from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
 import Toast from "react-native-simple-toast";
-/* import {
-  BannerAd,
-  BannerAdSize,
-  TestIds,
-} from "react-native-google-mobile-ads"; */
 
 import Button from "../components/Buttons/Button";
 import ImageQR from "../components/LayoutComponents/ImageQR";
+import FooterBanner from "../components/Ads/FooterBanner";
+import MediumBanner from "../components/Ads/MediumBanner";
 
 import { AppStateContext } from "../context/AppStateProvider";
 import Header from "../components/LayoutComponents/Header";
@@ -91,9 +88,7 @@ function ResultView() {
   }, [isFocused]);
 
   const copyToClipboard = async () => {
-    
     await Clipboard.setStringAsync(data);
-  
 
     // Alert when copy with timeout to show again
     if (!toastShown) {
@@ -193,18 +188,12 @@ function ResultView() {
               { backgroundColor: globalPrimaryColor },
             ]}
           />
-          {/* Banner de anuncios */}
-          {/* <View style={styles.bannerContainer}>
-        <BannerAd
-          unitId={TestIds.BANNER}
-          size={BannerAdSize.FLUID}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: true,
-          }}
-        />
-      </View> */}
+          <MediumBanner />
         </View>
+        {/* This gives some space at the bottom for the footerBanner */}
+        <View style={{ height: 65 }} />
       </ScrollView>
+      <FooterBanner />
     </React.Fragment>
   );
 }
@@ -217,10 +206,6 @@ const styles = StyleSheet.create({
   },
 
   text: { width: "84%", fontWeight: "400", fontSize: 15 },
-
-  bannerContainer: {
-    width: "100%",
-  },
 });
 
 export default ResultView;
