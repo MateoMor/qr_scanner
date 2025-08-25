@@ -25,14 +25,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0F238C"
       },
-      "package": "com.frisded1.qr_scanner"
+      "package": "com.frisded.qr_scanner"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "d970ebe8-068d-4b7d-83e1-423dc1d479f6"
+        "projectId": "bb404a87-b7dd-43e8-9921-bebabe6ef814"
       }
     }
   },

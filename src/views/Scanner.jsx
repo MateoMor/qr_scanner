@@ -229,7 +229,7 @@ function Scanner() {
       <BottomPad zoom={zoom} setZoom={setZoom} />
 
       <ScannerAnimation />
-      
+    
         <FooterBanner />
       
     </View>

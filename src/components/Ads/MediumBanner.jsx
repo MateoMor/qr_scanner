@@ -1,11 +1,11 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
 
-import {
+/* import {
   BannerAd,
   BannerAdSize,
   TestIds,
-} from "react-native-google-mobile-ads";
+} from "react-native-google-mobile-ads"; */
 
 const MediumBanner = () => {
   return (

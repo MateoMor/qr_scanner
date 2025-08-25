@@ -29,7 +29,7 @@
     "expo-sharing": "~11.5.0",
     "expo-status-bar": "~1.6.0",
     "react": "18.2.0",
-    "react-native": "0.72.6",
+    "react-native": "0.72.10",
     "react-native-google-mobile-ads": "^12.6.0",
     "react-native-paper": "^5.12.3",
     "react-native-qrcode-svg": "^6.2.0",

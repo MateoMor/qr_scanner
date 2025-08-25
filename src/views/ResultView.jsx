@@ -63,6 +63,14 @@ function ResultView() {
     }
   }, [navState.index, navState.history]); */
 
+  useEffect(() => {
+    // If auto copy is enabled copy automatically when render
+    if (autoCopyToClipboard) {
+      copyToClipboard();
+      console.log(isDataRead)
+    }
+  }, [])
+
   const {
     params: { data, isNewData },
   } = useRoute(); //con esto pedimos los parametros enviados por ruta
@@ -72,11 +80,6 @@ function ResultView() {
   useEffect(() => {
     if (isFocused) {
       setIsCameraReady(false); // Set IsCameraReady to false to avoid camera crashes
-
-      // If auto copy is enabled copy automatically when render
-      if (autoCopyToClipboard) {
-        copyToClipboard();
-      }
 
       // If the data is new add it to history
       if (isNewData && !isDataRead) {
