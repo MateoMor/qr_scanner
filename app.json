@@ -11,12 +11,16 @@
       "resizeMode": "cover",
       "backgroundColor": "#0F238C"
     },
-    "androidStatusBar": { "barStyle": "light-content" },
+    "androidStatusBar": {
+      "barStyle": "light-content"
+    },
     "androidNavigationBar": {
       "barStyle": "light-content",
       "backgroundColor": "#0F238C"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -25,7 +29,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0F238C"
       },
-      "package": "com.frisded.qr_scanner"
+      "package": "com.frisded.qr_scanner",
+      "permissions": ["android.permission.CAMERA"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,10 +39,14 @@
       "eas": {
         "projectId": "bb404a87-b7dd-43e8-9921-bebabe6ef814"
       }
-    }
-  },
-  "react-native-google-mobile-ads": {
-    "android_app_id": "ca-app-pub-3940256099942544~3347511713",
-    "ios_app_id": "ca-app-pub-3940256099942544~1458002511"
+    },
+    "plugins": [
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera to scan QR codes"
+        }
+      ]
+    ]
   }
 }
