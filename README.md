@@ -1,6 +1,6 @@
 # QR Scanner App
 
-A comprehensive QR code and barcode scanner application built with React Native and Expo. This app provides a complete solution for scanning, generating, and managing QR codes with a modern, customizable interface.
+A mobile QR scanner with history and configuration functionalities, utilizing the device's camera, storage, and vibration.
 
 <div align="center">
   <img src="./screenshots/qr_scanner.png" alt="QR Scanner App Screenshot" width="300"/>
