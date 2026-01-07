@@ -5,7 +5,7 @@ import { CameraView, useCameraPermissions } from "expo-camera";
 import ImagePicker from "expo-image-picker";
 import Toast from "react-native-simple-toast";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { Audio } from "expo-av";
+import { useAudioPlayer } from 'expo-audio';
 
 import Button from "../components/Buttons/Button";
 import ScannerAnimation from "../components/LayoutComponents/ScannerAnimation";
@@ -15,6 +15,8 @@ import { StatusBar } from "expo-status-bar";
 
 import { AppStateContext } from "../context/AppStateProvider";
 import FooterBanner from "../components/Ads/FooterBanner";
+
+const audioSource = require('../../assets/beep.mp3');
 
 function Scanner() {
   
@@ -32,7 +34,8 @@ function Scanner() {
   const [zoom, setZoom] = useState(0);
   const [scanned, setScanned] = useState(false);
   const cameraRef = useRef(null);
-  const [scanSound, setScanSound] = useState(null);
+
+  const player = useAudioPlayer(audioSource);
 
   // Se pide permiso a la camara
   useEffect(() => {
@@ -42,13 +45,6 @@ function Scanner() {
       } else {
         setIsCameraReady(permission.granted);
       }
-
-      const { sound } = await Audio.Sound.createAsync(
-        require("../../assets/beep.mp3"),
-        { playThroughEarpieceAndroid: true }
-      ); // Pide el sonido del scanner
-
-      setScanSound(sound);
     })(); 
   }, [permission, isFocused]);
 
@@ -67,7 +63,7 @@ function Scanner() {
   };
 
   const playBeep = async () => {
-    await sound.playAsync(); // Reproduce el sonido
+    player.play(); // Reproduce el sonido
   };
 
   // Function what receive barcode info and calls navigate to other route
@@ -76,7 +72,7 @@ function Scanner() {
     setScanned(true);
 
     if (beep) {
-      scanSound.replayAsync(); // Beep sound is played
+      player.play();
     }
     if (vibration) {
       Vibration.vibrate(100);
