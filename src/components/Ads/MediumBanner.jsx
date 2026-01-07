@@ -10,13 +10,13 @@ import React from "react";
 const MediumBanner = () => {
   return (
     <View style={styles.adContainer}>
-      <BannerAd
+      {/* <BannerAd
         unitId={TestIds.BANNER}
         size={BannerAdSize.MEDIUM_RECTANGLE}
         requestOptions={{
           requestNonPersonalizedAdsOnly: true,
         }}
-      />
+      /> */}
       {/* This is a placeholder */}
       {/* <View style={{ backgroundColor: "green", width: 300, height: 250 }} /> */}
     </View>

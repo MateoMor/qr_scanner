@@ -11,13 +11,13 @@ const FooterBanner = () => {
   return (
     <View style={styles.adContainer}>
       <View>
-        <BannerAd
+        {/* <BannerAd
           unitId={TestIds.BANNER}
           size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
           requestOptions={{
             requestNonPersonalizedAdsOnly: true,
           }}
-        />
+        /> */}
       </View>
       {/* This is a placeholder */}
       {/* <View style={{ backgroundColor: "green", width: 468, height: 60 }} /> */}

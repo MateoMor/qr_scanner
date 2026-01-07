@@ -1,10 +1,10 @@
 import { Alert, Linking, StyleSheet, Vibration, View } from "react-native";
 import { useContext, useEffect, useRef, useState } from "react";
 
-import { Camera, CameraType } from "expo-camera";
+import { Camera, CameraType, CameraView } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
-import { BarCodeScanner } from "expo-barcode-scanner";
+/* import { BarCodeScanner } from "expo-barcode-scanner"; */
 import Toast from "react-native-simple-toast";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { Audio } from "expo-av";
@@ -19,6 +19,7 @@ import { AppStateContext } from "../context/AppStateProvider";
 import FooterBanner from "../components/Ads/FooterBanner";
 
 function Scanner() {
+  
   const { navigate } = useNavigation(); // Llamamos al hook de navigation
 
   const isFocused = useIsFocused(); // Hook para saber cuando montar y desmontar la cámara
@@ -28,8 +29,8 @@ function Scanner() {
 
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [type, setType] = useState(CameraType.back);
-  const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
+  const [type, setType] = useState('back');
+  const [flash, setFlash] = useState('off');
   const [zoom, setZoom] = useState(0);
   const [scanned, setScanned] = useState(false);
   const cameraRef = useRef(null);
@@ -107,14 +108,14 @@ function Scanner() {
       setSelectedImage({ localUri: pickerResult.assets[0].uri });
       try {
         // Se busca un qr en la imágen
-        const scannedResults = await BarCodeScanner.scanFromURLAsync(
+        /* const scannedResults = await BarCodeScanner.scanFromURLAsync(
           pickerResult.assets[0].uri
         );
 
         const imageData = scannedResults[0].data;
         const imageType = scannedResults[0].type;
 
-        barcodeScanned(imageType, imageData);
+        barcodeScanned(imageType, imageData); */
       } catch (error) {
         Toast.show("No Barcode Code Found");
       }
@@ -188,18 +189,18 @@ function Scanner() {
           icon="camera-reverse"
           onPress={() => {
             setType(
-              type === CameraType.back ? CameraType.front : CameraType.back
+              type === 'back' ? 'front' : 'back'
             );
           }}
         />
         <Button
           icon={
-            flash === Camera.Constants.FlashMode.off ? "flash-off" : "flash"
+            flash === 'off' ? "flash-off" : "flash"
           }
           onPress={() => {
             // Quiero que en esta linea la camara se pause
             setFlash(
-              flash === Camera.Constants.FlashMode.off
+              flash === 'off'
                 ? Camera.Constants.FlashMode.torch
                 : Camera.Constants.FlashMode.off
             );
@@ -209,7 +210,7 @@ function Scanner() {
         <Button icon="images" onPress={() => pickImage()} />
       </View>
       {isCameraReady && (
-        <Camera
+        <CameraView
           style={styles.camera}
           type={type}
           flashMode={flash}
@@ -223,7 +224,7 @@ function Scanner() {
           onMountError={(error) => {
             console.log("onMountError", error);
           }}
-        ></Camera>
+        ></CameraView>
       )}
 
       <BottomPad zoom={zoom} setZoom={setZoom} />
