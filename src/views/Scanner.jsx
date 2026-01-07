@@ -1,10 +1,8 @@
 import { Alert, Linking, StyleSheet, Vibration, View } from "react-native";
 import { useContext, useEffect, useRef, useState } from "react";
 
-import { Camera, CameraType, CameraView } from "expo-camera";
-import * as MediaLibrary from "expo-media-library";
-import * as ImagePicker from "expo-image-picker";
-/* import { BarCodeScanner } from "expo-barcode-scanner"; */
+import { CameraView, useCameraPermissions } from "expo-camera";
+import ImagePicker from "expo-image-picker";
 import Toast from "react-native-simple-toast";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { Audio } from "expo-av";
@@ -27,56 +25,45 @@ function Scanner() {
   const { vibration, beep, isCameraReady, setIsCameraReady } =
     useContext(AppStateContext);
 
-  const [hasCameraPermission, setHasCameraPermission] = useState(null);
+  const [permission, requestPermission] = useCameraPermissions();
   const [selectedImage, setSelectedImage] = useState(null);
-  const [type, setType] = useState('back');
-  const [flash, setFlash] = useState('off');
+  const [facing, setFacing] = useState("back");
+  const [torch, setTorch] = useState(false);
   const [zoom, setZoom] = useState(0);
   const [scanned, setScanned] = useState(false);
   const cameraRef = useRef(null);
   const [scanSound, setScanSound] = useState(null);
 
   // Se pide permiso a la camara
-  useEffect(
-    () => {
-      (async () => {
-        const cameraStatus = await Camera.requestCameraPermissionsAsync();
-        setHasCameraPermission(cameraStatus.status === "granted"); // si el status es concedido el estado es verdadero
+  useEffect(() => {
+    (async () => {
+      if (!permission) {
+        await requestPermission();
+      } else {
+        setIsCameraReady(permission.granted);
+      }
 
-        if (hasCameraPermission) {
-          if (hasCameraPermission) {
-            setIsCameraReady(true);
-          }
-        }
+      const { sound } = await Audio.Sound.createAsync(
+        require("../../assets/beep.mp3"),
+        { playThroughEarpieceAndroid: true }
+      ); // Pide el sonido del scanner
 
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/beep.mp3"),
-          { playThroughEarpieceAndroid: true }
-        ); // Pide el sonido del scanner
-
-        setScanSound(sound);
-
-        //const camRatios = await cameraRef.current.getSupportedRatiosAsync();
-        //console.log(camRatios);
-      })(); // Con () llamamos la función
-    },
-    [
-      isFocused,
-    ] /* Con isFocused la función se ejecutará cada vez que se entre a la pantalla */
-  );
+      setScanSound(sound);
+    })(); 
+  }, [permission, isFocused]);
 
   useEffect(() => {
-    if (hasCameraPermission) {
+    if (permission?.granted) {
       setIsCameraReady(true);
     }
-  }, [hasCameraPermission]);
+  }, [permission]);
 
   // Function to navigate to the information screen
   const QRscannedNav = (data) => {
-    setFlash(Camera.Constants.FlashMode.off);
+    setTorch(false);
     setZoom(0);
     setIsCameraReady(false);
-    navigate("Details", { data, isNewData: true }); // Recibe el nombre de la pantalla definida en el rooteador y llama al compomente con los argumentos dados
+    navigate("Details", { data, isNewData: true }); 
   };
 
   const playBeep = async () => {
@@ -85,21 +72,25 @@ function Scanner() {
 
   // Function what receive barcode info and calls navigate to other route
   const barcodeScanned = async (type, data) => {
+    if (scanned) return; 
+    setScanned(true);
+
     if (beep) {
       scanSound.replayAsync(); // Beep sound is played
     }
     if (vibration) {
       Vibration.vibrate(100);
     }
-    // Alert.alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    
     QRscannedNav(data);
+    setTimeout(() => setScanned(false), 2000);
   };
 
   // Function to select an image
   let pickImage = async () => {
     const pickerResult = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 1, // Importante para no tener un warning
+      quality: 1, 
     });
 
     if (pickerResult.canceled == true) {
@@ -123,7 +114,7 @@ function Scanner() {
   };
 
   const handleBarCodeScanned = ({ type, data }) => {
-    if (isFocused) {
+    if (isFocused && !scanned) {
       barcodeScanned(type, data);
     }
   };
@@ -140,11 +131,9 @@ function Scanner() {
         {
           text: "go to settings",
           onPress: () => {
-            Linking.openSettings(); /* Se abre la configuración */
-            /* Function to ask if hasPermission === "granted" after one second and force a reload if indeed it is, surely there's a better way but i don't know it */
+            Linking.openSettings(); 
             setTimeout(async () => {
-              const cameraStatus = await Camera.getCameraPermissionsAsync(); // Se si se tiene permiso de cámara
-              setHasCameraPermission(cameraStatus.status === "granted");
+              if (requestPermission) await requestPermission();
             }, 1500);
           },
         },
@@ -153,7 +142,7 @@ function Scanner() {
   };
 
   // View to show if the app doesn't have camera permission
-  if (hasCameraPermission === false) {
+  if (!permission?.granted) {
     return (
       <View
         style={{
@@ -168,7 +157,7 @@ function Scanner() {
           color="green"
           icon="camera-alt"
           library="MaterialIcons"
-          onPress={requestCameraPermissionFromSettings}
+          onPress={requestPermission}
         />
         <ButtonText
           text="Scan from Gallery"
@@ -188,22 +177,17 @@ function Scanner() {
         <Button
           icon="camera-reverse"
           onPress={() => {
-            setType(
-              type === 'back' ? 'front' : 'back'
+            setFacing(
+              facing === 'back' ? 'front' : 'back'
             );
           }}
         />
         <Button
           icon={
-            flash === 'off' ? "flash-off" : "flash"
+            !torch ? "flash-off" : "flash"
           }
           onPress={() => {
-            // Quiero que en esta linea la camara se pause
-            setFlash(
-              flash === 'off'
-                ? Camera.Constants.FlashMode.torch
-                : Camera.Constants.FlashMode.off
-            );
+            setTorch(!torch);
             console.log(selectedImage);
           }}
         />
@@ -212,12 +196,14 @@ function Scanner() {
       {isCameraReady && (
         <CameraView
           style={styles.camera}
-          type={type}
-          flashMode={flash}
+          facing={facing}
+          enableTorch={torch}
           zoom={zoom}
           ref={cameraRef}
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          ratio="16:9"
+          onBarcodeScanned={handleBarCodeScanned}
+          barcodeScannerSettings={{
+            barcodeTypes: ["qr", "pdf417", "ean13", "code128", "code39", "upc_e", "upc_a", "ean8", "itf14", "codabar", "aztec", "datamatrix"],
+          }}
           onCameraReady={() => {
             console.log("Camera Ready");
           }}
@@ -231,7 +217,7 @@ function Scanner() {
 
       <ScannerAnimation />
     
-        <FooterBanner />
+      <FooterBanner />
       
     </View>
   );
