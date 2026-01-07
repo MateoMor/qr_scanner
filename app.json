@@ -30,7 +30,9 @@
         "backgroundColor": "#0F238C"
       },
       "package": "com.frisded.qr_scanner",
-      "permissions": ["android.permission.CAMERA"]
+      "permissions": [
+        "android.permission.CAMERA"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -41,12 +43,7 @@
       }
     },
     "plugins": [
-      [
-        "expo-barcode-scanner",
-        {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera to scan QR codes"
-        }
-      ]
+      "expo-audio"
     ]
   }
 }
