@@ -1,159 +1,59 @@
-# QR Scanner App
+# QR Scanner
 
-A mobile QR scanner with history and configuration functionalities, utilizing the device's camera, storage, and vibration.
+## A mobile application for scanning and managing QR codes
 
-<div align="center">
-  <img src="./screenshots/qr_scanner.png" alt="QR Scanner App Screenshot" width="300"/>
-</div>
+This project is a **React Native application** built to demonstrate how to **implement camera scanning, QR generation, and persistent state management in a mobile environment**.  
+It serves as a **production-ready example** and showcases how to:
 
+- **Scan QR Codes**: Real-time scanning using the device camera
+- **Generate QR Codes**: Create QR codes from text or URLs
+- **Manage History**: Local storage of scanned codes with history management
+- **Personalize Experience**: Theming (Light/Dark mode) and customizable accent colors
+- **Handle Permissions**: Managing camera and library access gracefully
+- **Integrate Native Features**: Vibration, Share API, and File System access
 
-## 🚀 Features
+## Related Content
 
-### Core Functionality
-- **QR Code Scanning**: Real-time camera-based QR code and barcode scanning
-- **Gallery Scanning**: Scan QR codes from existing images in your gallery
-- **QR Code Generation**: Generate QR codes from any text or URL
-- **Camera Controls**: Flash toggle, camera flip (front/back), zoom functionality
-- **Auto-Detection**: Automatically detects URLs vs plain text
+If this project is associated with a tutorial, course, or video series, you can include it here.
 
-### User Experience
-- **Scan History**: Complete history of all scanned codes organized by date
-- **Auto Copy**: Automatic clipboard copying of scanned content
-- **Auto URL Opening**: Automatically open URLs when scanned
-- **Haptic Feedback**: Vibration feedback on successful scans
-- **Audio Feedback**: Optional beep sound when scanning
-- **Animated Scanner**: Professional scanning animation with targeting overlay
+<a href="#" target="_blank">
+<img src="./screenshots/qr_scanner.png" alt="App Screenshot" width="240" height="auto" />
+</a>
 
-### Customization & Settings
-- **Theme Support**: Light, dark, and automatic (system) themes
-- **Color Schemes**: 6 different accent color options
-- **Search Engine Selection**: Choose from Google, Bing, Yahoo, or Ecosia
-- **Personalized Experience**: All settings persist across app sessions
+## How to install QR Scanner
 
-### Content Management
-- **QR Code Sharing**: Share generated QR codes with other apps
-- **Download QR Codes**: Save QR codes to device gallery
-- **History Management**: Bulk delete, select all, and organize scan history
-- **Lazy Loading**: Optimized performance for large scan histories
+The recommended way to get started is by using the Expo CLI,  
+but here is the short version:
 
-The app features a modern material design interface with:
-- Clean scanner interface with animated targeting overlay
-- Intuitive bottom tab navigation
-- Customizable color schemes
-- Responsive design for all screen sizes
-
-## 🛠️ Technology Stack
-
-- **Framework**: React Native 0.74.5
-- **Development Platform**: Expo SDK 51
-- **Navigation**: React Navigation 6 (Stack & Material Bottom Tabs)
-- **State Management**: React Context API
-- **Storage**: AsyncStorage for persistent settings
-- **Camera**: Expo Camera with barcode scanning
-- **QR Generation**: react-native-qrcode-svg
-- **Animations**: React Native Reanimated 3
-- **Icons**: Expo Vector Icons (Material, Ionicons, etc.)
-
-## 📦 Installation
-
-### Prerequisites
-- Node.js (14 or later)
-- Expo CLI
-- Android Studio / Xcode (for device testing)
-
-### Setup
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd qr_scanner
-```
-
+1. Clone this repository
 2. Install dependencies:
-```bash
-npm install
-```
-
+   ```bash
+   npm install
+   ```
 3. Start the development server:
-```bash
-expo start
-```
+   ```bash
+   npx expo start
+   ```
+4. Run on a device or emulator:
+   - Use the Expo Go app on your phone to scan the QR code
+   - Or press `a` for Android Emulator / `i` for iOS Simulator
 
-4. Run on device:
-```bash
-# Android
-expo start --android
+## How to customize this project
 
-# iOS
-expo start --ios
-```
+This project is designed to be reusable.  
+You can fork or clone it and adapt it to your own needs by:
 
-## 🏗️ Project Structure
+- **Adding a new Search Engine**: Edit `src/context/AppStateProvider.jsx` (searchEngine state) and `src/views/Settings.jsx`.
+- **Modifying the Theme**: Change color constants in `src/context/AppStateProvider.jsx` or `constants/theme.ts` (if available).
+- **Adding new supported Barcode types**: Update the `barCodeScannerSettings` in `src/views/Scanner.jsx`.
 
-```
-src/
-├── components/          # Reusable UI components
-│   ├── Ads/            # Advertisement banners
-│   ├── Alerts/         # Modal dialogs and alerts
-│   ├── Buttons/        # Custom button components
-│   └── LayoutComponents/ # Layout and UI elements
-├── context/            # React Context providers
-│   └── AppStateProvider.jsx  # Global app state
-├── routes/             # Navigation configuration
-│   ├── Routes.jsx      # Main router
-│   ├── Tabs.jsx        # Bottom tab navigator
-│   └── ScannerStack.jsx # Scanner stack navigator
-├── utils/              # Utility functions
-│   ├── AsyncStorageFunctions.js
-│   └── dateFunctions.js
-└── views/              # Main screen components
-    ├── Scanner.jsx     # Camera scanner screen
-    ├── ResultView.jsx  # Scan results and QR generation
-    ├── History.jsx     # Scan history management
-    └── Settings.jsx    # App configuration
-```
+It works well as a starter boilerplate for **any barcode or QR-centric mobile utility**.
 
-## 🎯 Key Components
+## Found a bug or want to contribute?
 
-### Scanner Screen
-- Real-time camera scanning with expo-barcode-scanner
-- Camera controls (flash, flip, zoom)
-- Gallery image scanning
-- Animated scanner overlay
-- Permission handling
+If you find an issue or have a suggestion for improvement:
 
-### Result View
-- Display scanned content
-- Generate QR codes from content
-- Copy to clipboard functionality
-- Share and download options
-- URL detection and opening
+- Open an issue using the **Issues** tab
+- If submitting a PR, please reference the related issue
 
-### History Management
-- Chronological scan history
-- Bulk selection and deletion
-- Search and filter capabilities
-- Lazy loading for performance
-- Data persistence
-
-### Settings
-- Theme customization (light/dark/auto)
-- Color scheme selection
-- Scanner preferences (vibration, sound)
-- Search engine configuration
-- Auto-copy and auto-open settings
-
-## ⚙️ Configuration
-
-### Permissions
-The app requires the following permissions:
-- **Camera**: For QR code scanning
-- **Media Library**: For saving QR codes and accessing gallery images
-
-
-## 🎨 Customization
-
-### Themes
-- **Light Theme**: Clean white interface with blue accents
-- **Dark Theme**: Material Design dark theme with proper contrast
-- **Auto Theme**: Follows system theme preferences
-
+Contributions are welcome 🚀
