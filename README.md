@@ -12,9 +12,7 @@ It serves as a **production-ready example** and showcases how to:
 - **Handle Permissions**: Managing camera and library access gracefully
 - **Integrate Native Features**: Vibration, Share API, and File System access
 
-## Related Content
-
-If this project is associated with a tutorial, course, or video series, you can include it here.
+## Screenshots
 
 <a href="#" target="_blank">
 <img src="./screenshots/qr_scanner.png" alt="App Screenshot" width="240" height="auto" />
